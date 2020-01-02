@@ -279,7 +279,7 @@ class Browser(models.Model):
                 from selenium.webdriver.chrome.options import Options
                 executable_path = check_file(os.path.join(driver_path, "chromedriver.exe"))
                 options = Options()
-                options.add_argument('headless')
+                # options.add_argument('headless')
                 options.add_argument("disable-infobars")
                 options.add_argument('no-sandbox')
                 options.add_argument('disable-dev-shm-usage')
