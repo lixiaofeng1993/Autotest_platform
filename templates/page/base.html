@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+{% load static %}
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>POM - 自动化测试平台</title>
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/js/morris/morris-0.4.3.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/css/navbar.css' %}" rel="stylesheet"/>
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/favicon.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'assets/img/favicon.png' %}">
+    {% block css %}
+
+    {% endblock %}
+</head>
+
+<body>
+<div id="wrapper">
+    <!-- 头部bar -->
+    <nav class="navbar navbar-default top-navbar" role="navigation" id="nav-top">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand">
+                <a href="{% url 'index' %}"><img src="{% static 'assets/img/logo.png' %}" alt="Klorofil Logo"
+                                                 class="img-responsive logo"></a>
+            </div>
+        </div>
+        <ul class="nav navbar-top-links navbar-right color-white">
+            <li>
+                <a href="{% url 'logout' %}" class=" pointer">退出登录</a>
+            </li>
+            <li><span class="mar-rignt-100">{{ user }}</span></li>
+        </ul>
+    </nav>
+    <!-- 头部bar end -->
+    <!-- 左侧导航  -->
+    <nav class="navbar-default navbar-side" role="navigation" id="nav">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu" style="margin-top: 15px">
+                <li>
+                    <a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 系统概括</a>
+                </li>
+                <li>
+                    <a href="{% url 'project' %}"><i class="fa fa-desktop"></i> 项目管理</a>
+                </li>
+                <li>
+                    <a href="{% url 'page' %}"><i class="fa fa-bar-chart-o"></i> 页面管理</a>
+                </li>
+                <li>
+                    <a href="{% url 'element' %}"><i class="fa fa-qrcode"></i> 页面元素</a>
+                </li>
+
+                <li>
+                    <a href="{% url 'keyword' %}"><i class="fa fa-table"></i> 关键字库</a>
+                </li>
+                <li>
+                    <a href="{% url 'testcase' %}"><i class="fa fa-edit"></i> 测试用例 </a>
+                </li>
+                <li>
+                    <a href="{% url 'result' %}"><i class="fa fa-fw fa-file"></i> 测试结果 </a>
+                </li>
+                <li>
+                    <a href="{% url 'loginConfig' %}"><i class="fa fa-fw fa-building-o"></i> 登录配置 </a>
+                </li>
+                <li>
+                    <a href="{% url 'task' %}"><i class="fa fa-fw fa-sitemap"></i> 任务管理 </a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+    <!-- 左侧导航  -->
+    {% block body %}
+
+    {% endblock %}
+    <!-- /. PAGE WRAPPER  -->
+</div>
+{% block alert %}
+
+{% endblock %}
+<script src="{% static 'assets/jquery/jquery.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        var a_name = $("a").text();
+        var page_name = $("span.this-page").text();
+        if (a_name) {
+            if (page_name) {
+                $("a:contains(" + page_name + ")").addClass("active-menu");
+            }
+        }
+    });
+</script>
+{% block js %}
+
+{% endblock %}
+</body>
+</html>

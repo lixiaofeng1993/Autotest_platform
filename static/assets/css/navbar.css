@@ -1,0 +1,50 @@
+#nav {
+    position: fixed;
+    margin-top: 5%;
+}
+
+#nav-top {
+    position: fixed;
+    width: 100%;
+    z-index: 66;
+    border-bottom:2px solid #777777;
+}
+
+.navbar-header .navbar-brand {
+    height: 80px;
+    /*text-transform: none;*/
+    background: #ffffff;
+    padding-top: 30px;
+    padding-left: 35px;
+    display: block;
+    width: 100%;
+}
+
+.panel-body {
+    min-height: 500px;
+}
+
+.navbar-header .navbar-brand:hover {
+    background: #ffffff;
+    color: #777;
+}
+
+#wrapper .top-navbar {
+    background: #ffffff;
+    color: #777;
+}
+
+.color-white {
+    color: #777777;
+    padding-top: 15px;
+
+}
+
+#wrapper .top-navbar .color-white li a {
+    color: #777777;
+}
+
+#wrapper .top-navbar .color-white li a:hover {
+    background: #ffffff;
+    color: blue;
+}
