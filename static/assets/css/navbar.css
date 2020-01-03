@@ -7,7 +7,7 @@
     position: fixed;
     width: 100%;
     z-index: 66;
-    border-bottom:2px solid #777777;
+    border-bottom: 2px solid #777777;
 }
 
 .navbar-header .navbar-brand {
@@ -47,4 +47,9 @@
 #wrapper .top-navbar .color-white li a:hover {
     background: #ffffff;
     color: blue;
+}
+
+.form-horizontal #css-zidingyi .form-group #radio-all {
+    margin-left: 20%;
+    display: inline-block;
 }
