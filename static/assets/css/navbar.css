@@ -20,10 +20,6 @@
     width: 100%;
 }
 
-.panel-body {
-    min-height: 400px;
-}
-
 .navbar-header .navbar-brand:hover {
     background: #ffffff;
     color: #777;

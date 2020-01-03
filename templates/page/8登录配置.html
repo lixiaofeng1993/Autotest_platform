@@ -505,7 +505,7 @@
                         tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.logins[i].id + ')">删除</a>';
                         tr += '</td></tr>';
                     }
-                    $(".js_table").append(tr)
+                    $(".js_table").append(tr);
                     $('#dataTables-example').dataTable({
                         "bPaginate": true,  //是否显示分页
                         "bSort": true,     //是否支持排序功能
@@ -526,8 +526,8 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
-                    });
+                        }
+                    })
                 }
             });
         }
@@ -550,9 +550,9 @@
         }
 
         function isDel(id) {
-            $("#messageTitle").html("删除配置")
-            $("#messageContent").html("请确认是否删除登录配置")
-            $("#message").html("")
+            $("#messageTitle").html("删除配置");
+            $("#messageContent").html("请确认是否删除登录配置");
+            $("#message").html("");
             $("#delButton").attr("onclick", "del(" + id + ")");
             $("#del").modal("show");
         }
@@ -565,7 +565,7 @@
                 dataType: 'json',
                 success: function (res) {
                     if (res.code == 200) {
-                        $("#del").modal("hide")
+                        $("#del").modal("hide");
                         setTimeout(function () {
                             search();
                         }, 1000)
@@ -622,7 +622,7 @@
         //获得当前时间
         var newDate = new Date();
         var endTimeT1 = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).Format("yyyy-MM-dd");
-        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1)
+        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1);
         //开始时间
         $("#pzTime").datetimepicker({
             language: 'zh-CN',
@@ -633,7 +633,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();
@@ -652,7 +652,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();
