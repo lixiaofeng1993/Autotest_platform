@@ -301,11 +301,11 @@
 
         function newBind(id) {
             $("#eselect").removeAttr("disabled");
-            $("#myModalLabel").html("新建关联")
-            $("#message").html("")
+            $("#myModalLabel").html("新建关联");
+            $("#message").html("");
             $("#newProject").modal("show");
             $("#bind").modal("hide");
-            $("#saveBind").attr("onclick", "addBind(" + id + ")")
+            $("#saveBind").attr("onclick", "addBind(" + id + ")");
             var list = $("#bindParameter").find("[name='loginParams']");
             for (var i = 0; i < list.length; i++) {
                 $(list[i]).val("")
@@ -313,9 +313,9 @@
         }
 
         function addBind(id) {
-            var parameter = {}
+            var parameter = {};
             var list = $("#bindParameter").find("[name='loginParams']");
-            var environmentId = $("#eselect option:selected").val()
+            var environmentId = $("#eselect option:selected").val();
             for (var i = 0; i < list.length; i++) {
                 parameter[$(list[i]).attr("data-key")] = $(list[i]).val();
             }
@@ -342,7 +342,7 @@
         function bind(id) {
             $("#projectName").attr("data", id);
             $("#createBind").attr("onclick", "newBind(" + id + ")");
-            var projectId = 0
+            var projectId = 0;
             $.ajax({
                 url: '/api/v1/login/' + id,
                 type: 'post',
@@ -350,15 +350,15 @@
                 dataType: 'json',
                 success: function (res) {
                     if (res.code == 200) {
-                        $("#projectName").html("登录名称：" + res.data.name)
+                        $("#projectName").html("登录名称：" + res.data.name);
                         $("#binds").find("tr").remove();
-                        projectId = res.data.projectId
+                        projectId = res.data.projectId;
                         var tr = '';
                         for (var i = 0; i < res.data.bind.length; i++) {
                             tr += '<tr>';
-                            tr += '<td class="center">' + res.data.bind[i].environmentName + '</td>'
+                            tr += '<td class="center">' + res.data.bind[i].environmentName + '</td>';
                             tr += '<td class="center">';
-                            var parameters = res.data.bind[i].parameter
+                            var parameters = res.data.bind[i].parameter;
                             for (var j in parameters) {
                                 tr += (j + " = " + parameters[j]);
                                 tr += "</br>"
@@ -370,8 +370,8 @@
                             tr += '<a class="pointer" onclick="isDelBind(' + res.data.bind[i].id + ')">删除</a>';
                             tr += '</td></tr>';
                         }
-                        bindParameterSetting(res.data.params, [])
-                        $("#binds").append(tr)
+                        bindParameterSetting(res.data.params, []);
+                        $("#binds").append(tr);
                         $.ajax({
                             url: '/api/v1/environment?p=1',
                             type: 'post',
@@ -400,7 +400,7 @@
         }
 
         function updateBind(id) {
-            var parameter = {}
+            var parameter = {};
             var list = $("#bindParameter").find("[name='loginParams']");
             for (var i = 0; i < list.length; i++) {
                 parameter[$(list[i]).attr("data-key")] = $(list[i]).val();
@@ -426,9 +426,9 @@
         }
 
         function isDelBind(id) {
-            $("#messageTitle").html("删除关联")
-            $("#messageContent").html("请确认是否取消与此环境的关联")
-            $("#message").html("")
+            $("#messageTitle").html("删除关联");
+            $("#messageContent").html("请确认是否取消与此环境的关联");
+            $("#message").html("");
             $("#delButton").attr("onclick", "unbind(" + id + ")");
             $("#del").modal("show");
         }
@@ -437,7 +437,7 @@
             $("#myModalLabel").html("编辑关联");
             $("#bind").modal("hide");
             $("#message").html("");
-            $("#saveBind").attr("onclick", "updateBind(" + id + ")")
+            $("#saveBind").attr("onclick", "updateBind(" + id + ")");
             var list = $("#bindParameter").find("[name='loginParams']");
             for (var i = 0; i < list.length; i++) {
                 $(list[i]).val(params[$(list[i]).attr("data-key")])

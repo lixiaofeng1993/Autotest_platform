@@ -82,7 +82,7 @@
                                         <div class="col-sm-10">
                                             <div class="table-responsive">
                                                 <a class="pointer" data-toggle="modal" onclick="gotoAddStep()">添加步骤</a>
-                                                <table class="table table-striped table-bordered table-hover">
+                                                <table class="table table-striped table-bordered table-hover" id="tb1">
                                                     <thead>
                                                     <tr>
                                                         <th>序号</th>
@@ -378,7 +378,7 @@
             });
         });
 
-        init()
+        init();
 
         function initSelect() {
             var projectId = $("#projectSelect option:selected").val();
@@ -486,6 +486,7 @@
                             tr += "</td>"
                             tr += '<td class="center">';
                             tr += '<a class="pointer" data-index="' + (i + 1) + '" data-toggle="modal" onclick="setStep(this)">设置</a> -';
+                            tr += '<a class="pointer" data-index="' + (i + 1) + '" data-toggle="modal" onclick="insertStep(this)">添加</a> -';
                             tr += '<a class="pointer" data-toggle="modal" onclick="delStep(this)">删除</a>';
                             tr += '</td>';
                             tr += '<td class="data" data-view="" style="display: none">' + JSON.stringify(data) + '</td>';
@@ -524,13 +525,112 @@
                 tr += '<a class="pointer" data-index="' + index + '" data-value=\'' + JSON.stringify(view) + '\'+ data-toggle="modal" onclick="setValue(this)">设置参数值</a>';
                 tr += '</td>';
                 tr += '<td class = "data" style="display:none">';
-                tr += $(divs[i]).attr("data");
+                {#                tr += $(divs[i]).attr("data");#}
+                tr += JSON.stringify(view); // TODO 无法编辑的问题
                 tr += '</td>';
                 tr += '</tr>';
             }
             $("#keyword-value").find("tr").remove();
             $("#keyword-value").append(tr);
             $("#addBuzhou").modal("show");
+        }
+        function insertStep(index) {
+            var data_index = index.getAttribute("data-index");
+            $("#myModalLabel2").html("插入步骤");
+            $("#step-keyword").val("0");
+            $("#keyword-value").find("tr").remove();
+            $("#saveStep").attr("onclick", "insertToStep(" + data_index + ")");
+            $("#addBuzhou").modal("show");
+        }
+
+        function insertToStep(index) {
+            var keywordId = $("#step-keyword option:selected").val();
+            var keywordName = $("#step-keyword option:selected").text();
+            var listIndex;
+            if (index == null) {
+                listIndex = ($("#steps").find("tr").length) + 1;
+            } else {
+                listIndex = index;
+            }
+            var values = [];
+            var trs = $("#keyword-value").find("tr");
+            var td1 = '', td2 = "", td3 = "", td4 = "", td5 = "";
+            td1 = '<td class="center">' + (listIndex + 1) + '</td>';
+            td2 = '<td class="center">' + keywordName + '</td>';
+            td3 += '<td class="center">';
+            var text = '';
+            for (var i = 0; i < trs.length; i++) {
+                var td = $(trs[i]).find("td.data");
+                var data = JSON.parse(td.text());
+                values.push(data);
+                var viewData = $(trs[i]).find("td a").attr("data-value");
+                viewData = JSON.parse(viewData);
+                text += "<div class='parameter' data-view='" + JSON.stringify(viewData) + "' data='" + JSON.stringify(data) + "'>" + viewData["key"];
+                text += " = ";
+                if (viewData["isParameter"]) {
+                    text += ('<em  style="color:red;font-style: normal;">参数化：</em>' + viewData["value"]);
+                } else {
+                    if (viewData["type"] == "string") {
+                        text += viewData["value"];
+                    } else {
+                        text += viewData["elementName"];
+                    }
+                }
+                text += "</div>"
+            }
+            var data = {"keywordId": keywordId, "values": values};
+            td3 += text;
+            td3 += '</td>';
+            td4 += '<td class="center">';
+            td4 += '<a class="pointer" data-index="' + (listIndex + 1) + '" data-toggle="modal" onclick="setStep(this)">设置</a> -';
+            td4 += '<a class="pointer" data-index="' + (listIndex + 1) + '" data-toggle="modal" onclick="insertStep(this)">添加</a> -';
+            td4 += '<a class="pointer" data-toggle="modal" onclick="delStep(this)">删除</a>';
+            td4 += '</td>';
+            td5 = '<td class="data" data-view="" style="display: none">' + JSON.stringify(data) + '</td>';
+            var tr;
+            if (index == null) {
+                tr = '<tr class="odd">';
+                tr += tds;
+                tr += "</tr>";
+                $("#steps").append(tr);
+            } else {
+                {#            tr = $("#steps tr td a[data-index='" + (index + 1) + "']").parent().parent();#}
+                {#            tr.find("td").remove();#}
+                {#            tr.append(tds);#}
+                var tr = document.getElementById("tb1");
+                var newTr = tr.insertRow(index + 1);
+                newTr.setAttribute("class", "odd");
+                var newTd1 = newTr.insertCell();
+                newTd1.setAttribute("class", "center");
+                newTd1.innerHTML = td1;
+                var newTd2 = newTr.insertCell();
+                newTd2.setAttribute("class", "center");
+                newTd2.innerHTML = td2;
+                var newTd3 = newTr.insertCell();
+                newTd3.setAttribute("class", "center");
+                newTd3.innerHTML = td3;
+                var newTd4 = newTr.insertCell();
+                newTd4.innerHTML = td4;
+                newTd4.setAttribute("class", "center");
+                var newTd5 = newTr.insertCell();
+                newTd5.setAttribute("class", "data");
+                newTd5.setAttribute("data-view", "");
+                newTd5.setAttribute("style", "display: none");
+                newTd5.innerHTML = td5;
+                var trs = $("#steps").find("tr");
+                for (var i = 0; i < trs.length; i++) {
+                    var tr = $(trs[i]);
+                    var index = i + 1;
+                    tr.find("td:first").html(index);
+                    tr.find("td a[data-index]").attr("data-index", index);
+                }
+            }
+            $("#addCanshu").modal("hide");
+            $("#addBuzhou").modal("hide");
+            $(".modal-backdrop.in").remove();
+            $(".modal-backdrop.fade.in").remove();
+            initParams();
+
         }
 
         function addStep(index) {
@@ -573,6 +673,7 @@
             tds += '</td>';
             tds += '<td class="center">';
             tds += '<a class="pointer" data-index="' + listIndex + '" data-toggle="modal" onclick="setStep(this)">设置</a> -';
+            tds += '<a class="pointer" data-index="' + listIndex + '" data-toggle="modal" onclick="insertStep(this)">添加</a> -';
             tds += '<a class="pointer" data-toggle="modal" onclick="delStep(this)">删除</a>';
             tds += '</td>';
             tds += '<td class="data" data-view="" style="display: none">' + JSON.stringify(data) + '</td>';
@@ -598,9 +699,9 @@
             var type_ = type == "string" ? "文本" : type == "element" ? "元素" : "";
             var isParameter = (($('.radio input[name="valueType"]:checked ').val()) == "parameter");
             var data = {}, elementName, pageId;
-            data["type"] = type
-            data["key"] = key
-            data["isParameter"] = isParameter
+            data["type"] = type;
+            data["key"] = key;
+            data["isParameter"] = isParameter;
             var value_ = '';
             var viewValue = '';
             if (isParameter) {

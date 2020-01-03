@@ -190,6 +190,25 @@ INSERT INTO `keyword` VALUES (10, 0, 'sends_keys', 1, 'Autotest_platform.PageObj
 INSERT INTO `keyword` VALUES (12, 0, 'switch_window_handle', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'switch_window_handle', '[{\"type\": \"string\", \"key\": \"n\"}]', '[]', '2019-12-30 22:05:29', '切换浏览器handle');
 INSERT INTO `keyword` VALUES (13, 0, 'switch_context', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'switch_context', '[{\"type\": \"string\", \"key\": \"i\"}]', '[]', '2019-12-30 22:55:13', '手机切换上下文');
 INSERT INTO `keyword` VALUES (14, 0, 'maximize_window', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'maximize_window', '[]', '[]', '2019-12-30 23:04:38', '最大化浏览器');
+INSERT INTO `keyword` VALUES (17, 0, 'switch_frame', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'switch_frame', '[{\"type\": \"element\", \"key\": \"frame\"}]', '[]', '2020-1-2 19:36:03', '切换iframe');
+INSERT INTO `keyword` VALUES (18, 0, 'send_keys_enter', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'send_keys_enter', '[]', '[]', '2020-1-3 14:54:25', '敲enter');
+INSERT INTO `keyword` VALUES (19, 0, 'send_keys_down', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'send_keys_down', '[]', '[]', '2020-1-3 14:55:18', '敲向下键');
+INSERT INTO `keyword` VALUES (20, 0, 'alert_operations', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'alert_operations', '[{\"type\": \"string\", \"key\": \"opera\"}, {\"type\": \"string\", \"key\": \"text\"}]', '[]', '2020-1-3 14:57:33', '确认alert存在后，可以进行的操作');
+INSERT INTO `keyword` VALUES (21, 0, 'move_to_element', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'move_to_element', '[{\"type\": \"element\", \"key\": \"locator\"}]', '[]', '2020-1-3 14:58:13', '鼠标悬停操作');
+INSERT INTO `keyword` VALUES (22, 0, 'move', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'move', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"element\", \"key\": \"locator1\"}]', '[]', '2020-1-3 14:59:15', '循环调用鼠标事件，死循环');
+INSERT INTO `keyword` VALUES (23, 0, 'parent_frame', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'parent_frame', '[]', '[]', '2020-1-3 14:59:34', '跳出frame到父frame');
+INSERT INTO `keyword` VALUES (24, 0, 'default_content', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'default_content', '[]', '[]', '2020-1-3 14:59:48', '跳出frame到默认<跳到最外层>');
+INSERT INTO `keyword` VALUES (25, 0, 'back', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'back', '[]', '[]', '2020-1-3 15:00:32', '返回之前的网页');
+INSERT INTO `keyword` VALUES (26, 0, 'forward', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'forward', '[]', '[]', '2020-1-3 15:00:44', '前往下一个网页');
+INSERT INTO `keyword` VALUES (27, 0, 'close', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'close', '[]', '[]', '2020-1-3 15:01:02', '关闭当前网页');
+INSERT INTO `keyword` VALUES (28, 0, 'js_execute', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'js_execute', '[{\"type\": \"string\", \"key\": \"js\"}]', '[]', '2020-1-3 15:01:50', '执行js');
+INSERT INTO `keyword` VALUES (29, 0, 'js_focus_element', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'js_focus_element', '[{\"type\": \"element\", \"key\": \"locator\"}]', '[]', '2020-1-3 15:02:28', '聚焦元素');
+INSERT INTO `keyword` VALUES (30, 0, 'js_scroll_top', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'js_scroll_top', '[]', '[]', '2020-1-3 15:02:43', '滚动到顶部');
+INSERT INTO `keyword` VALUES (31, 0, 'js_scroll_bottom', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'js_scroll_bottom', '[]', '[]', '2020-1-3 15:02:55', '滚动到底部');
+INSERT INTO `keyword` VALUES (32, 0, 'select_by_index', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'select_by_index', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"index\"}]', '[]', '2020-1-3 15:05:59', '通过索引，index是第几个，从0开始');
+INSERT INTO `keyword` VALUES (33, 0, 'select_by_value', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'select_by_value', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"value\"}]', '[]', '2020-1-3 15:06:29', '通过value属性');
+INSERT INTO `keyword` VALUES (34, 0, 'select_by_text', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'select_by_text', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"text\"}]', '[]', '2020-1-3 15:07:24', '通过text属性');
+INSERT INTO `keyword` VALUES (35, 0, 'save_screenshot', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'save_screenshot', '[{\"type\": \"string\", \"key\": \"img_path\"}]', '[]', '2020-1-3 15:08:06', '获取电脑屏幕截屏');
 
 -- ----------------------------
 -- Table structure for testcase
