@@ -15,7 +15,7 @@
     /*text-transform: none;*/
     background: #ffffff;
     padding-top: 30px;
-    padding-left: 35px;
+    padding-left: 45px;
     display: block;
     width: 100%;
 }
@@ -48,4 +48,8 @@
 .form-horizontal #css-zidingyi .form-group #radio-all {
     margin-left: 20%;
     display: inline-block;
+}
+
+.main {
+    margin-top: -2%;
 }

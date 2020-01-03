@@ -91,6 +91,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('login/', login_view, name="login"),
+    path('register/', register, name="register"),
     path('logout/', logout, name="logout"),
     path('admin/index', index, name="index"),
     path('', index, name="index"),

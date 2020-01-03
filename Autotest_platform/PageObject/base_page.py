@@ -265,7 +265,7 @@ class PageObject:
             EC.element_located_selection_state_to_be(locator, selected))
         return result
 
-    def is_alert_present(self, opera=0, text=""):
+    def is_alert_present(self):
         """判断页面是否有alert，有返回alert，没有返回False"""
         try:
             result = WebDriverWait(self.driver, self.timeout, self.t).until((EC.alert_is_present()))
@@ -438,7 +438,8 @@ class PageObject:
     def select_by_index(self, locator, index):
         """通过索引，index是第几个，从0开始, 下拉框"""
         element = self.find_element(self.driver, locator)
-        Select(element).select_by_index(index)
+        if str(index).isdigit():
+            Select(element).select_by_index(int(index))
 
     def select_by_value(self, locator, value):
         """通过value属性"""

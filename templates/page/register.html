@@ -1,0 +1,132 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>register</title>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/navbar.css' %}">
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/favicon.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'assets/img/favicon.png' %}">
+    <style>
+        .bg {
+            text-align: center;
+            overflow: auto;
+            margin: 10% 0;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background: #f0f2f5;
+            background-image: url('{% static 'assets/img/bg.svg' %}');
+            min-height: 100%;
+            background-repeat: no-repeat;
+            background-position: 50%;
+            background-size: 100%;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        h1 {
+            margin-bottom: 2%;
+        }
+
+        .btn-success {
+            margin-top: 12px;
+            width: 15%;
+            margin-left: auto;
+            margin-right: auto;
+            display: inline-block;
+            background-color: #1dc5a3;
+            border-color: #1dc5a3;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #dda458;
+            border-color: #dda458;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        input {
+            border-radius: 20%;
+        }
+
+        .page-header {
+            background-color: #f7f7f7;
+            border-color: #777777;
+            width: 35%;
+            margin-left: 30%;
+            padding: 40px;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, .3);
+        }
+
+        #btn {
+            padding: 9px 14px;
+            font-size: 14px;
+            line-height: 1.3;
+            border-radius: 2px;
+            width: 45%;
+            margin-top: 5%;
+        }
+
+    </style>
+</head>
+<body class="bg">
+<div class="main">
+    <div class="panel">
+        <h1>EasyTest-自动化测试平台</h1>
+        <div class="page-header">
+            <form id="RegisterForm" class="simpleui-form" method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                <div id="navbar" class="navbar-collapse collapse">
+                    <div class="simpleui-input-inline" align="center">
+                        <label><i class="fa fa-user-o"></i>&nbsp;账 户：</label>
+                        <input id="user" type="text" placeholder="username" name="username"
+                               class="form-control"><span style="color:red;margin-left: 1%">*</span>
+                    </div>
+                    <br>
+                    <div class="simpleui-input-inline" align="center">
+                        <label><i class="fa fa-envelope-o fa-fw"></i>&nbsp;邮 箱：</label>
+                        <input id="email" type="text" placeholder="email" name="email"
+                               class="form-control"><span style="color: #f3f6fb;margin-left: 1%;">.</span>
+                    </div>
+                    <br>
+                    <div class="simpleui-input-inline" align="center">
+                        <label><i class="fa fa-key"></i>&nbsp;密 码：</label>
+                        <input id="pswd" type="password" placeholder="password" name="password"
+                               class="form-control"><span style="color:red;margin-left: 1%">*</span>
+                    </div>
+                    <br>
+                    <div class="simpleui-input-inline" align="center">
+                        <label><i class="fa fa-key"></i>&nbsp;确 认：</label>
+                        <input id="pswd-again" type="password" placeholder="the password again" name="pswd-again"
+                               class="form-control"><span style="color:red;margin-left: 1%">*</span>
+                    </div>
+                    <p class="errors" style="color: red; font-size: 12px"> {{ error }} </p>
+                    <button type="submit" class="btn-success" id="btn">注册并登录</button>
+                </div>
+            </form>
+        </div>
+        <div id="particles-js"></div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="{% static 'assets/js/particles.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/particles/app.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>

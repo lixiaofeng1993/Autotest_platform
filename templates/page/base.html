@@ -25,6 +25,15 @@
             bottom: 0;
             z-index: -1;
         }
+
+        .dropdown a img {
+            width: 20%;
+        }
+
+        .dropdown {
+            margin-left: 75%;
+            margin-top: 1.5%;
+        }
     </style>
     {% block css %}
 
@@ -47,12 +56,19 @@
                                                  class="img-responsive logo"></a>
             </div>
         </div>
-        <ul class="nav navbar-top-links navbar-right color-white">
-            <li>
-                <a href="{% url 'logout' %}" class=" pointer">退出登录</a>
-            </li>
-            <li><span class="mar-rignt-100">{{ user }}</span></li>
-        </ul>
+        <div id="navbar-menu1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="img"><img
+                            src="{% static 'assets/img/comment_img.jpeg' %}"
+                            class="img-circle" alt="Avatar">
+                        <span>{{ user }}</span> <i class="icon-submenu fa fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> <span>退出</span></a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </nav>
     <!-- 头部bar end -->
     <!-- 左侧导航  -->

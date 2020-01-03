@@ -8,7 +8,8 @@
 
 
 from django.conf import settings
-import os, platform, time
+from django.contrib.auth.models import User
+import os, platform, time, re
 
 pattern = '/' if platform.system() != 'Windows' else '\\'
 
@@ -62,3 +63,31 @@ log_path = check_dir(os.path.join(BASE_DIR, "logs"))  # 日志路径
 
 hour = time.strftime('%Y-%m-%d')
 now = time.strftime('%Y-%m-%d %H-%M-%S')
+
+
+def register_info_logic(username, password, pswd_again, email):
+    """
+    注册新用户逻辑
+    :param username:
+    :param password:
+    :param pswd_again:
+    :param email:
+    :return:
+    """
+    if email:
+        if not re.match('.+@.+\..+$', email):
+            return "邮箱格式错误！"
+    if username == '' or password == '' or pswd_again == '':
+        return "用户名、密码不能为空！"
+    elif len(username) > 50 or len(password) > 50 or len(email) > 50:
+        return "用户名、密码及邮箱必须小于50位!"
+    elif 6 > len(username) or 6 > len(password):
+        return "用户名、密码必须大于6位!"
+    elif password != pswd_again:
+        return "两次密码输入不一致！"
+    else:
+        try:
+            User.objects.get(username=username)
+            return "用户名已经存在！"
+        except User.DoesNotExist:
+            return 'ok'

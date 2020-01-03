@@ -1,16 +1,15 @@
 # coding:utf-8
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render
 from django.contrib import messages
-import json
-import os
-import pymysql
-import time
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.models import User
+from Autotest_platform.helper.helperPath import register_info_logic
+import logging
+
+log = logging.getLogger('log')  # 初始化log
 
 
 def login_view(request):
@@ -28,6 +27,32 @@ def login_view(request):
             return render(request, 'page/1登录.html')
     elif request.method == "GET":
         return render(request, 'page/1登录.html')
+
+
+def register(request):
+    if request.method == 'GET':
+        return render(request, 'page/register.html')
+    else:
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+        pswd_again = request.POST.get('pswd-again', '')
+        email = request.POST.get('email', '')
+        msg = register_info_logic(username, password, pswd_again, email)
+        if msg != 'ok':
+            log.error('register error：{}'.format(msg))
+            return render(request, 'page/register.html', {'error': msg})
+        else:
+            User.objects.create_user(username=username, password=password, email=email)
+            user = auth.authenticate(username=username, password=password)
+            if user is not None:
+                auth.login(request, user)
+                request.session['user'] = username  # 将session信息记录到浏览器
+                user_ = User.objects.get(username=username)
+                request.session['user_id'] = user_.id  # 将session信息记录到浏览器
+                response = HttpResponseRedirect('/')
+                log.info('用户： {} 注册并登录成功！'.format(username))
+                request.session.set_expiry(None)  # 关闭浏览器后，session失效
+                return response
 
 
 @login_required
