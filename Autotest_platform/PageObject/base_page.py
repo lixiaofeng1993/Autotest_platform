@@ -135,7 +135,7 @@ class PageObject:
         else:
             elements = self.find_element(self.driver, locator, more=True)
             for element in elements:
-                if element.text == text:
+                if element.text.strip() == text:
                     element.click()
 
     def double_click(self, locator):
@@ -402,12 +402,12 @@ class PageObject:
         if not str(n).isdigit():
             return
         element = self.find_element(self.driver, locator, more=True)[int(n)]
-        return element.text
+        return element.text.strip()
 
     def get_text(self, locator):
         """获取文本"""
         element = self.find_element(self.driver, locator)
-        return element.text
+        return element.text.strip()
 
     def get_attribute(self, locator, name):
         """获取属性"""

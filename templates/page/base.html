@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>POM - 自动化测试平台</title>
+    <title>EasyTest - UI 自动化测试平台</title>
     <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet"/>
     <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet"/>
     <link href="{% static 'assets/js/morris/morris-0.4.3.min.css' %}" rel="stylesheet"/>
@@ -12,6 +12,20 @@
     <link href="{% static 'assets/css/navbar.css' %}" rel="stylesheet"/>
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/favicon.png' %}">
     <link rel="icon" type="image/png" sizes="96x96" href="{% static 'assets/img/favicon.png' %}">
+    <style type="text/css">
+        body {
+            background-image: url('http://www.easytest.xyz/static/admin/simpleui-x/img/bg.svg');
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+    </style>
     {% block css %}
 
     {% endblock %}
@@ -101,5 +115,10 @@
 {% block js %}
 
 {% endblock %}
+
+<div id="particles-js"></div>
+
+<script type="text/javascript" src="{% static 'assets/js/particles.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/app.js' %}"></script>
 </body>
 </html>
