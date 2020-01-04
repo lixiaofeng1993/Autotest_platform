@@ -213,3 +213,6 @@ LOGGING = {
         },
     }
 }
+
+# 未登录重定向地址
+LOGIN_URL = "/login/"
