@@ -1118,7 +1118,7 @@ class Public:
             data_failure.append(len(all_result.filter(status=40)))
         result = dict()
         result["project"] = project_list
-        data = list();
+        data = list()
         data.append({"name": "队列中", "data": data_queue})
         data.append({"name": "测试中", "data": data_testing})
         data.append({"name": "成功", "data": data_succeed})

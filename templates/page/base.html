@@ -123,6 +123,8 @@
         var page_name = $("span.this-page").text();
         if (a_name) {
             if (page_name) {
+
+                console.log(a_name, "==========>", page_name);
                 $("a:contains(" + page_name + ")").addClass("active-menu");
             }
         }

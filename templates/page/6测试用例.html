@@ -305,7 +305,8 @@
                 "startTime": creatTime1,
                 "endTime": creatTime2,
                 "pageSize": 99999
-            }
+            };
+            console.log(datas, 1111111111);
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/testcase?p=1',
@@ -360,7 +361,7 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
+                        }
                     });
 
                 }
@@ -390,8 +391,8 @@
                             "checkType": res.data.checkType,
                             "checkValue": res.data.checkValue,
                             "checkText": res.data.checkText,
-                            "selectText": res.data.selectText,
-                        }
+                            "selectText": res.data.selectText
+                        };
 
                         $.ajax({
                             url: '/api/v1/testcase/create',
@@ -438,7 +439,7 @@
                         setTimeout(function () {
                             //重新获取下列表
                             search();
-                        }, 1000)
+                        }, 1000);
                         $('#DelXProject1').modal('hide');
                     } else {
                         $(".js_DELmessage").html(res.message);
@@ -557,7 +558,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();

@@ -701,8 +701,8 @@
             data["expect"] = expect;
             tds += '<td data-type="expect" class="center">' + (expect ? "成功" : "失败") + '</td>';
             tds += '<td class="center">';
-            tds += '<a class="pointer" data-index="' + index + '" onclick="setTestData(this)">编辑</a> -'
-            tds += '<a class="pointer" data-toggle="modal" onclick="delTestData(this)">删除</a></td>'
+            tds += '<a class="pointer" data-index="' + index + '" onclick="setTestData(this)">编辑</a> -';
+            tds += '<a class="pointer" data-toggle="modal" onclick="delTestData(this)">删除</a></td>';
             tds += '<td class="data" style="display: none">' + JSON.stringify(data) + '</td>';
 
             if (isAdd) {

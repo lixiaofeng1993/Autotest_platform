@@ -21,7 +21,7 @@ from django.views.static import serve
 from django.conf import settings
 from Admin.views import *
 from Product.views import Project, Page, Element, Keyword, TestCase, TestResult, Public, TestTasks, Environment, \
-    Login  # , \
+    Login
 
 # User
 

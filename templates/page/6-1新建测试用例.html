@@ -398,7 +398,7 @@
             title = $("#title").val();
             projectId = $("#projectSelect option:selected").val();
             level = $("#level option:selected").val();
-            checkType = $('.radio input[name="checkType"]:checked ').val()
+            checkType = $('.radio input[name="checkType"]:checked ').val();
             if (checkType == "url") {
                 checkValue = $("#urlCheckValue").val();
             } else {
@@ -406,7 +406,7 @@
                 checkText = $("#check-text").val();
                 selectText = $('.radio input[name="selectText"]:checked ').val()
             }
-            logins = $("#logins option:selected").val()
+            logins = $("#logins option:selected").val();
             var stepList = $("#steps tr td.data");
             for (var i = 0; i < stepList.length; i++) {
                 steps.push(JSON.parse($(stepList[i]).text().toString()))
@@ -427,8 +427,8 @@
                 "checkType": checkType,
                 "checkValue": checkValue,
                 "checkText": checkText,
-                "selectText": selectText,
-            }
+                "selectText": selectText
+            };
             $.ajax({
                 url: '/api/v1/testcase/create',
                 type: 'post',
@@ -506,7 +506,7 @@
             var isAdd = (index == null)
             index = (index == null ? ($("#testData tr").length + 1) : index);
             var divs = $("#textDataSet").find("div[data-type]");
-            var data = {}
+            var data = {};
             var tds = '<td class="center">' + index + '</td>';
             for (var i = 0; i < divs.length; i++) {
                 var div = $(divs[i]);
@@ -608,7 +608,7 @@
         }
 
         function addStringData(key) {
-            var data = ''
+            var data = '';
             data += '<div data-type="string" data-key=' + key + '  class="form-group">';
             data += '<label for="firstname" class="col-sm-2 control-label">' + key + '</label>';
             data += '<div class="col-sm-10">';
