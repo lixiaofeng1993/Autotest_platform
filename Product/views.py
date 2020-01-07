@@ -1025,16 +1025,34 @@ class TestResult:
         if not re:
             return JsonResponse.BadRequest("该测试结果不存在")
         result = model_to_dict(re, ["id", "projectId", "taskId", "testcaseId", 'title', 'status', 'checkType',
-                                    'checkValue', 'checkText', 'selectText'])
+                                    'checkValue', 'checkText', 'selectText', 'steps'])
         result["parameter"] = json.loads(re.parameter) if re.parameter else []
         result["steps"] = json.loads(re.steps) if re.steps else []
-        beforeLogin = json.loads(re.beforeLogin) if re.beforeLogin else [];
+        result["steps_num"] = len(result["steps"]) if result["steps"] else 0
+        checkValue = result["checkValue"]
+        if checkValue.isdigit():
+            el = get_model(element, id=checkValue)
+            result["checkValue"] = el.name if el else result["checkValue"]
+        beforeLogin = json.loads(re.beforeLogin) if re.beforeLogin else []
         result["beforeLogin"] = list()
+        steps_num = 0
         if beforeLogin:
             for bl in beforeLogin:
-                bl = get_model(LoginConfig, id=bl)
-                bl = bl.name if bl else ""
+                login = get_model(LoginConfig, id=bl)
+                bl = model_to_dict(login,
+                                   ["name", "remark", "steps", "checkType", 'checkValue', 'checkText', 'selectText',
+                                    'params'])
+                bl["steps"] = json.loads(login.steps) if login.steps else []
+                steps_num = len(bl["steps"]) if bl["steps"] else 0
+                for step in bl["steps"]:
+                    kw = get_model(keyword, id=step["keywordId"])
+                    step["keyName"] = kw.method if kw else ""
+                    for value in step["values"]:
+                        if value["value"].isdigit():
+                            el = get_model(element, id=value["value"])
+                            value["value"] = el.name if el else value["value"]
                 result["beforeLogin"].append(bl)
+        result["steps_num"] = result["steps_num"] + steps_num
         browsers = json.loads(re.browsers) if re.browsers else []
         result["browsers"] = list()
         for browser in browsers:
@@ -1064,6 +1082,29 @@ class TestResult:
             sd["parameter"] = json.loads(s.parameter) if s.parameter else {}
             splitResult.append(sd)
         result['splitResults'] = splitResult
+        steps_ = list()
+        for step in result["steps"]:
+            info = dict()
+            info["data"] = step
+            kw = get_model(keyword, id=step["keywordId"])
+            info["keywordName"] = kw.name if kw else ""
+            values = step["values"]
+            info_value = list()
+            for value in values:
+                pa = dict()
+                pa["isParameter"] = value.get("isParameter", False)
+                pa["type"] = value["type"]
+                pa["value"] = value["value"]
+                pa["key"] = value["key"]
+                if not value.get("isParameter", False):
+                    if value["type"] == "element":
+                        ele = get_model(element, id=value["value"])
+                        pa["pageId"] = ele.pageId
+                        pa["elementName"] = ele.name
+                info_value.append(pa)
+            info["viewData"] = info_value
+            steps_.append(info)
+        result["steps"] = steps_
         return JsonResponse.OK(message="ok", data=result)
 
 

@@ -129,21 +129,6 @@ def testcase_edit(request, testcase_id):
 
 
 @login_required
-def plan(request):
-    return render(request, "page/plan_index.html")
-
-
-@login_required
-def plan_create(request):
-    return render(request, "page/plan_add.html")
-
-
-@login_required
-def plan_edit(request, plan_id):
-    return render(request, "page/plan_edit.html", {"testcaseId": plan_id})
-
-
-@login_required
 def result(request):
     return render(request, "page/7测试结果.html")
 
@@ -171,3 +156,8 @@ def loginConfig_create(request):
 @login_required
 def loginConfig_edit(request, login_id):
     return render(request, "page/8-1编辑登录配置.html", {"id": login_id})
+
+
+@login_required
+def report(request, report_id):
+    return render(request, "page/report.html", {"report_id": report_id})

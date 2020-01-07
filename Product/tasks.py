@@ -3,7 +3,6 @@ import time
 
 from celery.task import task
 
-
 # 自定义要执行的task任务
 
 

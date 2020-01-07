@@ -1,5 +1,28 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
+{% block css %}
+    <link href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <style type="text/css">
+        #fa {
+            padding-top: 2%;
+            padding-left: 1%;
+            text-align: center;
+        }
+
+        #remark {
+            max-width: 150px;
+            word-wrap: break-word;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        #remark:hover {
+            white-space: normal;
+            overflow: auto;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <div id="page-wrapper">
         <div id="page-inner">
@@ -70,12 +93,13 @@
                                                     <th>序号</th>
                                                     <th>浏览器</th>
                                                     <th>测试环境</th>
-                                                    <th style="width: 160px">测试数据</th>
+                                                    <th>测试数据</th>
                                                     <th>预期结果</th>
                                                     <th>实际结果</th>
                                                     <th style="width: 180px">备注信息</th>
                                                     <th>测试开始时间</th>
                                                     <th>测试结束时间</th>
+                                                    <th>测试报告</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody id="splitResult">
@@ -146,7 +170,11 @@
                         }
                         $("#checkType").html(res.data.checkType);
                         var logins = res.data.beforeLogin;
-                        $("#logins").html(logins.length > 0 ? logins.join("  ,  ") : "无");
+                        console.log(logins);
+                        for (i = 0; i < logins.length; i++) {
+                            $("#logins").html(logins[i].name);
+                        }
+{#                        $("#logins").html(logins.length > 0 ? logins.join("  ,  ") : "无");#}
                         var splitResult = res.data.splitResults;
                         var sr = "";
                         for (var i = 0; i < splitResult.length; i++) {
@@ -155,21 +183,22 @@
                             sr += '<td class="center">' + (i + 1) + '</td>';
                             sr += '<td class="center">' + resultDetails["browser"] + '</td>';
                             sr += '<td class="center">' + resultDetails["environment"] + '</td>';
-                            sr += '<td class="center">';
+                            sr += '<td class="center" id="remark">';
                             for (var j in resultDetails["parameter"]) {
                                 if (j == "expect") {
                                     continue;
                                 }
-                                sr += (j + "=" + resultDetails["parameter"][j])
+                                sr += (j + "=" + resultDetails["parameter"][j]);
                                 sr += "</br>";
                             }
                             sr += '</td>';
                             sr += '<td class="center">' + (resultDetails["expect"] ? "成功" : "失败") + '</td>';
                             var status = resultDetails["status"];
                             sr += '<td class="center">' + (status == 10 ? "队列中" : status == 20 ? "测试中" : status == 30 ? "成功" : status == 40 ? "失败" : status == 50 ? "跳过" : "") + '</td>';
-                            sr += '<td class="center">' + resultDetails["remark"] + '</td>';
+                            sr += '<td class="center" id="remark">' + resultDetails["remark"] + '</td>';
                             sr += '<td class="center">' + resultDetails["startTime"] + '</td>';
                             sr += '<td class="center">' + resultDetails["finishTime"] + '</td>';
+                            sr += '<td class="center" id="fa"><a href="/admin/report/' + resultId + '"><i class="fa fa-bar-chart"></i></a></td>';
                         }
                         $("#splitResult").append(sr);
                     } else {
