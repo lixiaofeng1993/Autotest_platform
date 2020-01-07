@@ -4,10 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>测试报告</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
     <link href="{% static 'assets/css/animate.min.css' %}" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.5/chosen.css" rel="stylesheet">
+    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet">
     <!-- ICONS -->
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/favicon.png' %}">
     <link rel="icon" type="image/png" sizes="96x96" href="{% static 'assets/img/favicon.png' %}">
@@ -7039,7 +7038,7 @@
 <div class="row  border-bottom white-bg dashboard-header">
     <div class="col-sm-12 text-center">
         <span style="color: #1ab394; font-size: 20px; font-weight: 700" id="report_id" data-report-id={{ report_id }}>测试报告</span>
-        <button id="back_home" onclick="window.location.href='{% url 'result' %}'">返回报告模块</button>
+        <button id="back_home" onclick="window.location.href='/admin/result/'+'{{ report_id }}'">返回报告模块</button>
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -7202,14 +7201,8 @@
     </div>
 
 </div>
-{#<script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>#}
-<script src={% static 'vendor/jquery/jquery.min.js' %}></script>
-{#<script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>#}
-<script src={% static 'vendor/bootstrap/js/bootstrap.min.js' %}></script>
-{#<script src="js/content.min.js?v=1.0.0"></script>#}
-{#<script src="https://cdn.bootcss.com/echarts/3.8.5/echarts.min.js"></script>#}
-<script src={% static 'vendor/jquery.easy-pie-chart/easypiechart.min.js' %}></script>
-{#<script src="https://cdn.bootcss.com/chosen/1.8.2/chosen.jquery.js"></script>#}
+<script src={% static 'assets/js/jquery.min.js' %}></script>
+<script src={% static 'assets/js/bootstrap.min.js' %}></script>
 <script type="text/javascript">
 
     $('#detailBody').on('click', '.btn-primary', function () {
