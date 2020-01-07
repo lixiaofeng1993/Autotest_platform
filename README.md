@@ -1,1 +1,0 @@
-# Autotest_platform
