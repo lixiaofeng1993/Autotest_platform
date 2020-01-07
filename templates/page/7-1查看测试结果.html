@@ -96,7 +96,7 @@
                                                     <th>测试数据</th>
                                                     <th>预期结果</th>
                                                     <th>实际结果</th>
-                                                    <th style="width: 180px">备注信息</th>
+                                                    <th>备注信息</th>
                                                     <th>测试开始时间</th>
                                                     <th>测试结束时间</th>
                                                     <th>测试报告</th>
@@ -174,7 +174,7 @@
                         for (i = 0; i < logins.length; i++) {
                             $("#logins").html(logins[i].name);
                         }
-{#                        $("#logins").html(logins.length > 0 ? logins.join("  ,  ") : "无");#}
+                        {#                        $("#logins").html(logins.length > 0 ? logins.join("  ,  ") : "无");#}
                         var splitResult = res.data.splitResults;
                         var sr = "";
                         for (var i = 0; i < splitResult.length; i++) {
