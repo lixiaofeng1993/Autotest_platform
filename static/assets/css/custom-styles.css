@@ -327,7 +327,7 @@ footer p {
 }
 
 .top-navbar {
-    margin: 0px;
+    margin: 0;
 }
 
 .top-navbar .navbar-brand {
@@ -344,6 +344,8 @@ footer p {
 .top-navbar .nav > li {
     position: relative;
     display: inline-block;
+    margin-right: 30px;
+    margin-top: 10px;
 }
 
 .top-navbar .nav > li > a {
@@ -378,11 +380,11 @@ footer p {
     margin-bottom: 8px;
     overflow: hidden;
     background-color: #f5f5f5;
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .dropdown-tasks > li > a {
-    padding: 0px 15px;
+    padding: 0 15px;
 }
 
 .dropdown-tasks p {

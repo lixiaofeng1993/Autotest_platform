@@ -5,18 +5,18 @@
     <meta charset="utf-8"/>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-
     <title>EasyTest - UI 自动化测试平台</title>
-    <link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet"/>
-    <link href="{% static 'assets/css/font-awesome.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'assets/js/morris/morris-0.4.3.min.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
     <link href="{% static 'assets/css/custom-styles.css' %}" rel="stylesheet"/>
     <link href="{% static 'assets/css/navbar.css' %}" rel="stylesheet"/>
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet"/>
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'assets/img/favicon.png' %}">
     <link rel="icon" type="image/png" sizes="96x96" href="{% static 'assets/img/favicon.png' %}">
     <style type="text/css">
         body {
-            background-image: url('http://www.easytest.xyz/static/admin/simpleui-x/img/bg.svg');
+            background-image: "{% static 'assets/img/bg.svg' %}";
         }
 
         #particles-js {
@@ -28,13 +28,11 @@
             z-index: -1;
         }
 
-        .dropdown a img {
-            width: 15%;
+        .form-inline .form-group {
+            display: inline-flex;
         }
-
-        .dropdown {
-            margin-left: 75%;
-            margin-top: 1%;
+        .form-control-custom{
+            margin-top: -3px;
         }
     </style>
     {% block css %}
@@ -53,7 +51,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <div class="navbar-brand">
+            <div class="brand">
                 <a href="{% url 'index' %}"><img src="{% static 'assets/img/logo.png' %}" alt="Klorofil Logo"
                                                  class="img-responsive logo"></a>
             </div>
@@ -74,7 +72,7 @@
     </nav>
     <!-- 头部bar end -->
     <!-- 左侧导航  -->
-    <nav class="navbar-default navbar-side" role="navigation" id="nav">
+    <nav class="navbar-default navbar-side" role="navigation" id="nav" style="display: block">
         <div class="sidebar-collapse">
             <ul class="nav" id="main-menu" style="margin-top: 15px">
                 <li>

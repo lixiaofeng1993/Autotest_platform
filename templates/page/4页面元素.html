@@ -1,5 +1,22 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
+{% block css %}
+    <style type="text/css">
+
+        #locator {
+            max-width: 200px;
+            word-wrap: break-word;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        #locator:hover {
+            white-space: normal;
+            overflow: auto;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <div id="page-wrapper">
         <div id="page-inner">
@@ -89,7 +106,7 @@
                                         <th width="70px">定位类型</th>
                                         <th width="100px">定位值</th>
                                         <th width="100px">备注信息</th>
-                                        <th width="70px">操作</th>
+                                        <th width="85px">操作</th>
                                     </tr>
                                     </thead>
                                     <tbody class="js_table"></tbody>
@@ -299,7 +316,6 @@
     </div>
 {% endblock %}
 {% block js %}
-    <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
     <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
@@ -469,7 +485,7 @@
                     $('#dataTables-example').dataTable().fnClearTable();//清空数据.fnClearTable();//清空数据
                     $('#dataTables-example').dataTable().fnDestroy(); //还原初始化了的datatable
                     for (var i = 0; i < res.data.elements.length; i++) {
-                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' + res.data.elements[i].name + '</td><td class="center">' + res.data.elements[i].projectName + '</td><td class="center">' + res.data.elements[i].pageName + '</td><td class="center">' + res.data.elements[i].createTime + '</td><td class="center">' + res.data.elements[i].by + '</td><td class="center">' + res.data.elements[i].locator + '</td><td class="center">' + res.data.elements[i].remark + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.elements[i].id + '" onclick="editList(this)">编辑</a> - <a href="javascript:void(0);" class="pointer" Did="' + res.data.elements[i].id + '" onclick="deleteNew(this)">删除</a></td></tr>');
+                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' + res.data.elements[i].name + '</td><td class="center">' + res.data.elements[i].projectName + '</td><td class="center">' + res.data.elements[i].pageName + '</td><td class="center">' + res.data.elements[i].createTime + '</td><td class="center">' + res.data.elements[i].by + '</td><td class="center" id="locator">' + res.data.elements[i].locator + '</td><td class="center">' + res.data.elements[i].remark + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.elements[i].id + '" onclick="editList(this)">编辑</a> - <a href="javascript:void(0);" class="pointer" Did="' + res.data.elements[i].id + '" onclick="deleteNew(this)">删除</a></td></tr>');
                     }
                     $('#dataTables-example').dataTable({
                         "bPaginate": true,  //是否显示分页
