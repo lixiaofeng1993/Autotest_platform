@@ -31,7 +31,8 @@
         .form-inline .form-group {
             display: inline-flex;
         }
-        .form-control-custom{
+
+        .form-control-custom {
             margin-top: -3px;
         }
     </style>
@@ -64,6 +65,10 @@
                             class="img-circle" alt="Avatar">
                         <span>{{ user }}</span> <i class="icon-submenu fa fa-caret-down"></i></a>
                     <ul class="dropdown-menu">
+                        <li><a href="javascript:void(0)" onclick="changePassword()"><i
+                                class="fa fa-minus-square"></i> <span>修改密码</span></a>
+                        </li>
+                        <li><a href="/admin/"><i class="fa fa-bookmark"></i> <span>站点管理</span></a></li>
                         <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> <span>退出</span></a></li>
                     </ul>
                 </li>
@@ -129,6 +134,32 @@
             }
         }
     });
+    function changePassword() {
+        var new_password = prompt('新密码');
+        $.ajax({
+            type: "post",
+            url: "/admin/change_password/",
+            data: {
+                "new_password": new_password,
+                "user": "{{ user }}"
+            },
+            success: function (data) {
+                if (new_password) {
+                    if (data['msg'] == 'success') {
+                        alert('修改密码成功！');
+                        window.location.replace("/login/");
+                    } else {
+                        alert(data['msg'])
+                    }
+                } else if (new_password == '') {
+                    alert('密码不能为空！')
+                } else {
+                    // 点击取消按钮
+                }
+
+            }
+        })
+    }
 </script>
 {% block js %}
 

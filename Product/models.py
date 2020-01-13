@@ -15,7 +15,7 @@ log = logging.getLogger('log')  # 初始化log
 class Project(models.Model):
     name = models.CharField(max_length=20, null=False)
     remark = models.TextField(null=True)
-    creator = models.CharField(max_length=20, null=False, default='少年')
+    creator = models.CharField(max_length=20, null=False, default='lixiaofeng')
     createTime = models.DateTimeField(default=timezone.now)
 
     class Meta:

@@ -91,3 +91,19 @@ def register_info_logic(username, password, pswd_again, email):
             return "用户名已经存在！"
         except User.DoesNotExist:
             return 'ok'
+
+
+def change_info_logic(new_password):
+    """
+    修改密码逻辑
+    :param new_password:
+    :return:
+    """
+    if not new_password:
+        return "'字段不能为空！'"
+    elif len(new_password) < 6:
+        return '输入字段长度不够！<新密码必须大于6位.>'
+    elif len(new_password) > 50:
+        return '输入字段过长！<新密码必须小于50位.>'
+    else:
+        return 'ok'

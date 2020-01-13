@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.models import User
-from Autotest_platform.helper.helperPath import register_info_logic
+from Autotest_platform.helper.helperPath import register_info_logic, change_info_logic
 import logging
 
 log = logging.getLogger('log')  # 初始化log
@@ -185,3 +185,26 @@ def page_not_found(request, exception, template_name='error_page/404.html'):
 def server_error(exception, template_name='error_page/500.html'):
     log.error('-------------------->500 error<--------------------')
     return render(exception, template_name)
+
+
+@login_required
+def change_password(request):
+    """
+    修改密码
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        new_password = request.POST.get('new_password', '')
+        user = request.POST.get('user', '')
+
+        msg = change_info_logic(new_password)
+        if msg != 'ok':
+            log.error('change password error：{}'.format(msg))
+            return JsonResponse({'msg': msg})
+        else:
+            user = User.objects.get(username=user)
+            user.set_password(new_password)
+            user.save()
+            log.info('用户：{} 修改密码为 {}'.format(user, new_password))
+            return JsonResponse({'msg': 'success'})
