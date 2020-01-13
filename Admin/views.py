@@ -161,3 +161,27 @@ def loginConfig_edit(request, login_id):
 @login_required
 def report(request, report_id):
     return render(request, "page/report.html", {"report_id": report_id})
+
+
+# 400
+def bad_request(request, exception, template_name='error_page/400.html'):
+    log.error('-------------------->400 error<--------------------')
+    return render(request, template_name)
+
+
+# 403
+def permission_denied(request, exception, template_name='error_page/403.html'):
+    log.error('-------------------->403 error<--------------------')
+    return render(request, template_name)
+
+
+# 404
+def page_not_found(request, exception, template_name='error_page/404.html'):
+    log.error('-------------------->404 error<--------------------')
+    return render(request, template_name)
+
+
+# 500
+def server_error(exception, template_name='error_page/500.html'):
+    log.error('-------------------->500 error<--------------------')
+    return render(exception, template_name)
