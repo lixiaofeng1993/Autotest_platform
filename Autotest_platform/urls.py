@@ -24,7 +24,8 @@ from Product.views import Project, Page, Element, Keyword, TestCase, TestResult,
     Login
 
 # User
-
+admin.site.site_header = 'EasyTest- UI 后台管理'
+admin.site.site_title = 'EasyTest-UI Manage'
 urlpatterns = [
     # project
     path('api/v1/project/create', Project.create),
