@@ -404,7 +404,7 @@ class PageObject:
         element = self.find_element(self.driver, locator, more=True)[int(n)]
         return element.text.strip()
 
-    def get_text(self, locator):
+    def get_text(self, locator, make=None):
         """获取文本"""
         element = self.find_element(self.driver, locator)
         return element.text.strip()

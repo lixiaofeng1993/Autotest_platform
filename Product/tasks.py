@@ -3,6 +3,7 @@ import time
 
 from celery.task import task
 
+
 # 自定义要执行的task任务
 
 
@@ -90,7 +91,7 @@ def SplitTaskRan(result_id):
 @task
 def SplitTaskRunning(splitResult_id):
     from Product.models import SplitResult, Browser, Environment, Element, Check, Result, EnvironmentLogin, LoginConfig
-    import django.utils.timezone as timezone
+    from django.utils import timezone
     from Autotest_platform.PageObject.base_page import PageObject
     from Autotest_platform.helper.util import get_model
     split = SplitResult.objects.get(id=splitResult_id)
@@ -108,6 +109,7 @@ def SplitTaskRunning(splitResult_id):
     environment = get_model(Environment, id=split.environmentId)
     host = environment.host if environment and environment.host else ''
     driver = None
+    make_params = {}
     try:
         driver = Browser.objects.get(id=split.browserId).buid(host)
     except:
@@ -183,8 +185,23 @@ def SplitTaskRunning(splitResult_id):
             split.loginStatus = 1
     index = 1
     for step in steps:
+        values = step.get("values", [])
+        keyword_id = step.get("keywordId")
         try:
-            Step(step.get("keywordId"), step.get("values")).perform(driver, parameter, host)
+            if "make" in str(values):
+                for key in values:
+                    if key.get("value", "").isdigit():
+                        element = key["value"]
+                        element = get_model(Element, id=int(element))
+                    if key.get("key", "") == "make":
+                        PageObject().find_element(driver, element)
+                        make_text = PageObject().find_element(driver, element).text
+                        make_key = key.get("value")
+                        make_params.update({make_key: make_text})
+            for key in values:
+                if key.get("value", "") in make_params.keys():
+                    key["value"] = make_params[key["value"]]
+            Step(keyword_id, values).perform(driver, parameter, host)
             index = index + 1
         except RuntimeError as re:
             split.status = 40
