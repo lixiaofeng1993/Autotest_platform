@@ -1,7 +1,9 @@
 import json
 import time
-
 from celery.task import task
+import logging
+
+log = logging.getLogger('log')  # 初始化log
 
 
 # 自定义要执行的task任务
@@ -196,10 +198,12 @@ def SplitTaskRunning(splitResult_id):
                     if key.get("key", "") == "make":
                         PageObject().find_element(driver, element)
                         make_text = PageObject().find_element(driver, element).text
+                        log.info("提取的文本是：{}".format(make_text))
                         make_key = key.get("value")
                         make_params.update({make_key: make_text})
             for key in values:
                 if key.get("value", "") in make_params.keys():
+                    log.info("把提取的文本，赋值给需要输入的值：{}".format(make_params[key["value"]]))
                     key["value"] = make_params[key["value"]]
             Step(keyword_id, values).perform(driver, parameter, host)
             index = index + 1
