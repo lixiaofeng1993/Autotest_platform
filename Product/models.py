@@ -375,6 +375,8 @@ class SplitResult(models.Model):
     expect = models.BooleanField()
     status = models.IntegerField(default=10)  # 10 排队中 20 测试中 30 成功  40 失败 50跳过
     remark = models.TextField(null=True)
+    step_num = models.IntegerField(default=0)
+    error_name = models.CharField(max_length=200, default="")
 
     class Meta:
         db_table = 'SplitResult'

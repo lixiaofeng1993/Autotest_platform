@@ -1072,8 +1072,12 @@ class TestResult:
         from .models import SplitResult
         split = get_model(SplitResult, False, resultId=re.id)
         splitResult = list()
+        step_num = 0
+        error_name = ""
         for s in split:
-            sd = model_to_dict(s, ["status", 'expect', 'remark'])
+            sd = model_to_dict(s, ["status", 'expect', 'remark', 'step_num', 'error_name'])
+            step_num = sd.get("step_num", 0)
+            error_name = sd.get("error_name", "")
             sd['browser'] = get_model(Browser, id=s.browserId).name if get_model(Browser, id=s.browserId) else ""
             sd['environment'] = get_model(environment, id=s.environmentId).name if get_model(environment,
                                                                                              id=s.environmentId) else ""
@@ -1105,6 +1109,8 @@ class TestResult:
             info["viewData"] = info_value
             steps_.append(info)
         result["steps"] = steps_
+        result["error_name"] = error_name
+        result["step_num"] = step_num
         return JsonResponse.OK(message="ok", data=result)
 
 

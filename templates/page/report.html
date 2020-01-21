@@ -7283,6 +7283,7 @@
             url: "/api/v1/result/" + report_id,
             type: "get",
             success: function (data) {
+                console.log(data, 111111111111111111);
                 $("#step_num").html(data.data.steps_num);
                 $("#steps_num").html("<span style='color:#777;'>" + data.data.steps_num + "</span>");
                 var result = data.data.status;
@@ -7314,12 +7315,16 @@
                     } else {
                         hp = "<p style='font-family: Consolas;font-size:12px;color:black;'>[--------------------------------]  测试结果： " + split.remark + "</p>";
                     }
+                    if (data.data.step_num == 999) {
+                        hp += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
+                    }
                 }
                 $("#testName").html("<a href='/admin/testcase/" + data.data.testcaseId + "'>" + data.data.title + "</a>");
                 $("#browsers").html(data.data.browsers.join("  ,  "));
                 var es = data.data.environments;
                 $("#environments").html(es.length > 0 ? es.join("  ,  ") : "-");
                 var num = 0;
+                var login_num = 0;
                 var html = "";
                 if (data.data.beforeLogin.length > 0) {
                     $("#tr-pass-1").show();
@@ -7328,15 +7333,19 @@
                         var login = data.data.beforeLogin[l];
                         for (var k = 0; k < login.steps.length; k++) {
                             var st = login.steps[k];
-                            num = num + 1;
+                            login_num = login_num + 1;
                             html += "<br>";
-                            html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：" + st.keyName + "  <<<<<<----</p>";
+                            html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：" + st.keyName + "  <<<<<<----</p>";
                             var hl = "";
                             for (var q = 0; q < st.values.length; q++) {
                                 var key = st.values[q];
                                 hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";
                             }
+
                             html += hl;
+                        }
+                        if (data.data.step_num == 888) {
+                            html += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
                         }
                         html += "<br>";
                         $("#step-login").append(html);
@@ -7361,6 +7370,10 @@
                             ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.value + " </p>";
 
                         }
+                    }
+
+                    if (num == data.data.step_num) {
+                        ht += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
                     }
                     html1 += ht;
 

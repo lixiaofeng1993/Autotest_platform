@@ -6,7 +6,8 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.models import User
-from Autotest_platform.helper.helperPath import register_info_logic, change_info_logic
+from django.conf import settings
+from Autotest_platform.helper.helperPath import register_info_logic, change_info_logic, delete_testcase
 import logging
 
 log = logging.getLogger('log')  # 初始化log
@@ -21,6 +22,8 @@ def login_view(request):
             auth.login(request, user)
             request.session['user'] = username  # 跨请求的保持user参数
             response = HttpResponseRedirect('/admin/index')
+            delete_testcase(settings.MEDIA_ROOT)
+            delete_testcase(settings.LOG_PATH)
             return response
         else:
             messages.add_message(request, messages.WARNING, '账户或者密码错误，请检查')

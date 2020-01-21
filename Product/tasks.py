@@ -94,6 +94,8 @@ def SplitTaskRan(result_id):
 def SplitTaskRunning(splitResult_id):
     from Product.models import SplitResult, Browser, Environment, Element, Check, Result, EnvironmentLogin, LoginConfig
     from django.utils import timezone
+    from django.conf import settings
+    import os
     from Autotest_platform.PageObject.base_page import PageObject
     from Autotest_platform.helper.util import get_model
     split = SplitResult.objects.get(id=splitResult_id)
@@ -112,6 +114,10 @@ def SplitTaskRunning(splitResult_id):
     host = environment.host if environment and environment.host else ''
     driver = None
     make_params = {}
+    step_num = 0
+    error_name = ""
+    now = time.strftime('%Y-%m-%d %H-%M-%S')
+    img_path = os.path.join(settings.MEDIA_ROOT, now + ".png")
     try:
         driver = Browser.objects.get(id=split.browserId).buid(host)
     except:
@@ -150,6 +156,9 @@ def SplitTaskRunning(splitResult_id):
                 except Exception as e:
                     split.loginStatus = 2
                     split.status = 50
+                    driver.save_screenshot(img_path)
+                    split.step_num = 888
+                    split.error_name = now + ".png"
                     split.remark = "初始化登陆失败</br>登陆名称=" + login.name + " , </br>错误信息=" + ("".join(e.args))
                     split.finishTime = timezone.now()
                     split.save()
@@ -162,6 +171,9 @@ def SplitTaskRunning(splitResult_id):
                     if not driver.current_url.endswith(str(loginCheckValue)):
                         split.loginStatus = 2
                         split.status = 50
+                        driver.save_screenshot(img_path)
+                        split.step_num = 888
+                        split.error_name = now + ".png"
                         split.remark = "初始化登陆失败</br>登陆名称=" + login.name + " , </br>错误信息=登录断言不通过"
                         split.finishTime = timezone.now()
                         split.save()
@@ -177,6 +189,9 @@ def SplitTaskRunning(splitResult_id):
                     except:
                         split.loginStatus = 2
                         split.status = 50
+                        driver.save_screenshot(img_path)
+                        split.step_num = 888
+                        split.error_name = now + ".png"
                         split.remark = "初始化登陆失败[ 登陆名称:" + login.name + " , 错误信息：断言不通过"
                         split.finishTime = timezone.now()
                         split.save()
@@ -209,6 +224,9 @@ def SplitTaskRunning(splitResult_id):
             index = index + 1
         except RuntimeError as re:
             split.status = 40
+            driver.save_screenshot(img_path)
+            split.step_num = index
+            split.error_name = now + ".png"
             split.remark = "测试用例执行第" + str(index) + "步失败，错误信息:" + str(re.args)
             split.finishTime = timezone.now()
             split.save()
@@ -217,6 +235,9 @@ def SplitTaskRunning(splitResult_id):
             return
         except Exception as info:
             split.status = 40
+            driver.save_screenshot(img_path)
+            split.step_num = index
+            split.error_name = now + ".png"
             split.remark = "执行测试用例第" + str(index) + "步发生错误，请检查测试用例:" + str(info.args)
             split.finishTime = timezone.now()
             split.save()
@@ -232,11 +253,17 @@ def SplitTaskRunning(splitResult_id):
                 if not split.expect:
                     remark = '测试通过'
                 else:
+                    driver.save_screenshot(img_path)
+                    step_num = 999
+                    error_name = now + ".png"
                     remark = '测试不通过,预期结果为["' + checkValue + '"], 但实际结果为["' + driver.current_url + '"]'
             else:
                 if split.expect:
                     remark = '测试通过'
                 else:
+                    driver.save_screenshot(img_path)
+                    step_num = 999
+                    error_name = now + ".png"
                     remark = '测试不通过,预期结果为["' + checkValue + '"], 但实际结果为["' + driver.current_url + '"]'
         elif checkType == Check.TYPE_ELEMENT:
             element = checkValue
@@ -256,8 +283,14 @@ def SplitTaskRunning(splitResult_id):
                         if split.expect:
                             remark = '测试通过，预期断言值完全匹配实际断言值。'
                         else:
+                            driver.save_screenshot(img_path)
+                            step_num = 999
+                            error_name = now + ".png"
                             remark = '测试不通过，预期结果失败，但实际结果是成功。'
                     else:
+                        driver.save_screenshot(img_path)
+                        step_num = 999
+                        error_name = now + ".png"
                         if not split.expect:
                             remark = '测试通过，预期结果失败，实际结果也是失败。'
                         else:
@@ -271,14 +304,23 @@ def SplitTaskRunning(splitResult_id):
                         if split.expect:
                             remark = '测试通过，预期断言值包含匹配实际断言值。'
                         else:
+                            driver.save_screenshot(img_path)
+                            step_num = 999
+                            error_name = now + ".png"
                             remark = '测试不通过，预期结果失败，但实际结果是成功。'
                     else:
+                        driver.save_screenshot(img_path)
+                        step_num = 999
+                        error_name = now + ".png"
                         if not split.expect:
                             remark = '测试通过，预期结果失败，实际结果也是失败。'
                         else:
                             remark = '测试不通过，预期结果为["' + expect_text + '"]，但实际结果为["' + actual_text + '"]'
             except:
                 TestResult = False
+                driver.save_screenshot(img_path)
+                step_num = 999
+                error_name = now + ".png"
                 remark = '当前元素定位已改变，请及时更新定位！'
 
     if driver:
@@ -286,6 +328,8 @@ def SplitTaskRunning(splitResult_id):
     split.status = 30 if TestResult else 40
     split.remark = remark
     split.finishTime = timezone.now()
+    split.step_num = step_num
+    split.error_name = error_name
     split.save()
     return
 
