@@ -7283,7 +7283,6 @@
             url: "/api/v1/result/" + report_id,
             type: "get",
             success: function (data) {
-                console.log(data, 111111111111111111);
                 $("#step_num").html(data.data.steps_num);
                 $("#steps_num").html("<span style='color:#777;'>" + data.data.steps_num + "</span>");
                 var result = data.data.status;
