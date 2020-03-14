@@ -335,13 +335,15 @@ def SplitTaskRunning(splitResult_id):
 
 
 @task
-def timingRunning():
-    from Product.models import Task, TestCase, Result
+def timingRunning(*args, **kwargs):
+    from Product.models import TestCase, Result
     from Autotest_platform.helper.util import get_model
-    tasks = Task.objects.filter(timing=1)
-    for t in tasks:
-        browsers = json.loads(t.browsers) if t.browsers else []
-        testcases = json.loads(t.testcases) if t.testcases else []
+    from djcelery.models import PeriodicTask
+    if kwargs:
+        name = kwargs["name"] if kwargs["name"] else None
+        periodic = PeriodicTask.objects.get(name__exact=name)
+        browsers = kwargs["browsers"] if kwargs["browsers"] else []
+        testcases = kwargs["testcases"] if kwargs["testcases"] else []
         for tc in testcases:
             environments = tc.get("environments", [])
             tc = get_model(TestCase, id=tc.get("id", 0))
@@ -350,7 +352,7 @@ def timingRunning():
                                       title=tc.title, beforeLogin=tc.beforeLogin,
                                       steps=tc.steps, parameter=tc.parameter,
                                       browsers=json.dumps(browsers, ensure_ascii=False),
-                                      environments=json.dumps(environments, ensure_ascii=False), taskId=t.id)
+                                      environments=json.dumps(environments, ensure_ascii=False), taskId=periodic.id)
             SplitTask.delay(r.id)
 
 

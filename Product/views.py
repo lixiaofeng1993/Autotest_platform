@@ -10,7 +10,10 @@ from Product.models import Page as page
 from Product.models import Project as project
 from Product.models import Result, Task, LoginConfig, EnvironmentLogin
 from Product.models import TestCase as testcase, Browser
+from djcelery.models import PeriodicTask, CrontabSchedule, IntervalSchedule, PeriodicTasks
 from .tasks import SplitTask
+from django.shortcuts import render
+from datetime import datetime
 import request
 import random
 
@@ -1203,6 +1206,118 @@ class Public:
         return JsonResponse(200, "ok", result)
 
 
+class TestTaskTime:
+    @staticmethod
+    def get(request, task_id):
+        task = PeriodicTask.objects.get(id=task_id)
+        interval_ = IntervalSchedule.objects.all()
+        crontab_ = CrontabSchedule.objects.all()
+        info = {"task": task, "interval_": interval_, "crontab_": crontab_}
+        if task.interval_id:
+            interval = IntervalSchedule.objects.get(id=task.interval_id)
+            info.update({"interval": interval})
+        if task.crontab_id:
+            crontab = CrontabSchedule.objects.get(id=task.crontab_id)
+            info.update({"crontab": crontab})
+        return render(request, "page/9-1任务管理-设置时间.html", info)
+
+    @staticmethod
+    def find(request):
+        crontab_id = request.GET.get("crontab_id")
+        interval_id = request.GET.get("interval_id")
+        if crontab_id:
+            try:
+                crontab = CrontabSchedule.objects.filter(id=crontab_id).values()
+                return JsonResponse(200, "ok", list(crontab))
+            except CrontabSchedule.DoesNotExist:
+                return HttpResponse("no")
+        if interval_id:
+            try:
+                interval = IntervalSchedule.objects.filter(id=interval_id).values()
+                return JsonResponse(200, "ok", list(interval))
+            except CrontabSchedule.DoesNotExist:
+                return HttpResponse("no")
+
+    @staticmethod
+    @post
+    def edit(request, task_id):
+        task_time = request.POST.get("task_time", "")
+        task_name = request.POST.get("task_name", "")
+        id_every = request.POST.get("id_every", "")
+        id_period = request.POST.get("id_period", "")
+        crontab_ = request.POST.get("crontab_", "")
+        crontab_time = request.POST.get("crontab_time", "")
+        crontab_div_time = request.POST.get("crontab_div_time", "")
+        now_time = datetime.now()
+        periodic = PeriodicTask.objects.filter(name=task_name).exclude(id=task_id)
+        if not task_name:
+            return HttpResponse("任务名称不能为空！")
+        if periodic:
+            return HttpResponse("任务名称已存在！")
+        if crontab_time == "1":
+            interval = request.POST.get("interval", "")
+            if task_time == "1":
+                interval = IntervalSchedule.objects.filter(every=1).filter(period="days")
+                if not interval:
+                    interval = IntervalSchedule.objects.create(every=1, period="days")
+                else:
+                    interval = interval[0]
+            elif task_time == "2":
+                interval = IntervalSchedule.objects.filter(every=7).filter(period="days")
+                if not interval:
+                    interval = IntervalSchedule.objects.create(every=7, period="days")
+                else:
+                    interval = interval[0]
+            elif task_time == "3":
+                interval = IntervalSchedule.objects.filter(every=int(id_every)).filter(period=id_period)
+                if not interval:
+                    interval = IntervalSchedule.objects.create(every=int(id_every), period=id_period)
+                else:
+                    interval = interval[0]
+            elif task_time == "4":
+                interval = IntervalSchedule.objects.filter(id=int(interval))
+                if not interval:
+                    return HttpResponse("选择时间间隔不存在！")
+                if id_every.strip() != "" and id_period.strip() != "":
+                    interval.update(every=int(id_every), period=id_period)
+                interval = interval[0]
+            PeriodicTask.objects.filter(id=task_id).update(name=task_name, date_changed=now_time, crontab="",
+                                                           interval=interval)
+        if crontab_time == "2":
+            make = False
+            crontab_dict = eval(request.POST.get("crontab", ""))
+            if crontab_div_time == "1":
+                crontab = CrontabSchedule.objects.filter(minute=crontab_dict["id_minute"]).filter(
+                    hour=crontab_dict["id_hour"]).filter(day_of_week=crontab_dict["id_day_of_week"]).filter(
+                    day_of_month=crontab_dict["id_day_of_month"]).filter(
+                    month_of_year=crontab_dict["id_month_of_year"])
+                if not crontab:
+                    crontab = CrontabSchedule.objects.create(minute=crontab_dict["id_minute"],
+                                                             hour=crontab_dict["id_hour"],
+                                                             day_of_week=crontab_dict["id_day_of_week"],
+                                                             day_of_month=crontab_dict["id_day_of_month"],
+                                                             month_of_year=crontab_dict["id_month_of_year"])
+                else:
+                    crontab = crontab[0]
+            elif crontab_div_time == "2":
+                crontab = CrontabSchedule.objects.filter(id=int(crontab_))
+                if not crontab:
+                    return HttpResponse("选择Crontab时间不存在！")
+                for key, value in crontab_dict.items():
+                    if value.strip() == "":
+                        make = True
+                if not make:
+                    crontab.update(minute=crontab_dict["id_minute"], hour=crontab_dict["id_hour"],
+                                   day_of_week=crontab_dict["id_day_of_week"],
+                                   day_of_month=crontab_dict["id_day_of_month"],
+                                   month_of_year=crontab_dict["id_month_of_year"])
+                crontab = crontab[0]
+            PeriodicTask.objects.filter(id=task_id).update(name=task_name, date_changed=now_time, crontab=crontab,
+                                                           interval="")
+        PeriodicTasks.objects.filter(ident=1).update(last_update=now_time)
+        return HttpResponse("ok")
+
+
 class TestTasks:
     @staticmethod
     @post
@@ -1211,20 +1326,30 @@ class TestTasks:
             parameter = get_request_body(request)
         except ValueError:
             return JsonResponse.BadRequest("json格式错误")
-        t = Task()
-        t.name = parameter.get("name", "")
-        t.remark = parameter.get("remark", "")
-        t.testcases = parameter.get("testcases", [])
-        t.browsers = parameter.get("browsers", [1])
-        t.timing = parameter.get("timing", True)
-        try:
-            t.clean()
-        except ValidationError as ve:
-            return JsonResponse.BadRequest(','.join(ve.messages))
-        t.name = t.name.strip()
-        t.testcases = json.dumps(t.testcases, ensure_ascii=False)
-        t.browsers = json.dumps(t.browsers, ensure_ascii=False)
-        if Task.objects.filter(name__exact=t.name):
+        kwargs = dict()
+        t = PeriodicTask()
+        name = parameter.get("name", "").strip()
+        t.description = parameter.get("remark", "")
+        testcases = parameter.get("testcases", [])
+        browsers = parameter.get("browsers", [1])
+        enabled = parameter.get("timing", 0)
+        testcases = testcases if testcases else []
+        browsers = browsers if browsers else []
+
+        if not name or len(name) > 20 or len(name) < 1:
+            return JsonResponse.BadRequest('无效的任务名称')
+        if not (testcases and isinstance(testcases, list)):
+            return JsonResponse.BadRequest('无效的测试用例集')
+        if not (browsers and isinstance(browsers, list)):
+            return JsonResponse.BadRequest('无效的浏览器设置')
+
+        kwargs.update({"testcases": testcases, "browsers": browsers, "name": name})
+        t.name = name
+        t.task = "Product.tasks.timingRunning"
+        t.enabled = int(enabled)
+        t.date_changed = datetime.now()
+        t.kwargs = json.dumps(kwargs, ensure_ascii=False)
+        if PeriodicTask.objects.filter(name__exact=t.name):
             return JsonResponse.BadRequest("该任务已存在，请修改后重试")
         try:
             t.save()
@@ -1234,7 +1359,7 @@ class TestTasks:
 
     @staticmethod
     def delete(request, task_id):
-        t = get_model(Task, id=task_id)
+        t = get_model(PeriodicTask, id=task_id)
         if not t:
             return JsonResponse(500, "该任务不存在")
         try:
@@ -1247,7 +1372,7 @@ class TestTasks:
     @post
     def edit(request, task_id):
         # 获取项目
-        t = get_model(Task, id=task_id)
+        t = get_model(PeriodicTask, id=task_id)
         if not t:
             return JsonResponse.BadRequest("该任务不存在")
         # 获取请求参数
@@ -1256,20 +1381,30 @@ class TestTasks:
         except ValueError:
             return JsonResponse.BadRequest("json格式错误")
         # 判断参数有效性
-        t.name = parameter.get("name", "")
-        t.remark = parameter.get("remark", "")
-        t.testcases = parameter.get("testcases", [])
-        t.browsers = parameter.get("browsers", [1])
-        t.timing = parameter.get("timing", True)
-        try:
-            t.clean()
-        except ValidationError as ve:
-            return JsonResponse.BadRequest(','.join(ve.messages))
+        kwargs = dict()
+        name = parameter.get("name", "").strip()
+        t.description = parameter.get("remark", "")
+        testcases = parameter.get("testcases", [])
+        browsers = parameter.get("browsers", [1])
+        enabled = parameter.get("timing", 0)
+        testcases = testcases if testcases else []
+        browsers = browsers if browsers else []
+
+        if not name or len(name) > 20 or len(name) < 1:
+            return JsonResponse.BadRequest('无效的任务名称')
+        if not (testcases and isinstance(testcases, list)):
+            return JsonResponse.BadRequest('无效的测试用例集')
+        if not (browsers and isinstance(browsers, list)):
+            return JsonResponse.BadRequest('无效的浏览器设置')
+
         # 判断重复
-        t.name = t.name.strip()
-        t.testcases = json.dumps(t.testcases, ensure_ascii=False)
-        t.browsers = json.dumps(t.browsers, ensure_ascii=False)
-        if Task.objects.filter(name__exact=t.name).exclude(id=t.id):
+        kwargs.update({"testcases": testcases, "browsers": browsers, "name": name})
+        t.name = name.strip()
+        t.task = "Product.tasks.timingRunning"
+        t.enabled = int(enabled)
+        t.date_changed = datetime.now()
+        t.kwargs = json.dumps(kwargs, ensure_ascii=False)
+        if PeriodicTask.objects.filter(name__exact=t.name).exclude(id=t.id):
             return JsonResponse.BadRequest("任务已存在,请修改后重试")
         # 保存
         try:
@@ -1294,23 +1429,31 @@ class TestTasks:
         end_time = parameter.get("endTime", now) if parameter.get("endTime", now) else now
         name = parameter.get("name") if parameter.get("name", "") else ""
         timing = parameter.get("timing", 0)
-        timing = int(timing) if str(timing).isdigit() and int(timing) >= 1 else 0
+        timing = int(timing) if str(timing).isdigit() and int(timing) >= 1 else 2
 
         try:
-            ts = Task.objects.filter(createTime__lt=end_time, createTime__gt=start_time,
-                                     name__contains=name).order_by("-createTime")
-            if timing and timing in [1, 2]:
-                ts = ts.filter(timing=timing)
+            ts = PeriodicTask.objects.filter(date_changed__lt=end_time, date_changed__gt=start_time,
+                                             name__contains=name).order_by("-date_changed")
+            if timing and timing in [0, 1]:
+                ts = ts.filter(enabled=timing)
             total = len(ts)
         except:
             return JsonResponse(400, "时间参数错误")
         ts = ts[(page_index - 1) * page_size:page_index * page_size]
         _list = list()
         for t in ts:
-            dic = model_to_dict(t, ["id", 'name', 'remark', 'timing'])
-            dic["browsers"] = json.loads(t.browsers) if t.browsers else None
-            dic["testcases"] = json.loads(t.testcases) if t.testcases else None
-            dic["createTime"] = t.createTime.strftime('%Y-%m-%d %H:%M:%S')
+            dic = model_to_dict(t, ["id", 'name', 'description', 'enabled', "kwargs", "task", "crontab_id",
+                                    "interval_id"])
+            if "Product.tasks.timingRunning" in t.task:
+                dic["browsers"] = json.loads(t.kwargs)["browsers"] if t.kwargs else None
+                dic["testcases"] = json.loads(t.kwargs)["testcases"] if t.kwargs else None
+            dic["crontab"] = model_to_dict(CrontabSchedule.objects.get(id=t.crontab_id),
+                                           ["id", "minute", "hour", "day_of_week", "day_of_month",
+                                            "month_of_year"]) if t.crontab_id else None
+            dic["interval"] = model_to_dict(IntervalSchedule.objects.get(id=t.interval_id),
+                                            ["id", 'every', 'period']) if t.interval_id else None
+            dic["createTime"] = t.date_changed.strftime('%Y-%m-%d %H:%M:%S')
+            dic["description"] = t.description
             _list.append(dic)
         result = dict()
         result["total"] = total
@@ -1319,12 +1462,13 @@ class TestTasks:
 
     @staticmethod
     def get(request, task_id):
-        t = get_model(Task, id=task_id)
+        t = get_model(PeriodicTask, id=task_id)
         if not t:
             return JsonResponse.BadRequest("该任务不存在")
-        result = model_to_dict(t, ["id", 'name', 'remark', 'timing'])
-        result["browsers"] = json.loads(t.browsers) if t.browsers else None
-        tcs = json.loads(t.testcases) if t.testcases else None
+        result = model_to_dict(t, ["id", 'name', 'description', 'enabled', 'kwargs'])
+        result["browsers"] = json.loads(t.kwargs)["browsers"] if t.kwargs else None
+        result["enabled"] = "1" if t.enabled else "0"
+        tcs = json.loads(t.kwargs)["testcases"] if t.kwargs else None
         testcaseInfo = list()
         for tci in tcs:
             oneTestCase = dict()
@@ -1340,7 +1484,7 @@ class TestTasks:
             oneTestCase["data"] = tci
             testcaseInfo.append(oneTestCase)
         result["testcases"] = testcaseInfo
-        result["createTime"] = t.createTime.strftime('%Y-%m-%d %H:%M:%S')
+        result["createTime"] = t.date_changed.strftime('%Y-%m-%d %H:%M:%S')
         return JsonResponse.OK(message="ok", data=result)
 
     @staticmethod

@@ -27,9 +27,9 @@
                                         <div class="form-group">
                                             <!--<label class="sr-only" for="name">名称</label>-->
                                             <select class="form-control" id="newtiming">
-                                                <option>任务类型</option>
-                                                <option id="1" value="定时">定时</option>
-                                                <option id="2" value="常规">常规</option>
+                                                <option>任务状态</option>
+                                                <option id="1" value="定时">有效</option>
+                                                <option id="0" value="常规">无效</option>
                                             </select>
                                         </div>
 
@@ -73,11 +73,12 @@
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                     <tr>
-                                        <th width="70px">序号</th>
+                                        <th width="50px">序号</th>
                                         <th width="100px">任务名称</th>
-                                        <th width="100px">任务类型</th>
-                                        <th width="120px">备注信息</th>
-                                        <th width="100px">创建时间</th>
+                                        <th width="50px">任务状态</th>
+                                        <th width="50px">执行时间</th>
+                                        <th width="100px">备注信息</th>
+                                        <th width="80px">创建时间</th>
                                         <th width="100px">操作</th>
                                     </tr>
                                     </thead>
@@ -121,16 +122,16 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="lastname" class="col-sm-2 control-label">任务类型</label>
+                            <label for="lastname" class="col-sm-2 control-label">任务状态</label>
                             <div class="col-sm-10">
                                 <div class="radio" style="display:inline-block; margin-right:20px">
                                     <label>
-                                        <input type="radio" name="taskType" value="1" checked="">定时任务
+                                        <input type="radio" name="taskType" value="1" checked="">有效
                                     </label>
                                 </div>
                                 <div class="radio" style="display:inline-block">
                                     <label>
-                                        <input type="radio" name="taskType" value="2">常规任务
+                                        <input type="radio" name="taskType" value="0">无效
                                     </label>
                                 </div>
                             </div>
@@ -366,7 +367,7 @@
         function newTestCase() {
             $("#guanlian").modal("hide");
             $("#projectSelect").val("999999999");
-            $("#addTestCaseMessage").html("")
+            $("#addTestCaseMessage").html("");
             $("#testcaseSelect").find("option").remove();
             $("#es").find("option").remove();
             $("#newProject").modal("show");
@@ -378,7 +379,7 @@
             var esid, es;
             esid = $("#es option:selected").map(function () {
                 return $(this).val();
-            }).get()
+            }).get();
             projectId = $("#projectSelect option:selected").val();
             projectName = $("#projectSelect option:selected").text();
             testcaseId = $("#testcaseSelect option:selected").val();
@@ -386,7 +387,7 @@
             var data = {"id": testcaseId, "environments": esid};
             es = $("#es option:selected").map(function () {
                 return $(this).text();
-            }).get()
+            }).get();
             if (esid.length == 0 || typeof(testcaseId) == "undefined") {
                 $("#addTestCaseMessage").html("请选择测试用例与测试环境")
             } else {
@@ -416,7 +417,7 @@
             dataType: 'json',
             success: function (res) {
                 if (res.code == 200) {
-                    var options = ""
+                    var options = "";
                     for (var i = 0; i < res.data.browsers.length; i++) {
                         options += '<option value="' + res.data.browsers[i].id + '">' + res.data.browsers[i].name + '</option>';
                     }
@@ -459,7 +460,7 @@
                     "timing": taskType,
                     "testcases": testCases,
                     "browsers": browsers,
-                    "remark": remark,
+                    "remark": remark
                 }),
                 dataType: 'json',
                 success: function (res) {
@@ -467,7 +468,7 @@
                         $("#guanlian").modal("hide");
                         setTimeout(function () {
                             search();
-                        }, 1000)
+                        }, 1000);
                         $('#DelXProject1').modal('hide');
                     } else {
                         $("#message").html(res.message);
@@ -478,7 +479,7 @@
 
         function edit(id) {
             $("#message").html("");
-            $("#testcases").find("tr").remove()
+            $("#testcases").find("tr").remove();
             $("input:radio").removeAttr("checked");
             $("#myModalLabe0").html("编辑任务");
             $.ajax({
@@ -488,8 +489,8 @@
                 success: function (res) {
                     if (res.code == 200) {
                         $("#taskName").val(res.data.name);
-                        $("input:radio[value='" + res.data.timing + "']").prop('checked', true);
-                        $("#remark").val(res.data.remark);
+                        $("input:radio[value='" + res.data.enabled + "']").prop('checked', true);
+                        $("#remark").val(res.data.description);
                         $("#browsers").val(res.data.browsers);
                         var tr = '';
                         for (var i = 0; i < res.data.testcases.length; i++) {
@@ -530,7 +531,7 @@
             var tlist = [];
             var tcElements = $("#testcases").find("tr").find("td.data");
             tcElements.each(function (i, v) {
-                debugger
+                debugger;
                 tlist.push(JSON.parse($(v).text()));
             });
             testCases = tlist;
@@ -543,7 +544,7 @@
                     "timing": taskType,
                     "testcases": testCases,
                     "browsers": browsers,
-                    "remark": remark,
+                    "remark": remark
                 }),
                 dataType: 'json',
                 success: function (res) {
@@ -551,7 +552,7 @@
                         $("#guanlian").modal("hide");
                         setTimeout(function () {
                             search();
-                        }, 1000)
+                        }, 1000);
                         $('#DelXProject1').modal('hide');
                     } else {
                         $("#message").html(res.message);
@@ -565,15 +566,15 @@
             var nameTxt, name_xmT, name_xmS, creatTime1, creatTime2;
             nameTxt = $("#name").val();                              //用例标题
             name_xmT = $("#newtiming option:selected").attr('id');      //所属项目
-            creatTime1 = $('#dtp_input_start').val()                 //开始时间
-            creatTime2 = $('#dtp_input_end').val()                   //结束时间
+            creatTime1 = $('#dtp_input_start').val();                 //开始时间
+            creatTime2 = $('#dtp_input_end').val();                   //结束时间
             var datas = {
                 "name": nameTxt,
                 "timing": name_xmT,
                 "startTime": creatTime1,
                 "endTime": creatTime2,
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/task?p=1',
@@ -583,18 +584,28 @@
                 success: function (res) {
                     $('#dataTables-example').dataTable().fnClearTable();//清空数据.fnClearTable();//清空数据
                     $('#dataTables-example').dataTable().fnDestroy(); //还原初始化了的datatable
-                    var tr = ''
+                    var tr = '';
                     for (var i = 0; i < res.data.tasks.length; i++) {
-                        var num_timing = res.data.tasks[i].timing;
+                        var num_timing = res.data.tasks[i].enabled;
+                        var crontab = res.data.tasks[i].crontab;
+                        var interval = res.data.tasks[i].interval;
                         tr += '<tr class="odd"><td class="center">' + (i + 1) + '</td>';
                         tr += '<td class="center">' + res.data.tasks[i].name + '</td>';
-                        tr += '<td class="center">' + (num_timing == 1 ? "定时" : num_timing == 2 ? "常规" : "") + '</td>';
-                        tr += '<td class="center">' + res.data.tasks[i].remark + '</td>';
+                        tr += '<td class="center">' + (num_timing == 1 ? "有效" : num_timing == 0 ? "无效" : "") + '</td>';
+                        if (crontab) {
+                            tr += '<td class="center">' + (crontab.minute + " " + crontab.hour + " " + crontab.day_of_week
+                                + " " + crontab.day_of_month + " " + crontab.month_of_year + "(m/h/d/dM/MY)") + '</td>';
+                        } else if (interval) {
+                            tr += '<td class="center">' + (interval.every + " " + interval.period + "/次") + '</td>';
+                        }
+                        tr += '<td class="center">' + res.data.tasks[i].description + '</td>';
                         tr += '<td class="center">' + res.data.tasks[i].createTime + '</td>';
                         tr += '<td class="center">';
                         tr += '<a href="javascript:void(0);" class="pointer"  onclick="run(' + res.data.tasks[i].id + ')">运行</a>';
                         tr += ' - ';
                         tr += '<a href="javascript:void(0);" class="pointer"  onclick="edit(' + res.data.tasks[i].id + ')">编辑</a>';
+                        tr += ' - ';
+                        tr += '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer">时间</a>';
                         tr += ' - ';
                         tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.tasks[i].id + ')">删除</a>';
                         tr += '</td></tr>';
@@ -620,7 +631,7 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
+                        }
                     });
 
                 }
@@ -628,7 +639,7 @@
 
             $("#projectSelect").find("option").remove();
             $("#projectSelect").append("<option value='999999999'>选择项目</option>"
-            )
+            );
             $.ajax({
                 url: '/api/v1/project?p=1',
                 type: 'post',
@@ -707,11 +718,11 @@
             for (var k in o)
                 if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
-        }
+        };
         //获得当前时间
         var newDate = new Date();
         var endTimeT1 = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).Format("yyyy-MM-dd");
-        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1)
+        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1);
         //开始时间
         $("#pzTime").datetimepicker({
             language: 'zh-CN',
@@ -722,7 +733,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();
@@ -741,7 +752,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();

@@ -21,7 +21,7 @@ from django.views.static import serve
 from django.conf import settings
 from Admin.views import *
 from Product.views import Project, Page, Element, Keyword, TestCase, TestResult, Public, TestTasks, Environment, \
-    Login
+    Login, TestTaskTime
 
 # User
 admin.site.site_header = 'EasyTest- UI 后台管理'
@@ -70,6 +70,9 @@ urlpatterns = [
     path('api/v1/task/edit/<int:task_id>', TestTasks.edit),
     path('api/v1/task', TestTasks.find),
     path('api/v1/task/<int:task_id>', TestTasks.get),
+    path('api/v1/task_time/<int:task_id>', TestTaskTime.get),
+    path('api/v1/task_time/edit/<int:task_id>', TestTaskTime.edit),
+    path('api/v1/task_time/find', TestTaskTime.find),
     path('api/v1/task/running/<int:task_id>', TestTasks.test),
     # Login
     path('api/v1/login/create', Login.create),

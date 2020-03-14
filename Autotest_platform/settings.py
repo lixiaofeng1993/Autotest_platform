@@ -135,12 +135,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # 对应文件夹
 if not os.path.exists(MEDIA_ROOT): os.mkdir(MEDIA_ROOT)
 MEDIA_URL = '/media/'  # 对应上线后的url
 
+import djcelery
+
+djcelery.setup_loader()
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+# broker_pool_limit=None
+# BROKER_POOL_LIMIT=None
+CELERY_IMPORTS = ('Product.tasks')
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_ENABLE_UTC = False
 CELERYBEAT_SCHEDULE = {
-    'timing': {
-        'task': 'Product.tasks.timingRunning',
-        # 'schedule': crontab(hour=10, minute=30),
-        'schedule': timedelta(seconds=300),
-    },
+    # 'timing': {
+    #     'task': 'Product.tasks.timingRunning',
+    #     # 'schedule': crontab(hour=10, minute=30),
+    #     'schedule': timedelta(seconds=300),
+    # },
 }
 
 # log
