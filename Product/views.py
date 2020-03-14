@@ -1432,8 +1432,9 @@ class TestTasks:
         timing = int(timing) if str(timing).isdigit() and int(timing) in [0, 1] else 2
 
         try:
-            ts = PeriodicTask.objects.filter(date_changed__lt=end_time, date_changed__gt=start_time,
-                                             name__contains=name).order_by("-date_changed")
+            ts = PeriodicTask.objects.filter(
+                date_changed__lt=end_time, date_changed__gt=start_time, name__contains=name,
+                task="Product.tasks.timingRunning").order_by("-date_changed")
             if timing != 2:
                 ts = ts.filter(enabled=timing)
             total = len(ts)
@@ -1490,11 +1491,11 @@ class TestTasks:
     @staticmethod
     @post
     def test(request, task_id):
-        t = get_model(Task, id=task_id)
+        t = get_model(PeriodicTask, id=task_id)
         if not t:
             return JsonResponse(404, "该任务不存在")
-        browsers = json.loads(t.browsers) if t.browsers else []
-        testcases = json.loads(t.testcases) if t.testcases else []
+        browsers = json.loads(t.kwargs)["browsers"] if t.kwargs else []
+        testcases = json.loads(t.kwargs)["testcases"] if t.kwargs else []
         for tc in testcases:
             environments = tc.get("environments", [])
             tc = get_model(testcase, id=tc.get("id", 0))

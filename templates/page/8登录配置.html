@@ -444,7 +444,7 @@
                 $(list[i]).val(params[$(list[i]).attr("data-key")])
             }
             $("#eselect option[value='" + eid + "']").attr("selected", true);
-            $("#eselect").attr("disabled", "disabled");
+            {#            $("#eselect").attr("disabled", "disabled");#}
             $("#newProject").modal("show");
         }
 

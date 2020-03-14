@@ -169,6 +169,7 @@
                             $("#result").html('<div class="color-green">' + resultText + '</div>');
                         }
                         $("#checkType").html(res.data.checkType);
+                        $("#checkValue").html(res.data.checkValue);
                         var logins = res.data.beforeLogin;
                         console.log(logins);
                         for (i = 0; i < logins.length; i++) {

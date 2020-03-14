@@ -1,5 +1,19 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
+
+{% block css %}
+    <style type="text/css">
+
+        #newSel {
+            max-width: 150px;
+            word-wrap: break-word;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div id="page-wrapper">
         <div id="page-inner">
@@ -169,7 +183,7 @@
             name_xmT = $("#newSel option:selected").attr('id');      //所属项目
             name_xmS = $("#newZiduan option:selected").attr('id');   //关键字类型
             creatTime1 = $('#dtp_input_start').val();                 //开始时间
-            creatTime2 = $('#dtp_input_end').val() ;                  //结束时间
+            creatTime2 = $('#dtp_input_end').val();                  //结束时间
             var datas = {
                 "name": nameTxt,
                 "projectId": name_xmT,
