@@ -226,7 +226,14 @@
                         } else {
                             num_status = "失败";
                         }
-                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' + res.data.results[i].title + '</td><td class="center">' + res.data.results[i].projectName + '</td><td class="center">' + res.data.results[i].taskName + '</td><td class="center">' + num_status + '</td><td class="center">' + res.data.results[i].createTime + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.results[i].id + '" onclick="seeDetails(this)">查看</a> - <a href="javascript:void(0);" class="pointer" Did="' + res.data.results[i].id + '" onclick="deleteNew(this)">删除</a></td></tr>');
+                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' +
+                            res.data.results[i].title + '</td><td class="center">' + res.data.results[i].projectName
+                            + '</td><td class="center">' + res.data.results[i].taskName + '</td><td class="center">' +
+                            num_status + '</td><td class="center">' + res.data.results[i].createTime
+                            + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' +
+                            res.data.results[i].id + '" onclick="seeDetails(this)"><i class="fa fa-edit"></i></a> &nbsp;&nbsp;&nbsp; ' +
+                            '<a href="javascript:void(0);" class="pointer" Did="' + res.data.results[i].id
+                            + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a></td></tr>');
                     }
                     $('#dataTables-example').dataTable({
                         "bPaginate": true,  //是否显示分页
@@ -286,7 +293,14 @@
                         } else {
                             num_status = "失败";
                         }
-                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' + res.data.results[i].title + '</td><td class="center">' + res.data.results[i].projectName + '</td><td class="center">' + res.data.results[i].taskName + '</td><td class="center">' + num_status + '</td><td class="center">' + res.data.results[i].createTime + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.results[i].id + '" onclick="seeDetails(this)">查看</a> - <a href="javascript:void(0);" class="pointer" Did="' + res.data.results[i].id + '" onclick="deleteNew(this)">删除</a></td></tr>');
+                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' +
+                            res.data.results[i].title + '</td><td class="center">' + res.data.results[i].projectName
+                            + '</td><td class="center">' + res.data.results[i].taskName + '</td><td class="center">' +
+                            num_status + '</td><td class="center">' + res.data.results[i].createTime
+                            + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' +
+                            res.data.results[i].id + '" onclick="seeDetails(this)"><i class="fa fa-edit"></i></a> &nbsp;&nbsp;&nbsp; ' +
+                            '<a href="javascript:void(0);" class="pointer" Did="' + res.data.results[i].id
+                            + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a></td></tr>');
                     }
                     $('#dataTables-example').dataTable({
                         "bPaginate": true,  //是否显示分页

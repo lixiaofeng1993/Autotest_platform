@@ -524,9 +524,9 @@
                             }
                             tr += "</td>";
                             tr += '<td class="center">';
-                            tr += '<a class="pointer" data-index="' + (i + 1) + '" data-toggle="modal" onclick="setStep(this)">设置</a> -';
-                            tr += '<a class="pointer" data-index="' + (i + 1) + '" data-toggle="modal" onclick="insertStep(this)">添加</a> -';
-                            tr += '<a class="pointer" data-toggle="modal" onclick="delStep(this)">删除</a>';
+                            tr += '<a class="pointer" data-index="' + (i + 1) + '" data-toggle="modal" onclick="setStep(this)"><i class="fa fa-gavel"></i></a>&nbsp;&nbsp;&nbsp;';
+                            tr += '<a class="pointer" data-index="' + (i + 1) + '" data-toggle="modal" onclick="insertStep(this)"><i class="fa fa-plus-square-o"></i></a>&nbsp;&nbsp;&nbsp;';
+                            tr += '<a class="pointer" data-toggle="modal" onclick="delStep(this)"><i class="fa fa-times"></i></a>';
                             tr += '</td>';
                             tr += '<td class="data" data-view="" style="display: none">' + JSON.stringify(data) + '</td>';
                             tr += '</td>';
@@ -550,8 +550,8 @@
                             });
                             trs += '<td class="center" data-type="expect">' + (v["expect"] ? "成功" : "失败") + '</td>';
                             trs += '<td class="center">';
-                            trs += '<a class="pointer" data-index="' + index + '" onclick="setTestData(this)">编辑</a> - ';
-                            trs += '<a class="pointer" data-toggle="modal" onclick="delTestData(this)">删除</a>';
+                            trs += '<a class="pointer" data-index="' + index + '" onclick="setTestData(this)"><i class="fa fa-gavel"></i></a>&nbsp;&nbsp;&nbsp;';
+                            trs += '<a class="pointer" data-toggle="modal" onclick="delTestData(this)"><i class="fa fa-times"></i></a>';
                             trs += '</td>';
                             trs += '<td class="data" style="display: none">' + JSON.stringify(v) + '</td>';
                         });
@@ -701,8 +701,8 @@
             data["expect"] = expect;
             tds += '<td data-type="expect" class="center">' + (expect ? "成功" : "失败") + '</td>';
             tds += '<td class="center">';
-            tds += '<a class="pointer" data-index="' + index + '" onclick="setTestData(this)">编辑</a> -';
-            tds += '<a class="pointer" data-toggle="modal" onclick="delTestData(this)">删除</a></td>';
+            tds += '<a class="pointer" data-index="' + index + '" onclick="setTestData(this)"><i class="fa fa-gavel"></i></a>&nbsp;&nbsp;&nbsp;';
+            tds += '<a class="pointer" data-toggle="modal" onclick="delTestData(this)"><i class="fa fa-times"></i></a></td>';
             tds += '<td class="data" style="display: none">' + JSON.stringify(data) + '</td>';
 
             if (isAdd) {
@@ -1233,9 +1233,9 @@
             td3 += text;
             td3 += '</td>';
             td4 += '<td class="center">';
-            td4 += '<a class="pointer" data-index="' + (listIndex + 1) + '" data-toggle="modal" onclick="setStep(this)">设置</a> -';
-            td4 += '<a class="pointer" data-index="' + (listIndex + 1) + '" data-toggle="modal" onclick="insertStep(this)">添加</a> -';
-            td4 += '<a class="pointer" data-toggle="modal" onclick="delStep(this)">删除</a>';
+            td4 += '<a class="pointer" data-index="' + (listIndex + 1) + '" data-toggle="modal" onclick="setStep(this)"><i class="fa fa-gavel"></i></a>&nbsp;&nbsp;&nbsp;';
+            td4 += '<a class="pointer" data-index="' + (listIndex + 1) + '" data-toggle="modal" onclick="insertStep(this)"><i class="fa fa-plus-square-o"></i></a>&nbsp;&nbsp;&nbsp;';
+            td4 += '<a class="pointer" data-toggle="modal" onclick="delStep(this)"><i class="fa fa-times"></i></a>';
             td4 += '</td>';
             td5 = '<td class="data" data-view="" style="display: none">' + JSON.stringify(data) + '</td>';
             var tr;
@@ -1323,9 +1323,9 @@
             tds += text;
             tds += '</td>';
             tds += '<td class="center">';
-            tds += '<a class="pointer" data-index="' + listIndex + '" data-toggle="modal" onclick="setStep(this)">设置</a> -';
-            tds += '<a class="pointer" data-index="' + listIndex + '" data-toggle="modal" onclick="insertStep(this)">添加</a> -';
-            tds += '<a class="pointer" data-toggle="modal" onclick="delStep(this)">删除</a>';
+            tds += '<a class="pointer" data-index="' + listIndex + '" data-toggle="modal" onclick="setStep(this)"><i class="fa fa-gavel"></i></a>&nbsp;&nbsp;&nbsp;';
+            tds += '<a class="pointer" data-index="' + listIndex + '" data-toggle="modal" onclick="insertStep(this)"><i class="fa fa-plus-square-o"></i></a>&nbsp;&nbsp;&nbsp;';
+            tds += '<a class="pointer" data-toggle="modal" onclick="delStep(this)"><i class="fa fa-times"></i></a>';
             tds += '</td>';
             tds += '<td class="data" data-view="" style="display: none">' + JSON.stringify(data) + '</td>';
             var tr;

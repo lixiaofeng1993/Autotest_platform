@@ -291,9 +291,9 @@
                         tr += '<td class="center">' + res.data.environments[i].host + '</td>'
                         tr += '<td class="center">' + res.data.environments[i].remark + '</td>';
                         tr += '<td class="center">';
-                        tr += '<a href="javascript:void(0);" class="pointer" onclick="edit(' + res.data.environments[i].id + ')">编辑</a>';
-                        tr += '-';
-                        tr += '<a href="javascript:void(0);" class="pointer" onclick="isDel(' + res.data.environments[i].id + ')">删除</a>';
+                        tr += '<a href="javascript:void(0);" class="pointer" onclick="edit(' + res.data.environments[i].id + ')"><i class="fa fa-edit"></i></a>';
+                        tr += '&nbsp;&nbsp;&nbsp;';
+                        tr += '<a href="javascript:void(0);" class="pointer" onclick="isDel(' + res.data.environments[i].id + ')"><i class="fa fa-times"></i></a>';
                         tr += '</td></tr>)';
                         $(".js_table").append(tr)
                     }

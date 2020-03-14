@@ -365,9 +365,10 @@
                             }
                             tr += '</td>';
                             tr += '<td class="center">';
-                            tr += '<a class="pointer"  onclick=\'editBind(' + res.data.bind[i].id + ',' + JSON.stringify(parameters) + ',\"' + res.data.bind[i].environmentId + '\")\'>编辑</a>';
-                            tr += ' - ';
-                            tr += '<a class="pointer" onclick="isDelBind(' + res.data.bind[i].id + ')">删除</a>';
+                            tr += '<a class="pointer"  onclick=\'editBind(' + res.data.bind[i].id + ',' + JSON.stringify(parameters)
+                                + ',\"' + res.data.bind[i].environmentId + '\")\'><i class="fa fa-edit"></i></a>';
+                            tr += ' &nbsp;&nbsp;&nbsp;';
+                            tr += '<a class="pointer" onclick="isDelBind(' + res.data.bind[i].id + ')"><i class="fa fa-times"></i></a>';
                             tr += '</td></tr>';
                         }
                         bindParameterSetting(res.data.params, []);
@@ -498,11 +499,11 @@
                         tr += '<td class="center">' + res.data.logins[i].params.length + '</td>';
                         tr += '<td class="center">' + res.data.logins[i].remark + '</td>';
                         tr += '<td class="center">';
-                        tr += '<a href="javascript:void(0);" class="pointer" onclick="bind(' + res.data.logins[i].id + ')">关联</a>';
-                        tr += ' - ';
-                        tr += '<a href="/admin/loginConfig/edit/' + res.data.logins[i].id + '" class="pointer">编辑</a>';
-                        tr += ' - ';
-                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.logins[i].id + ')">删除</a>';
+                        tr += '<a href="javascript:void(0);" class="pointer" onclick="bind(' + res.data.logins[i].id + ')"><i class="fa fa-gavel"></i></a>';
+                        tr += ' &nbsp;&nbsp;&nbsp;';
+                        tr += '<a href="/admin/loginConfig/edit/' + res.data.logins[i].id + '" class="pointer"><i class="fa fa-edit"></i></a>';
+                        tr += ' &nbsp;&nbsp;&nbsp;';
+                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.logins[i].id + ')"><i class="fa fa-times"></i></a>';
                         tr += '</td></tr>';
                     }
                     $(".js_table").append(tr);

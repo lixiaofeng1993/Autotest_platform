@@ -147,7 +147,7 @@
             $("#newSel,#newSel1,#newSel2").append('<option>所属项目</option>');
             var datas = {
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/project?p=1',
@@ -168,8 +168,8 @@
             nameTxt = $("#name").val();                              //关键字名称
             name_xmT = $("#newSel option:selected").attr('id');      //所属项目
             name_xmS = $("#newZiduan option:selected").attr('id');   //关键字类型
-            creatTime1 = $('#dtp_input_start').val()                 //开始时间
-            creatTime2 = $('#dtp_input_end').val()                   //结束时间
+            creatTime1 = $('#dtp_input_start').val();                 //开始时间
+            creatTime2 = $('#dtp_input_end').val() ;                  //结束时间
             var datas = {
                 "name": nameTxt,
                 "projectId": name_xmT,
@@ -177,7 +177,7 @@
                 "startTime": creatTime1,
                 "endTime": creatTime2,
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/keyword?p=1',
@@ -194,13 +194,18 @@
                         } else {
                             key_list = res.data.keywords[i].params.length;
                         }
-                        ;
                         if (res.data.keywords[i].type == 1) {
                             type_num = "系统";
                         } else {
                             type_num = "自定义";
                         }
-                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' + res.data.keywords[i].name + '</td><td class="center">' + res.data.keywords[i].projectName + '</td><td class="center">' + type_num + '</td><td class="center">' + res.data.keywords[i].createTime + '</td><td class="center">' + key_list + '</td><td class="center">' + res.data.keywords[i].remark + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.keywords[i].id + '" onclick="editList(this)">编辑</a> - <a href="javascript:void(0);" class="pointer" Did="' + res.data.keywords[i].id + '" onclick="deleteNew(this)">删除</a></td></tr>');
+                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' +
+                            res.data.keywords[i].name + '</td><td class="center">' + res.data.keywords[i].projectName + '' +
+                            '</td><td class="center">' + type_num + '</td><td class="center">' + res.data.keywords[i].createTime
+                            + '</td><td class="center">' + key_list + '</td><td class="center">' + res.data.keywords[i].remark
+                            + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.keywords[i].id
+                            + '" onclick="editList(this)"><i class="fa fa-edit"></i></a> ' + '&nbsp;&nbsp;&nbsp;' + ' <a href="javascript:void(0);" class="pointer" Did="'
+                            + res.data.keywords[i].id + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a></td></tr>');
                     }
                     $('#dataTables-example').dataTable({
                         "bPaginate": true,  //是否显示分页
@@ -222,7 +227,7 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
+                        }
                     });
 
                 }
@@ -249,7 +254,7 @@
                         setTimeout(function () {
                             //重新获取下列表
                             ListsNew();
-                        }, 1000)
+                        }, 1000);
                         $('#DelXProject1').modal('hide');
                     } else {
                         $(".js_DELmessage").html(res.message);
@@ -271,7 +276,7 @@
         function ListsNew() {
             var datas = {
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/keyword?p=1',
@@ -288,13 +293,18 @@
                         } else {
                             key_list = res.data.keywords[i].params.length;
                         }
-                        ;
                         if (res.data.keywords[i].type == 1) {
                             type_num = "系统";
                         } else {
                             type_num = "自定义";
                         }
-                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' + res.data.keywords[i].name + '</td><td class="center">' + res.data.keywords[i].projectName + '</td><td class="center">' + type_num + '</td><td class="center">' + res.data.keywords[i].createTime + '</td><td class="center">' + key_list + '</td><td class="center">' + res.data.keywords[i].remark + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.keywords[i].id + '" onclick="editList(this)">编辑</a> - <a href="javascript:void(0);" class="pointer" Did="' + res.data.keywords[i].id + '" onclick="deleteNew(this)">删除</a></td></tr>');
+                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' +
+                            res.data.keywords[i].name + '</td><td class="center">' + res.data.keywords[i].projectName
+                            + '</td><td class="center">' + type_num + '</td><td class="center">' + res.data.keywords[i].createTime
+                            + '</td><td class="center">' + key_list + '</td><td class="center">' + res.data.keywords[i].remark
+                            + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.keywords[i].id
+                            + '" onclick="editList(this)"><i class="fa fa-edit"></i></a> ' + '&nbsp;&nbsp;&nbsp;' + ' <a href="javascript:void(0);" class="pointer" Did="' +
+                            res.data.keywords[i].id + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a></td></tr>');
                     }
                     $('#dataTables-example').dataTable({
                         "bPaginate": true,  //是否显示分页
@@ -316,7 +326,7 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
+                        }
                     });
 
                 }
@@ -340,11 +350,11 @@
             for (var k in o)
                 if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
-        }
+        };
         //获得当前时间
         var newDate = new Date();
         var endTimeT1 = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).Format("yyyy-MM-dd");
-        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1)
+        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1);
         //开始时间
         $("#pzTime").datetimepicker({
             language: 'zh-CN',
@@ -355,7 +365,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();
@@ -374,7 +384,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();

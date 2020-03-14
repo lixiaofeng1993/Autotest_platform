@@ -393,7 +393,7 @@
                                 trs += '<td class="center">' + (v.type == "string" ? "文本" : "元素") + "</td>";
                                 trs += '<td class="center">' + v.key + "</td>";
                                 trs += '<td class="center">';
-                                trs += '<a class="pointer" data-toggle="modal" onclick="deleteParams(this)">删除</a>';
+                                trs += '<a class="pointer" data-toggle="modal" onclick="deleteParams(this)"><i class="fa fa-times"></i></a>';
                                 trs += '</td>';
                                 trs += '<td class="data" style="display: none">' + JSON.stringify(v) + ' </td>';
                                 trs += '</tr>'
@@ -564,7 +564,7 @@
             tr += ("<td class='center'>" + (type == 'string' ? '文本' : type == 'element' ? '元素' : '') + "</td>");
             tr += "<td class='center'>" + key + "</td>";
             tr += "<td class=\"center\">";
-            tr += ' <a class="pointer" data-toggle="modal" onclick="deleteParams(this)">删除</a>';
+            tr += ' <a class="pointer" data-toggle="modal" onclick="deleteParams(this)"><i class="fa fa-times"></i></a>';
             tr += '</td>';
             tr += '<td class="data" style="display: none">' + data + ' </td>';
             tr += '</tr>';

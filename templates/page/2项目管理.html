@@ -242,7 +242,7 @@
                 dataType: 'json',
                 success: function (res) {
                     if (res.code == 200) {
-                        $("#newProject").modal("hide")
+                        $("#newProject").modal("hide");
                         setTimeout(function () {
                             search();
                         }, 1000)
@@ -254,7 +254,7 @@
         }
 
         function isDel(id) {
-            $("#delButton").attr("onclick", "del(" + id + ")")
+            $("#delButton").attr("onclick", "del(" + id + ")");
             $("#delProject").modal("show")
         }
 
@@ -266,7 +266,7 @@
                 dataType: 'json',
                 success: function (res) {
                     if (res.code == 200) {
-                        $("#delProject").modal("hide")
+                        $("#delProject").modal("hide");
                         setTimeout(function () {
                             search();
                         }, 1000)
@@ -282,15 +282,15 @@
             var projectName, creator, creatTime1, creatTime2;
             projectName = $("#pName").val();
             creator = $("#pName").val();//页面名称
-            creatTime1 = $('#dtp_input_start').val()//开始时间
-            creatTime2 = $('#dtp_input_end').val()//结束时间
+            creatTime1 = $('#dtp_input_start').val();//开始时间
+            creatTime2 = $('#dtp_input_end').val();//结束时间
             var datas = {
                 "name": projectName,
                 "creator": creator,
                 "startTime": creatTime1,
                 "endTime": creatTime2,
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/project?p=1',
@@ -307,19 +307,19 @@
                         tr += '<tr>';
                         tr += '<td class="center">' + (i + 1) + '</td>';
                         tr += '<td class="center">' + res.data.projects[i].name + '</td>';
-                        tr += '<td class="center">' + res.data.projects[i].creatorName + '</td>'
+                        tr += '<td class="center">' + res.data.projects[i].creatorName + '</td>';
                         tr += '<td class="center">' + res.data.projects[i].createTime + '</td>';
-                        tr += '<td class="center">' + res.data.projects[i].environments.length + '</td>'
+                        tr += '<td class="center">' + res.data.projects[i].environments.length + '</td>';
                         tr += '<td class="center">' + res.data.projects[i].remark + '</td>';
                         tr += '<td class="center">';
-                        tr += '<a href="/admin/project/' + res.data.projects[i].id + '" class="pointer">配置</a>';
-                        tr += '-';
-                        tr += '<a href="javascript:void(0);" class="pointer" onclick="edit(' + res.data.projects[i].id + ')">编辑</a>';
-                        tr += '-';
-                        tr += '<a href="javascript:void(0);" class="pointer" onclick="isDel(' + res.data.projects[i].id + ')">删除</a>'
+                        tr += '<a href="/admin/project/' + res.data.projects[i].id + '" class="pointer"><i class="fa fa-gavel"></i></a>';
+                        tr += '&nbsp;&nbsp;&nbsp;';
+                        tr += '<a href="javascript:void(0);" class="pointer" onclick="edit(' + res.data.projects[i].id + ')"><i class="fa fa-edit"></i></a>';
+                        tr += '&nbsp;&nbsp;&nbsp;';
+                        tr += '<a href="javascript:void(0);" class="pointer" onclick="isDel(' + res.data.projects[i].id + ')"><i class="fa fa-times"></i></a>';
                         tr += '</td></tr>)';
                     }
-                    $(".js_table").append(tr)
+                    $(".js_table").append(tr);
                     $('#dataTables-example').dataTable({
                         "bPaginate": true,  //是否显示分页
                         "bSort": true,     //是否支持排序功能
@@ -340,7 +340,7 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
+                        }
                     });
                 }
             });
@@ -359,7 +359,7 @@
                 dataType: 'json',
                 success: function (res) {
                     if (res.code == 200) {
-                        $("#newProject").modal("hide")
+                        $("#newProject").modal("hide");
                         setTimeout(function () {
                             search();
                         }, 1000)
@@ -386,11 +386,11 @@
             for (var k in o)
                 if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
-        }
+        };
         //获得当前时间
         var newDate = new Date();
         var endTimeT1 = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).Format("yyyy-MM-dd");
-        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1)
+        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1);
         //开始时间
         $("#pzTime").datetimepicker({
             language: 'zh-CN',
@@ -401,7 +401,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();
@@ -420,7 +420,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();

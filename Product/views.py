@@ -1427,14 +1427,14 @@ class TestTasks:
         start_time = parameter.get("startTime", start_time) if parameter.get("startTime", start_time) else start_time
         now = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
         end_time = parameter.get("endTime", now) if parameter.get("endTime", now) else now
-        name = parameter.get("name") if parameter.get("name", "") else ""
+        name = parameter.get("name").strip() if parameter.get("name", "") else ""
         timing = parameter.get("timing", 0)
-        timing = int(timing) if str(timing).isdigit() and int(timing) >= 1 else 2
+        timing = int(timing) if str(timing).isdigit() and int(timing) in [0, 1] else 2
 
         try:
             ts = PeriodicTask.objects.filter(date_changed__lt=end_time, date_changed__gt=start_time,
                                              name__contains=name).order_by("-date_changed")
-            if timing and timing in [0, 1]:
+            if timing != 2:
                 ts = ts.filter(enabled=timing)
             total = len(ts)
         except:

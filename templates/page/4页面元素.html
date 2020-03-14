@@ -485,7 +485,15 @@
                     $('#dataTables-example').dataTable().fnClearTable();//清空数据.fnClearTable();//清空数据
                     $('#dataTables-example').dataTable().fnDestroy(); //还原初始化了的datatable
                     for (var i = 0; i < res.data.elements.length; i++) {
-                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' + res.data.elements[i].name + '</td><td class="center">' + res.data.elements[i].projectName + '</td><td class="center">' + res.data.elements[i].pageName + '</td><td class="center">' + res.data.elements[i].createTime + '</td><td class="center">' + res.data.elements[i].by + '</td><td class="center" id="locator">' + res.data.elements[i].locator + '</td><td class="center">' + res.data.elements[i].remark + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.elements[i].id + '" onclick="editList(this)">编辑</a> - <a href="javascript:void(0);" class="pointer" Did="' + res.data.elements[i].id + '" onclick="deleteNew(this)">删除</a></td></tr>');
+                        $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' +
+                            res.data.elements[i].name + '</td><td class="center">' + res.data.elements[i].projectName
+                            + '</td><td class="center">' + res.data.elements[i].pageName + '</td><td class="center">' +
+                            res.data.elements[i].createTime + '</td><td class="center">' + res.data.elements[i].by
+                            + '</td><td class="center" id="locator">' + res.data.elements[i].locator + '</td><td class="center">' +
+                            res.data.elements[i].remark + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' +
+                            res.data.elements[i].id + '" onclick="editList(this)"><i class="fa fa-edit"></i></a> ' + '&nbsp;&nbsp;&nbsp;'
+                            + ' <a href="javascript:void(0);" class="pointer" Did="' +
+                            res.data.elements[i].id + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a></td></tr>');
                     }
                     $('#dataTables-example').dataTable({
                         "bPaginate": true,  //是否显示分页

@@ -27,9 +27,9 @@
                                         <div class="form-group">
                                             <!--<label class="sr-only" for="name">名称</label>-->
                                             <select class="form-control" id="newtiming">
-                                                <option>任务状态</option>
-                                                <option id="1" value="定时">有效</option>
-                                                <option id="0" value="常规">无效</option>
+                                                <option id="2" value="任务状态">任务状态</option>
+                                                <option id="1" value="有效">有效</option>
+                                                <option id="0" value="无效">无效</option>
                                             </select>
                                         </div>
 
@@ -401,7 +401,7 @@
                 }
                 tr += '</td>';
                 tr += '<td class="center">';
-                tr += '<a class="pointer" onclick="delTestCase(this)">删除</a>';
+                tr += '<a class="pointer" onclick="delTestCase(this)"><i class="fa fa-times"></i></a>';
                 tr += '</td>';
                 tr += '<td class="data" style="display:none">' + JSON.stringify(data) + '</td>';
                 tr += '</tr>';
@@ -503,7 +503,7 @@
                             }
                             tr += '</td>';
                             tr += '<td class="center">';
-                            tr += '<a class="pointer" onclick="delTestCase(this)">删除</a>';
+                            tr += '<a class="pointer" onclick="delTestCase(this)"><i class="fa fa-times"></i></a>';
                             tr += '</td>';
                             tr += '<td class="data" style="display:none">' + JSON.stringify(res.data.testcases[i].data) + '</td>';
                             tr += '</tr>';
@@ -594,20 +594,20 @@
                         tr += '<td class="center">' + (num_timing == 1 ? "有效" : num_timing == 0 ? "无效" : "") + '</td>';
                         if (crontab) {
                             tr += '<td class="center">' + (crontab.minute + " " + crontab.hour + " " + crontab.day_of_week
-                                + " " + crontab.day_of_month + " " + crontab.month_of_year + "(m/h/d/dM/MY)") + '</td>';
+                                + " " + crontab.day_of_month + " " + crontab.month_of_year) + '</td>';
                         } else if (interval) {
                             tr += '<td class="center">' + (interval.every + " " + interval.period + "/次") + '</td>';
                         }
                         tr += '<td class="center">' + res.data.tasks[i].description + '</td>';
                         tr += '<td class="center">' + res.data.tasks[i].createTime + '</td>';
                         tr += '<td class="center">';
-                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="run(' + res.data.tasks[i].id + ')">运行</a>';
-                        tr += ' - ';
-                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="edit(' + res.data.tasks[i].id + ')">编辑</a>';
-                        tr += ' - ';
-                        tr += '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer">时间</a>';
-                        tr += ' - ';
-                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.tasks[i].id + ')">删除</a>';
+                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="run(' + res.data.tasks[i].id + ')"><i class="fa fa-recycle"></i></a>';
+                        tr += '&nbsp;&nbsp;&nbsp;';
+                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="edit(' + res.data.tasks[i].id + ')"><i class="fa fa-edit"></i></a>';
+                        tr += '&nbsp;&nbsp;&nbsp;';
+                        tr += '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer"><i class="fa fa-gavel"></i></a>';
+                        tr += '&nbsp;&nbsp;&nbsp;';
+                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.tasks[i].id + ')"><i class="fa fa-times"></i></a>';
                         tr += '</td></tr>';
                     }
                     $(".js_table").append(tr);
@@ -675,7 +675,7 @@
                         setTimeout(function () {
                             //重新获取下列表
                             search();
-                        }, 1000)
+                        }, 1000);
                         $('#DelXProject1').modal('hide');
                     } else {
                         $(".js_DELmessage").html(res.message);
