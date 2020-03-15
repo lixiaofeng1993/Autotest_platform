@@ -169,7 +169,7 @@
             $("#newSel").append('<option>所属项目</option>');
             var datas = {
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/project?p=1',
@@ -190,8 +190,8 @@
             nameTxt = $("#name").val();                              //用例标题
             name_xmT = $("#newSel option:selected").attr('id');      //所属项目
             name_xmS = $("#newstatus option:selected").attr('id');    //状态
-            creatTime1 = $('#dtp_input_start').val()                 //开始时间
-            creatTime2 = $('#dtp_input_end').val()                   //结束时间
+            creatTime1 = $('#dtp_input_start').val();                 //开始时间
+            creatTime2 = $('#dtp_input_end').val();                  //结束时间
             var datas = {
                 "title": nameTxt,
                 "projectId": name_xmT,
@@ -199,7 +199,7 @@
                 "startTime": creatTime1,
                 "endTime": creatTime2,
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/result?p=1',
@@ -216,7 +216,6 @@
                         } else {
                             result_list = res.data.results[i].params.length;
                         }
-                        ;
                         if (res.data.results[i].status == 10) {
                             num_status = "队列中";
                         } else if (res.data.results[i].status == 20) {
@@ -255,7 +254,7 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
+                        }
                     });
 
                 }
@@ -266,7 +265,7 @@
         function ListsNew() {
             var datas = {
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/result?p=1',
@@ -283,7 +282,6 @@
                         } else {
                             result_list = res.data.results[i].params.length;
                         }
-                        ;
                         if (res.data.results[i].status == 10) {
                             num_status = "队列中";
                         } else if (res.data.results[i].status == 20) {
@@ -300,7 +298,7 @@
                             + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' +
                             res.data.results[i].id + '" onclick="seeDetails(this)"><i class="fa fa-edit"></i></a> &nbsp;&nbsp;&nbsp; ' +
                             '<a href="javascript:void(0);" class="pointer" Did="' + res.data.results[i].id
-                            + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a></td></tr>');
+                            + '" onclick="deleteNew(this)"><i class="fa fa-trash"></i></a></td></tr>');
                     }
                     $('#dataTables-example').dataTable({
                         "bPaginate": true,  //是否显示分页
@@ -322,7 +320,7 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
+                        }
                     });
 
                 }
@@ -345,11 +343,11 @@
             for (var k in o)
                 if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
-        }
+        };
         //获得当前时间
         var newDate = new Date();
         var endTimeT1 = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).Format("yyyy-MM-dd");
-        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1)
+        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1);
         //开始时间
         $("#pzTime").datetimepicker({
             language: 'zh-CN',
@@ -360,7 +358,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();
@@ -379,7 +377,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();
@@ -409,7 +407,7 @@
                         setTimeout(function () {
                             //重新获取下列表
                             search();
-                        }, 1000)
+                        }, 1000);
                         $('#DelXProject1').modal('hide');
                     } else {
                         $(".js_DELmessage").html(res.message);

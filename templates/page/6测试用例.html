@@ -334,7 +334,7 @@
                         tr += '<td class="center">' + res.data.testcase[i].createTime + '</td>';
                         tr += '<td class="center">';
                         tr += '<a href="javascript:void(0);" class="pointer" onclick="running(' + res.data.testcase[i].projectId + ',' + res.data.testcase[i].id + ')"><i class="fa fa-recycle"></i></a> &nbsp;&nbsp;&nbsp; ';
-                        tr += '<a href="/admin/testcase/' + res.data.testcase[i].id + '" class="pointer"><i class="fa fa-edit"></i></a> &nbsp;&nbsp;&nbsp; ';
+                        tr += '<a href="/admin/testcase/' + res.data.testcase[i].id + '" class="pointer"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;&nbsp; ';
                         tr += '<a href="javascript:void(0);" class="pointer" Cid="' + res.data.testcase[i].id + '" onclick="copyNew(this)"><i class="fa fa-copy"></i></a> &nbsp;&nbsp;&nbsp; ';
                         tr += '<a href="javascript:void(0);" class="pointer" Did="' + res.data.testcase[i].id + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a>';
 
@@ -460,7 +460,7 @@
             dataType: 'json',
             success: function (res) {
                 if (res.code == 200) {
-                    var options = ""
+                    var options = "";
                     for (var i = 0; i < res.data.browsers.length; i++) {
                         options += '<option value="' + res.data.browsers[i].id + '">' + res.data.browsers[i].name + '</option>';
                     }
@@ -542,7 +542,7 @@
             for (var k in o)
                 if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
-        }
+        };
         //获得当前时间
         var newDate = new Date();
         var endTimeT1 = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).Format("yyyy-MM-dd");
@@ -576,7 +576,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();

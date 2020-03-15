@@ -288,10 +288,10 @@
                         tr += '<tr>';
                         tr += '<td class="center">' + (i + 1) + '</td>';
                         tr += '<td class="center">' + res.data.environments[i].name + '</td>';
-                        tr += '<td class="center">' + res.data.environments[i].host + '</td>'
+                        tr += '<td class="center">' + res.data.environments[i].host + '</td>';
                         tr += '<td class="center">' + res.data.environments[i].remark + '</td>';
                         tr += '<td class="center">';
-                        tr += '<a href="javascript:void(0);" class="pointer" onclick="edit(' + res.data.environments[i].id + ')"><i class="fa fa-edit"></i></a>';
+                        tr += '<a href="javascript:void(0);" class="pointer" onclick="edit(' + res.data.environments[i].id + ')"><i class="fa fa-pencil"></i></a>';
                         tr += '&nbsp;&nbsp;&nbsp;';
                         tr += '<a href="javascript:void(0);" class="pointer" onclick="isDel(' + res.data.environments[i].id + ')"><i class="fa fa-times"></i></a>';
                         tr += '</td></tr>)';
@@ -317,7 +317,7 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
+                        }
                     });
                 }
             });
@@ -504,11 +504,11 @@
             for (var k in o)
                 if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
-        }
+        };
         //获得当前时间
         var newDate = new Date();
         var endTimeT1 = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).Format("yyyy-MM-dd");
-        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1)
+        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1);
         //开始时间
         $("#pzTime").datetimepicker({
             language: 'zh-CN',
@@ -519,7 +519,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();
@@ -538,7 +538,7 @@
             startView: 2,
             minView: "month",
             format: 'yyyy-mm-dd',
-            forceParse: 0,
+            forceParse: 0
             //endDate : new Date()
         }).on('hide', function (event) {
             event.preventDefault();

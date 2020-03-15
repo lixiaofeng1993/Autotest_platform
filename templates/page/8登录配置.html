@@ -366,7 +366,7 @@
                             tr += '</td>';
                             tr += '<td class="center">';
                             tr += '<a class="pointer"  onclick=\'editBind(' + res.data.bind[i].id + ',' + JSON.stringify(parameters)
-                                + ',\"' + res.data.bind[i].environmentId + '\")\'><i class="fa fa-edit"></i></a>';
+                                + ',\"' + res.data.bind[i].environmentId + '\")\'><i class="fa fa-pencil"></i></a>';
                             tr += ' &nbsp;&nbsp;&nbsp;';
                             tr += '<a class="pointer" onclick="isDelBind(' + res.data.bind[i].id + ')"><i class="fa fa-times"></i></a>';
                             tr += '</td></tr>';
@@ -471,8 +471,8 @@
             var name, project, startTime, endTime;
             name = $("#loginName").val();           //登录名称
             project = $("#name_xm option:selected").attr('value');  //所属项目
-            startTime = $('#dtp_input_start').val()//开始时间
-            endTime = $('#dtp_input_end').val()//结束时间
+            startTime = $('#dtp_input_start').val();//开始时间
+            endTime = $('#dtp_input_end').val();//结束时间
             var data = JSON.stringify({
                 "name": name,
                 "projectId": project,
@@ -501,7 +501,7 @@
                         tr += '<td class="center">';
                         tr += '<a href="javascript:void(0);" class="pointer" onclick="bind(' + res.data.logins[i].id + ')"><i class="fa fa-gavel"></i></a>';
                         tr += ' &nbsp;&nbsp;&nbsp;';
-                        tr += '<a href="/admin/loginConfig/edit/' + res.data.logins[i].id + '" class="pointer"><i class="fa fa-edit"></i></a>';
+                        tr += '<a href="/admin/loginConfig/edit/' + res.data.logins[i].id + '" class="pointer"><i class="fa fa-pencil"></i></a>';
                         tr += ' &nbsp;&nbsp;&nbsp;';
                         tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.logins[i].id + ')"><i class="fa fa-times"></i></a>';
                         tr += '</td></tr>';
@@ -619,7 +619,7 @@
             for (var k in o)
                 if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
-        }
+        };
         //获得当前时间
         var newDate = new Date();
         var endTimeT1 = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).Format("yyyy-MM-dd");

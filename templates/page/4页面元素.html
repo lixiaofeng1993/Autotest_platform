@@ -340,7 +340,7 @@
             $("#newpage,#newpage1,#newSel2").append('<option>所属页面</option>');
             var datas = {
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/project?p=1',
@@ -362,7 +362,7 @@
             $("#newpage").append('<option>所属页面</option>');
             var datas = {
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/page?p=1',
@@ -386,7 +386,7 @@
             $("#newpage1").append('<option>所属页面</option>');
             var datas = {
                 "pageSize": 99999
-            }
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/page?p=1',
@@ -418,8 +418,8 @@
                 "pageId": newpage1,            //所属页面ID
                 "by": newBy,                   //定位类型
                 "locator": newLocator,         //元素定位
-                "remark": newRemark,           //备注信息
-            }
+                "remark": newRemark           //备注信息
+            };
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/element/create',
@@ -433,7 +433,7 @@
                         setTimeout(function () {
                             //重新获取下列表
                             search();
-                        }, 1000)
+                        }, 1000);
                         //取消方法
                         closeDown()
                     } else {
@@ -462,8 +462,8 @@
             nameTxt = $("#name").val();           //页面名称
             name_xmT = $("#newSel option:selected").attr('id');  //所属项目
             name_xmS = $("#newpage option:selected").attr('id');  //所属项目
-            creatTime1 = $('#dtp_input_start').val()//开始时间
-            creatTime2 = $('#dtp_input_end').val()//结束时间
+            creatTime1 = $('#dtp_input_start').val();//开始时间
+            creatTime2 = $('#dtp_input_end').val();//结束时间
             var datas = {
                 "name": nameTxt,
                 "projectId": name_xmT,
@@ -471,7 +471,7 @@
                 "startTime": creatTime1,
                 "endTime": creatTime2,
                 "pageSize": 99999
-            }
+            };
             console.log(datas, "666");
             var data = JSON.stringify(datas);
             $.ajax({
@@ -491,7 +491,7 @@
                             res.data.elements[i].createTime + '</td><td class="center">' + res.data.elements[i].by
                             + '</td><td class="center" id="locator">' + res.data.elements[i].locator + '</td><td class="center">' +
                             res.data.elements[i].remark + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' +
-                            res.data.elements[i].id + '" onclick="editList(this)"><i class="fa fa-edit"></i></a> ' + '&nbsp;&nbsp;&nbsp;'
+                            res.data.elements[i].id + '" onclick="editList(this)"><i class="fa fa-pencil"></i></a> ' + '&nbsp;&nbsp;&nbsp;'
                             + ' <a href="javascript:void(0);" class="pointer" Did="' +
                             res.data.elements[i].id + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a></td></tr>');
                     }
@@ -515,7 +515,7 @@
                                 "sNext": " 下一页 ",
                                 "sLast": " 最后一页 "
                             }
-                        },
+                        }
                     });
 
                 }

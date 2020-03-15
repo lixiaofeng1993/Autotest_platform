@@ -506,9 +506,9 @@
             tds += '<td class="data" data-view="" style="display: none">' + JSON.stringify(data) + '</td>';
             tds += '</tr>';
             if (index == null) {
-                var tr = '<tr class="odd">'
+                var tr = '<tr class="odd">';
                 tr += tds;
-                tr += "</tr>"
+                tr += "</tr>";
                 $("#steps").append(tr);
             } else {
                 tr = $("#steps tr td a[data-index='" + index + "']").parent().parent();
@@ -526,9 +526,9 @@
             var type_ = type == "string" ? "文本" : type == "element" ? "元素" : "";
             var isParameter = (($('.radio input[name="valueType"]:checked ').val()) == "parameter");
             var data = {}, elementName, pageId;
-            data["type"] = type
-            data["key"] = key
-            data["isParameter"] = isParameter
+            data["type"] = type;
+            data["key"] = key;
+            data["isParameter"] = isParameter;
             var value_ = '';
             var viewValue = '';
             if (isParameter) {
@@ -569,7 +569,7 @@
             var tr = a.parent().parent();
             tr.find("td").remove();
             tr.append(tds);
-            $("#setCanshu").modal("hide")
+            $("#setCanshu").modal("hide");
             $("#addBuzhou").modal("show")
         }
 
@@ -788,7 +788,7 @@
                 "checkType": checkType,
                 "checkValue": checkValue,
                 "steps": steps,
-                "remark": remark,
+                "remark": remark
             };
             $.ajax({
                 url: '/api/v1/login/create',

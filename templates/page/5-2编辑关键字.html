@@ -367,16 +367,16 @@
         init();
 
         function init() {
-            var keywordId = $("#keywordName").attr("data-id")
+            var keywordId = $("#keywordName").attr("data-id");
             $.ajax({
                 url: '/api/v1/keyword/' + keywordId,
                 type: 'post',
                 dataType: 'json',
                 success: function (res) {
                     if (res.code == 200) {
-                        $("#keywordName").val(res.data.name)
+                        $("#keywordName").val(res.data.name);
                         $("#projectSelect").append("<option checked=\"checked\" value=" + res.data.projectId + ">" + res.data.projectName + "</option>");
-                        initSelect()
+                        initSelect();
                         var type = res.data.type;
                         $("#package").val(res.data.package);
                         $("#clazz").val(res.data.clazz);
@@ -400,7 +400,7 @@
                             });
                             $("#params").append(trs);
                         } else {
-                            var tr = ''
+                            var tr = '';
                             $("#steps tr").remove();
                             var steps = res.data.steps;
                             for (var i = 0; i < steps.length; i++) {
@@ -424,7 +424,7 @@
                                     }
                                     tr += "</div>";
                                 }
-                                tr += "</td>"
+                                tr += "</td>";
                                 tr += '<td class="center">';
                                 tr += '<a class="pointer" data-index="' + (i + 1) + '" data-toggle="modal" onclick="setStep(this)">设置</a> -';
                                 tr += '<a class="pointer" data-toggle="modal" onclick="delStep(this)">删除</a>';
@@ -633,8 +633,8 @@
                 "method": method,
                 "remark": remark,
                 "steps": steps,
-                "projectId": projectId,
-            }
+                "projectId": projectId
+            };
             $.ajax({
                 url: '/api/v1/keyword/edit/' + keywordId,
                 type: 'post',
@@ -700,7 +700,7 @@
             tds += '<td class="data" data-view="" style="display: none">' + JSON.stringify(data) + '</td>';
             tds += '</tr>';
             if (index == null) {
-                var tr = '<tr class="odd">'
+                var tr = '<tr class="odd">';
                 tr += tds;
                 tr += "</tr>"
                 $("#steps").append(tr);
