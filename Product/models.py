@@ -305,19 +305,12 @@ class Browser(models.Model):
                 desired_caps = {
                     "platformName": host.get("platformName", ""),
 
-                    "deviceName": "GWY0217124003040",
-
-                    "automationName": "uiautomator2",
+                    "deviceName": "Android",
 
                     # 不重置app
                     "noReset": host.get("noReset", ""),
 
                     "autoLaunch": host.get("autoLaunch", ""),
-
-                    # 隐藏手机默认键盘
-                    "unicodeKeyboard": host.get("unicodeKeyboard", ""),
-
-                    "resetKeyboard": host.get("unicodeKeyboard", ""),
 
                     # "udid": "" # 指定运行设备
                     # "chromeOptions": {"androidProcess": "com.tencent.mm:tools"}
@@ -326,7 +319,14 @@ class Browser(models.Model):
                 if browser == "android":
                     desired_caps.update({"appPackage": host.get("appPackage", ""),
 
-                                         "appActivity": host.get("appActivity", ""), })
+                                         "appActivity": host.get("appActivity", ""),
+                                         # 隐藏手机默认键盘
+                                         "unicodeKeyboard": host.get("unicodeKeyboard", ""),
+
+                                         "resetKeyboard": host.get("unicodeKeyboard", ""),
+
+                                         "automationName": "uiautomator2",
+                                         })
                 elif browser == "simulator":
                     desired_caps.update({"platformVersion": host.get("platformVersion", ""), })
                 elif browser == "html":
