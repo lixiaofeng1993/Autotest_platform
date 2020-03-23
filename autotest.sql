@@ -61,7 +61,8 @@ CREATE TABLE `Browser`  (
 INSERT INTO `Browser` VALUES (1, 'chrome', 'chrome', NULL, NULL, NULL);
 INSERT INTO `Browser` VALUES (2, 'firefox', 'firefox', NULL, NULL, NULL);
 INSERT INTO `Browser` VALUES (3, 'app', 'android', NULL, NULL, NULL);
-INSERT INTO `Browser` VALUES (4, 'phone_chrome', 'html', NULL, NULL, NULL);
+INSERT INTO `Browser` VALUES (4, '手机浏览器', 'html', NULL, NULL, NULL);
+INSERT INTO `Browser` VALUES (5, '模拟器', 'simulator', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for project
