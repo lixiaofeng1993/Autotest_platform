@@ -1,6 +1,12 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
-
+{% block css %}
+    <style>
+        #font-size {
+            font-size: 12px;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <div id="page-wrapper">
         <div id="page-inner">
@@ -116,60 +122,90 @@
                                             <!--内容-->
                                             <form class="form-horizontal" role="form">
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">环境名称</label>
+                                                    <label class="col-sm-2 control-label" id="font-size">环境名称</label>
                                                     <div class="col-sm-10">
                                                         <input id='phone_name' type="text" class="form-control"
                                                                value="">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">platformName</label>
+                                                    <label class="col-sm-2 control-label"
+                                                           id="font-size">platformName</label>
                                                     <div class="col-sm-10">
                                                         <input id='platformName' type="text" class="form-control"
                                                                value="Android">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">noReset</label>
+                                                    <label class="col-sm-2 control-label"
+                                                           id="font-size">platformVersion</label>
+                                                    <div class="col-sm-10">
+                                                        <input id='platformVersion' type="text" class="form-control"
+                                                               placeholder="android版本号"
+                                                               value="8.0">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label" id="font-size">noReset</label>
                                                     <div class="col-sm-10">
                                                         <input id='noReset' type="text" class="form-control"
+                                                               placeholder="是否重置app"
                                                                value="true">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">unicodeKeyboard</label>
+                                                    <label class="col-sm-2 control-label"
+                                                           id="font-size">autoLaunch</label>
+                                                    <div class="col-sm-10">
+                                                        <input id='autoLaunch' type="text" class="form-control"
+                                                               placeholder="是否自动打开app"
+                                                               value="true">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label"
+                                                           id="font-size">unicodeKeyboard</label>
                                                     <div class="col-sm-10">
                                                         <input id='unicodeKeyboard' type="text" class="form-control"
+                                                               placeholder="隐藏手机默认键盘"
                                                                value="true">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">resetKeyboard</label>
+                                                    <label class="col-sm-2 control-label"
+                                                           id="font-size">resetKeyboard</label>
                                                     <div class="col-sm-10">
                                                         <input id='resetKeyboard' type="text" class="form-control"
+                                                               placeholder="隐藏手机默认键盘"
                                                                value="true">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">appPackage</label>
+                                                    <label class="col-sm-2 control-label"
+                                                           id="font-size">appPackage</label>
                                                     <div class="col-sm-10">
-                                                        <input id='appPackage' type="text" class="form-control">
+                                                        <input id='appPackage' type="text" class="form-control"
+                                                               placeholder="app包名">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">appActivity</label>
+                                                    <label class="col-sm-2 control-label"
+                                                           id="font-size">appActivity</label>
                                                     <div class="col-sm-10">
-                                                        <input id='appActivity' type="text" class="form-control">
+                                                        <input id='appActivity' type="text" class="form-control"
+                                                               placeholder="app包启动页面">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">browserName</label>
+                                                    <label class="col-sm-2 control-label"
+                                                           id="font-size">browserName</label>
                                                     <div class="col-sm-10">
-                                                        <input id='browserName' type="text" class="form-control">
+                                                        <input id='browserName' type="text" class="form-control"
+                                                               placeholder="手机浏览器名称">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">备注信息</label>
+                                                    <label class="col-sm-2 control-label" id="font-size">备注信息</label>
                                                     <div class="col-sm-10">
                                                         <textarea id='remark' class="form-control" rows="3"></textarea>
                                                     </div>
@@ -386,9 +422,13 @@
             var appPackage = $("#appPackage").val();
             var appActivity = $("#appActivity").val();
             var browserName = $("#browserName").val();
+            var platformVersion = $("#platformVersion").val();
+            var autoLaunch = $("#autoLaunch").val();
             var data = JSON.stringify({
                 "name": name, "host": {
                     "platformName": platformName,
+                    "autoLaunch": autoLaunch,
+                    "platformVersion": platformVersion,
                     "noReset": noReset,
                     "unicodeKeyboard": unicodeKeyboard,
                     "resetKeyboard": resetKeyboard,

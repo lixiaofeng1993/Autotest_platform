@@ -14,8 +14,7 @@ from djcelery.models import PeriodicTask, CrontabSchedule, IntervalSchedule, Per
 from .tasks import SplitTask
 from django.shortcuts import render
 from datetime import datetime
-import request
-import random
+import json
 
 
 # Create your views here.
@@ -166,7 +165,7 @@ class Environment:
         e.name = parameter.get("name", "")
         host = parameter.get("host", "")
         if isinstance(host, dict):
-            host = str(host)
+            host = json.dumps(host)
         e.host = host
         e.remark = parameter.get("remark", "")
         try:

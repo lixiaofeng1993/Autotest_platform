@@ -307,12 +307,12 @@ class Browser(models.Model):
 
                     "deviceName": "GWY0217124003040",
 
-                    # "platformVersion": read_config.platform_version,
-
                     "automationName": "uiautomator2",
 
                     # 不重置app
                     "noReset": host.get("noReset", ""),
+
+                    "autoLaunch": host.get("autoLaunch", ""),
 
                     # 隐藏手机默认键盘
                     "unicodeKeyboard": host.get("unicodeKeyboard", ""),
@@ -327,7 +327,9 @@ class Browser(models.Model):
                     desired_caps.update({"appPackage": host.get("appPackage", ""),
 
                                          "appActivity": host.get("appActivity", ""), })
-                else:
+                elif browser == "simulator":
+                    desired_caps.update({"platformVersion": host.get("platformVersion", ""), })
+                elif browser == "html":
                     executable_path = check_file(os.path.join(os.path.join(driver_path, "h5"), "chromedriver.exe"))
                     desired_caps.update({"browserName": host.get("browserName", ""),
 

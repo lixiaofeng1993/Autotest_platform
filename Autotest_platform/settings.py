@@ -119,7 +119,7 @@ USE_L10N = True
 
 USE_TZ = False
 
-CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
+# CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672'
 CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
 # BROKER_URL = 'amqp://guest:guest@localhost:5672'
 # CELERY_RESULT_BACKEND = 'amqp://guest:guest@localhost:5672'
