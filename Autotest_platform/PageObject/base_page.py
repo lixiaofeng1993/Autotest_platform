@@ -34,6 +34,7 @@ class PageObject:
         except TimeoutException as e:
             log.error("打开 {} 页面加载超时！{}".format(url, e))
             self.driver.execute_script("window.stop()")
+            self.close()
             raise TimeoutException("打开 {} 页面加载超时！{}".format(url, e))
         if title != "":
             try:
@@ -41,9 +42,11 @@ class PageObject:
                 log.info("打开网页成功！")
             except TimeoutException as e:
                 log.error("打开网页 {} 判断 title 出现错误！ {}".format(url, e))
+                self.close()
                 raise TimeoutException("打开网页 {} 判断 title 出现错误！ {}".format(url, e))
             except Exception as msg:
                 log.error("打开网页产生的其他错误：{}".format(msg))
+                self.close()
                 raise Exception("打开网页产生的其他错误：{}".format(msg))
 
     def maximize_window(self):
