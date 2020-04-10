@@ -310,7 +310,7 @@ class Browser(models.Model):
                     # 不重置app
                     "noReset": host.get("noReset", ""),
 
-                    "autoLaunch": host.get("autoLaunch", ""),
+                    "autoLaunch": host.get("autoLaunch", True),
 
                     # "udid": "" # 指定运行设备
                     # "chromeOptions": {"androidProcess": "com.tencent.mm:tools"}

@@ -21,7 +21,7 @@ CREATE TABLE `auth_user`  (
   UNIQUE INDEX `username`(`username`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
-INSERT INTO `auth_user` VALUES (1, 'pbkdf2_sha256$120000$W9ofYkHRrIdo$AOtT7QZMiA8FOBDjmdLC7bFQHzKwti+S8zUj9KcmH3w=', '2019-12-30 21:53:29', 1, 'lixiaofeng', '', '', '18701137212@163.com', 1, 1, '2019-12-30 21:53:06');
+INSERT INTO `auth_user` VALUES (1, 'pbkdf2_sha256$120000$UvFFGKczofz7$9747Yc/FusMaedOgszn8VpXs6ke/I+k5vqfM7olUJsE=', '2019-12-30 21:53:29', 1, 'lixiaofeng', '', '', '18701137212@163.com', 1, 1, '2019-12-30 21:53:06');
 
 -- ----------------------------
 -- Table structure for django_session
