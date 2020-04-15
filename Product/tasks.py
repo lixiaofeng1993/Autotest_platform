@@ -415,5 +415,6 @@ class Step:
 
         try:
             running(value)
-        except:
+        except Exception as e:
+            log.error(e)
             raise

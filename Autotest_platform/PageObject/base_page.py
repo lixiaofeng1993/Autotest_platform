@@ -69,7 +69,13 @@ class PageObject:
         self.driver.implicitly_wait(int(seconds))
 
     def find_element(self, driver, locator, more=False):
-        """定位元素方法"""
+        """
+        定位元素方法
+        :param driver:
+        :param locator: 定位元素
+        :param more: 定位一组元素标记
+        :return:
+        """
         if locator is None:
             return
         if isinstance(locator, dict):
@@ -127,7 +133,13 @@ class PageObject:
         element.click()
 
     def click_text(self, locator, text, n=""):
-        """点击指定文本元素"""
+        """
+        点击指定文本元素
+        :param locator: 定位元素
+        :param text: 文本
+        :param n: 第x个元素的文本
+        :return:
+        """
         log.info("点击指定文本 {} 的元素 {}".format(text, locator))
         if n == "":
             if self.get_text(locator) == text:
@@ -277,7 +289,12 @@ class PageObject:
             return False
 
     def alert_operations(self, opera=0, text=""):
-        """确认alert存在后，可以进行的操作"""
+        """
+        确认alert存在后，可以进行的操作
+        :param opera: 弹窗操作类型
+        :param text:
+        :return:
+        """
         if not str(opera).isdigit():
             return
         alert = EC.alert_is_present()(self.driver)
@@ -433,9 +450,13 @@ class PageObject:
         js = "var q=document.documentElement.scrollTop=0"
         self.driver.execute_script(js)
 
-    def js_scroll_bottom(self):
-        """滚动到底部"""
-        js = "var q=document.documentElement.scrollTop=10000"
+    def js_scroll_bottom(self, num):
+        """
+        滚动到底部
+        :param num: 下滑距离
+        :return:
+        """
+        js = "var q=document.documentElement.scrollTop={}".format(num)
         self.driver.execute_script(js)
 
     def select_by_index(self, locator, index):
@@ -477,3 +498,23 @@ class PageObject:
     def get_cookies(self):
         """获取cookies"""
         return self.driver.get_cookies()
+
+    def uploaded(self, path):
+        """
+        上传文件
+        :param path: 文件路径
+        :return:
+        """
+        time.sleep(1)
+        if not os.path.exists(path):
+            log.error("上传文件路径不存在！ {}".format(path))
+            return "上传文件路径不存在！"
+        from django.conf import settings
+        upload_path = os.path.join(os.path.join(settings.BASE_DIR, "driver"), "upload.exe")
+        if not os.path.exists(upload_path):
+            log.error('autolt工具生成的可执行文件不存在！')
+            return "autolt工具生成的可执行文件不存在！"
+        else:
+            log.info('开始上传图片...')
+            os.system('{} "{}"'.format(upload_path, path))
+            log.info('上传图片成功...')
