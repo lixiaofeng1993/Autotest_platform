@@ -7286,6 +7286,7 @@
                 $("#step_num").html(data.data.steps_num);
                 $("#steps_num").html("<span style='color:#777;'>" + data.data.steps_num + "</span>");
                 var result = data.data.status;
+                var browser = data.data.browsers.join("  ,  ");
                 var resultText = result == 10 ? "队列中" : result == 20 ? "测试中" : result == 30 ? "成功" : result == 40 ? "失败" : "";
                 if (result == 40) {
                     $("#status").html('<div class="color-red" style="color:red">' + resultText + '</div>');
@@ -7315,11 +7316,16 @@
                         hp = "<p style='font-family: Consolas;font-size:12px;color:black;'>[--------------------------------]  测试结果： " + split.remark + "</p>";
                     }
                     if (data.data.step_num == 999) {
-                        hp += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
+                        {#                        hp += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"#}
+                        if (browser == "chrome" || chrome == "firefox") {
+                            hp += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
+                        } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
+                            hp += "<img src='/media/" + data.data.error_name + "' height='720' width='500'></img><br>"
+                        }
                     }
                 }
                 $("#testName").html("<a href='/admin/testcase/" + data.data.testcaseId + "'>" + data.data.title + "</a>");
-                $("#browsers").html(data.data.browsers.join("  ,  "));
+                $("#browsers").html(browser);
                 var es = data.data.environments;
                 $("#environments").html(es.length > 0 ? es.join("  ,  ") : "-");
                 var num = 0;
@@ -7344,7 +7350,12 @@
                             html += hl;
                         }
                         if (data.data.step_num == 888) {
-                            html += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
+                            {#                            html += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"#}
+                            if (browser == "chrome" || chrome == "firefox") {
+                                html += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
+                            } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
+                                html += "<img src='/media/" + data.data.error_name + "' height='720' width='500'></img><br>"
+                            }
                         }
                         html += "<br>";
                         $("#step-login").append(html);
@@ -7372,7 +7383,12 @@
                     }
 
                     if (num == data.data.step_num) {
-                        ht += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
+                        {#                        ht += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"#}
+                        if (browser == "chrome" || chrome == "firefox") {
+                            ht += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
+                        } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
+                            ht += "<img src='/media/" + data.data.error_name + "' height='720' width='500'></img><br>"
+                        }
                     }
                     html1 += ht;
 
