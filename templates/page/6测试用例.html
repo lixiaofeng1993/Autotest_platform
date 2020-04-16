@@ -333,7 +333,7 @@
                         tr += '<td class="center">' + res.data.testcase[i].remark + '</td>';
                         tr += '<td class="center">' + res.data.testcase[i].createTime + '</td>';
                         tr += '<td class="center">';
-                        tr += '<a href="javascript:void(0);" class="pointer" onclick="running(' + res.data.testcase[i].projectId + ',' + res.data.testcase[i].id + ')"><i class="fa fa-recycle"></i></a> &nbsp;&nbsp;&nbsp; ';
+                        tr += '<a href="javascript:void(0);" class="pointer" onclick="running(' + res.data.testcase[i].projectId + ',' + res.data.testcase[i].id + ')"><i class="fa fa-play"></i></a> &nbsp;&nbsp;&nbsp; ';
                         tr += '<a href="/admin/testcase/' + res.data.testcase[i].id + '" class="pointer"><i class="fa fa-pencil"></i></a> &nbsp;&nbsp;&nbsp; ';
                         tr += '<a href="javascript:void(0);" class="pointer" Cid="' + res.data.testcase[i].id + '" onclick="copyNew(this)"><i class="fa fa-copy"></i></a> &nbsp;&nbsp;&nbsp; ';
                         tr += '<a href="javascript:void(0);" class="pointer" Did="' + res.data.testcase[i].id + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a>';

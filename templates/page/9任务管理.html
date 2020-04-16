@@ -598,16 +598,16 @@
                         } else if (interval) {
                             tr += '<td class="center">' + (interval.every + " " + interval.period + "/次") + '</td>';
                         } else {
-                            tr += '<td class="center">' + '点击：' + '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer"><i class="fa fa-gavel"></i></a>' + '</td>';
+                            tr += '<td class="center">' + '点击：' + '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer"><i class="fa fa-gear"></i></a>' + '</td>';
                         }
                         tr += '<td class="center">' + res.data.tasks[i].description + '</td>';
                         tr += '<td class="center">' + res.data.tasks[i].createTime + '</td>';
                         tr += '<td class="center">';
-                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="run(' + res.data.tasks[i].id + ')"><i class="fa fa-recycle"></i></a>';
+                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="run(' + res.data.tasks[i].id + ')"><i class="fa fa-play"></i></a>';
                         tr += '&nbsp;&nbsp;&nbsp;';
                         tr += '<a href="javascript:void(0);" class="pointer"  onclick="edit(' + res.data.tasks[i].id + ')"><i class="fa fa-pencil"></i></a>';
                         tr += '&nbsp;&nbsp;&nbsp;';
-                        tr += '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer"><i class="fa fa-gavel"></i></a>';
+                        tr += '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer"><i class="fa fa-gear"></i></a>';
                         tr += '&nbsp;&nbsp;&nbsp;';
                         tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.tasks[i].id + ')"><i class="fa fa-times"></i></a>';
                         tr += '</td></tr>';

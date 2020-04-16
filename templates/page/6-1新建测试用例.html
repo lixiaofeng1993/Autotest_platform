@@ -532,7 +532,7 @@
             data["expect"] = expect;
             tds += '<td data-type="expect" class="center">' + (expect ? "成功" : "失败") + '</td>';
             tds += '<td class="center">';
-            tds += '<a class="pointer" data-index="' + index + '" onclick="setTestData(this)"><i class="fa fa-gavel"></i></a>&nbsp;&nbsp;&nbsp;';
+            tds += '<a class="pointer" data-index="' + index + '" onclick="setTestData(this)"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;';
             tds += '<a class="pointer" data-toggle="modal" onclick="delTestData(this)"><i class="fa fa-times"></i></a></td>';
             tds += '<td class="data" style="display: none">' + JSON.stringify(data) + '</td>';
 
@@ -1037,7 +1037,7 @@
             td3 += text;
             td3 += '</td>';
             td4 += '<td class="center">';
-            td4 += '<a class="pointer" data-index="' + (listIndex + 1) + '" data-toggle="modal" onclick="setStep(this)"><i class="fa fa-gavel"></i></a>&nbsp;&nbsp;&nbsp;';
+            td4 += '<a class="pointer" data-index="' + (listIndex + 1) + '" data-toggle="modal" onclick="setStep(this)"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;';
             td4 += '<a class="pointer" data-index="' + (listIndex + 1) + '" data-toggle="modal" onclick="insertStep(this)"><i class="fa fa-plus-square-o"></i></a>&nbsp;&nbsp;&nbsp;';
             td4 += '<a class="pointer" data-toggle="modal" onclick="delStep(this)"><i class="fa fa-times"></i></a>';
             td4 += '</td>';
@@ -1126,7 +1126,7 @@
             tds += text;
             tds += '</td>';
             tds += '<td class="center">';
-            tds += '<a class="pointer" data-index="' + listIndex + '" data-toggle="modal" onclick="setStep(this)"><i class="fa fa-gavel"></i></a>&nbsp;&nbsp;&nbsp;';
+            tds += '<a class="pointer" data-index="' + listIndex + '" data-toggle="modal" onclick="setStep(this)"><i class="fa fa-pencil"></i></a>&nbsp;&nbsp;&nbsp;';
             tds += '<a class="pointer" data-index="' + listIndex + '" data-toggle="modal" onclick="insertStep(this)"><i class="fa fa-plus-square-o"></i></a>&nbsp;&nbsp;&nbsp;';
             tds += '<a class="pointer" data-toggle="modal" onclick="delStep(this)"><i class="fa fa-times"></i></a>';
             tds += '</td>';
