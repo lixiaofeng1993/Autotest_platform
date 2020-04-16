@@ -1,8 +1,10 @@
 import json
 import time
+from faker import Faker
 from celery.task import task
 import logging
 
+faker = Faker('zh_CN')
 log = logging.getLogger('log')  # 初始化log
 
 
@@ -35,6 +37,8 @@ def SplitTask(result_id):
                                     v = None
                                 if '#logo#' == v:
                                     v = "/home/Atp/logo.png"
+                                if '#random_text#' in v:
+                                    v = v.replace('#random_text#', faker.text(5))
                                 params[k] = v
                         sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
                                                         resultId=result.id,

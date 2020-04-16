@@ -27,14 +27,19 @@ class PageObject:
     driver = None
 
     def open(self, url, title=""):
-        """get url，最大化浏览器，判断title"""
+        """
+        打开网址
+        :param url: 网址
+        :param title: 网址头显示信息断言
+        :return:
+        """
         self.driver.set_page_load_timeout(self.timeout)  # 页面加载等待
         try:
             self.driver.get(url)
         except TimeoutException as e:
             log.error("打开 {} 页面加载超时！{}".format(url, e))
             self.driver.execute_script("window.stop()")
-            self.close()
+            self.quit()
             raise TimeoutException("打开 {} 页面加载超时！{}".format(url, e))
         if title != "":
             try:
@@ -72,8 +77,8 @@ class PageObject:
         """
         定位元素方法
         :param driver:
-        :param locator: 定位元素
-        :param more: 定位一组元素标记
+        :param locator: 元素
+        :param more: 定位一组元素
         :return:
         """
         if locator is None:
@@ -133,13 +138,7 @@ class PageObject:
         element.click()
 
     def click_text(self, locator, text, n=""):
-        """
-        点击指定文本元素
-        :param locator: 定位元素
-        :param text: 文本
-        :param n: 第x个元素的文本
-        :return:
-        """
+        """点击指定文本元素"""
         log.info("点击指定文本 {} 的元素 {}".format(text, locator))
         if n == "":
             if self.get_text(locator) == text:
@@ -289,12 +288,7 @@ class PageObject:
             return False
 
     def alert_operations(self, opera=0, text=""):
-        """
-        确认alert存在后，可以进行的操作
-        :param opera: 弹窗操作类型
-        :param text:
-        :return:
-        """
+        """确认alert存在后，可以进行的操作"""
         if not str(opera).isdigit():
             return
         alert = EC.alert_is_present()(self.driver)
@@ -502,7 +496,7 @@ class PageObject:
     def uploaded(self, path):
         """
         上传文件
-        :param path: 文件路径
+        :param path: 上传文件路径
         :return:
         """
         time.sleep(1)
