@@ -267,6 +267,7 @@ SIMPLEUI_HOME_ACTION = True
 SIMPLEUI_CONFIG = {
     # 在自定义菜单的基础上保留系统模块
     'system_keep': False,
+    # 'system_keep': True,
     'menus': [
         {
             'app': ' auth',

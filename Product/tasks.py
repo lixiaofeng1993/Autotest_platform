@@ -1,5 +1,8 @@
 import json
 import time
+import os
+from datetime import datetime
+from django.conf import settings
 from faker import Faker
 from celery.task import task
 import logging
@@ -160,7 +163,7 @@ def SplitTaskRunning(splitResult_id):
                 except Exception as e:
                     split.loginStatus = 2
                     split.status = 50
-                    driver.save_screenshot(img_path)
+                    # driver.save_screenshot(img_path)
                     split.step_num = 888
                     split.error_name = now + ".png"
                     split.remark = "初始化登陆失败</br>登陆名称=" + login.name + " , </br>错误信息=" + ("".join(e.args))
@@ -422,3 +425,42 @@ class Step:
         except Exception as e:
             log.error(e)
             raise
+
+
+@task
+def delete_logs():
+    log.info('remove logs------->删除过期日志中<--------------')
+    logs_path = os.path.join(settings.BASE_DIR, 'logs')
+    pic_path = os.path.join(settings.MEDIA_ROOT)
+    logs_num = remove_logs(logs_path)
+    pic_num = remove_logs(pic_path)
+    total_num = logs_num + pic_num
+    if total_num == 0:
+        log.info('remove logs------->没有要删除的文件.<--------------')
+    else:
+        log.info('remove logs------->删除过期日志文件数量：{}<--------------'.format(total_num))
+
+
+def remove_logs(path):
+    """
+    到期删除日志文件
+    :param path:
+    :return:
+    """
+    file_list = os.listdir(path)  # 返回目录下的文件list
+    now_time = datetime.now()
+    num = 0
+    for file in file_list:
+        file_path = os.path.join(path, file)
+        if os.path.isfile(file_path):
+            file_ctime = datetime(*time.localtime(os.path.getctime(file_path))[:6])
+            if (now_time - file_ctime).days > 6:
+                try:
+                    os.remove(file_path)
+                    num += 1
+                    log.info('------删除文件------->>> {}'.format(file_path))
+                except PermissionError as e:
+                    log.warning('删除文件失败：{}'.format(e))
+        else:
+            log.info('文件夹跳过：{}'.format(file_path))
+    return num
