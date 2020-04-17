@@ -134,6 +134,7 @@ def SplitTaskRunning(splitResult_id):
         split.save()
         if driver:
             driver.quit()
+        log.error(split.remark)
         return
     if beforeLogin and len(beforeLogin) > 0:
         for bl in beforeLogin:
@@ -150,6 +151,7 @@ def SplitTaskRunning(splitResult_id):
                 split.save()
                 if driver:
                     driver.quit()
+                log.error(split.remark)
                 return
             loginSteps = json.loads(login.steps) if login.steps else []
             loginParameter = {}
@@ -171,6 +173,7 @@ def SplitTaskRunning(splitResult_id):
                     split.save()
                     if driver:
                         driver.quit()
+                    log.error(split.remark)
                     return
             if loginCheckType:
                 time.sleep(2)
@@ -186,6 +189,7 @@ def SplitTaskRunning(splitResult_id):
                         split.save()
                         if driver:
                             driver.quit()
+                        log.error(split.remark)
                         return
                 elif loginCheckType == Check.TYPE_ELEMENT:
                     element = loginCheckValue
@@ -204,6 +208,7 @@ def SplitTaskRunning(splitResult_id):
                         split.save()
                         if driver:
                             driver.quit()
+                        log.error(split.remark)
                         return
         else:
             split.loginStatus = 1
@@ -239,6 +244,7 @@ def SplitTaskRunning(splitResult_id):
             split.save()
             if driver:
                 driver.quit()
+            log.error(split.remark)
             return
         except Exception as info:
             split.status = 40
@@ -250,6 +256,7 @@ def SplitTaskRunning(splitResult_id):
             split.save()
             if driver:
                 driver.quit()
+            log.error(split.remark)
             return
     remark = '测试用例未设置断言,建议设置'
     time.sleep(2)
@@ -338,6 +345,7 @@ def SplitTaskRunning(splitResult_id):
     split.step_num = step_num
     split.error_name = error_name
     split.save()
+    log.error(remark)
     return
 
 
