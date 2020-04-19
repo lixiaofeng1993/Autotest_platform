@@ -168,7 +168,7 @@ def SplitTaskRunning(splitResult_id):
                     # driver.save_screenshot(img_path)
                     split.step_num = 888
                     split.error_name = now + ".png"
-                    split.remark = "初始化登陆失败</br>登陆名称=" + login.name + " , </br>错误信息=" + ("".join(e.args))
+                    split.remark = "初始化登陆失败</br>登陆名称={}, </br>错误信息={}".format(login.name, e)
                     split.finishTime = timezone.now()
                     split.save()
                     if driver:
@@ -224,7 +224,7 @@ def SplitTaskRunning(splitResult_id):
                         element = get_model(Element, id=int(element))
                     if key.get("key", "") == "make":
                         PageObject().find_element(driver, element)
-                        make_text = PageObject().find_element(driver, element).text
+                        make_text = PageObject().get_text(element)
                         log.info("提取的文本是：{}".format(make_text))
                         make_key = key.get("value")
                         make_params.update({make_key: make_text})

@@ -7340,13 +7340,29 @@
                             var st = login.steps[k];
                             login_num = login_num + 1;
                             html += "<br>";
-                            html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：" + st.keyName + "  <<<<<<----</p>";
                             var hl = "";
-                            for (var q = 0; q < st.values.length; q++) {
-                                var key = st.values[q];
-                                hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";
-                            }
+                            if (st.keyName == "assert_text") {
+                                html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：<span style='font-weight:900;font-size:16px'>断言</span>  <<<<<<----</p>";
+                                for (var q = 0; q < st.values.length; q++) {
+                                    var key = st.values[q];
+                                    if (key.type == "element") {
+                                        hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言元素：" + key.value + " </p>";
 
+                                    } else {
+                                        if (key.value) {
+                                            hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言值：" + key.value + " </p>";
+                                        } else {
+                                        }
+                                    }
+                                    {#                                    hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";#}
+                                }
+                            } else {
+                                html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：" + st.keyName + "  <<<<<<----</p>";
+                                for (var q = 0; q < st.values.length; q++) {
+                                    var key = st.values[q];
+                                    hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";
+                                }
+                            }
                             html += hl;
                         }
                         if (data.data.step_num == 888) {
@@ -7369,16 +7385,32 @@
                     var step = data.data.steps[i];
                     num = num + 1;
                     html1 += "<br>";
-                    html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：" + step.keywordName + "  <<<<<<----</p>";
                     var ht = "";
-                    for (var j = 0; j < data.data.steps[i].viewData.length; j++) {
-                        var value = data.data.steps[i].viewData[j];
-                        if (value.type == "element") {
-                            ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.elementName + " </p>";
+                    if (step.keywordName == "assert_text") {
+                        html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：<span style='font-weight:900;font-size:16px'>断言</span> <<<<<<----</p>";
+                        for (var j = 0; j < data.data.steps[i].viewData.length; j++) {
+                            var value = data.data.steps[i].viewData[j];
+                            if (value.type == "element") {
+                                ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言元素：" + value.elementName + " </p>";
 
-                        } else {
-                            ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.value + " </p>";
+                            } else {
+                                if (value.value) {
+                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言值：" + value.value + " </p>";
+                                } else {
+                                }
+                            }
+                        }
+                    } else {
+                        html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：" + step.keywordName + "  <<<<<<----</p>";
+                        for (var j = 0; j < data.data.steps[i].viewData.length; j++) {
+                            var value = data.data.steps[i].viewData[j];
+                            if (value.type == "element") {
+                                ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.elementName + " </p>";
 
+                            } else {
+                                ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.value + " </p>";
+
+                            }
                         }
                     }
 

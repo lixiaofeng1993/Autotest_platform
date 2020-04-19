@@ -73,7 +73,7 @@ class PageObject:
         log.info("隐式等待：{} 秒.".format(seconds))
         self.driver.implicitly_wait(int(seconds))
 
-    def find_element(self, driver, locator, more=False):
+    def find_element(self, driver, locator, more=False, assertion=False):
         """
         定位元素方法
         :param driver:
@@ -110,6 +110,8 @@ class PageObject:
                 else:
                     return WebDriverWait(driver, self.timeout).until(EC.presence_of_element_located(locator))
         except Exception:
+            if assertion:
+                return
             log.error("页面中未能找到元素：{}".format(message))
             raise NoSuchElementException("找不到元素:" + str(message))
 
@@ -422,6 +424,25 @@ class PageObject:
         """获取文本"""
         element = self.find_element(self.driver, locator)
         return element.text.strip()
+
+    def assert_text(self, locator, text=""):
+        """断言函数"""
+
+        if text:
+            element = self.find_element(self.driver, locator)
+            element_text = element.text.strip()
+            if element_text == text:
+                log.info("断言成功！元素文本：{}，和断言内容：{} 相等".format(element_text, text))
+            elif text in element_text:
+                log.info("断言成功！元素文本：{}，包含 断言内容：{}".format(element_text, text))
+            else:
+                raise AssertionError("断言失败！元素文本：{} <==> 断言内容：{} ".format(element_text, text))
+        else:
+            element = self.find_element(self.driver, locator, assertion=True)
+            if element:
+                log.info("断言成功！元素：{} 存在".format(locator))
+            else:
+                raise AssertionError("断言失败！没有找到元素：{}  ".format(locator))
 
     def get_attribute(self, locator, name):
         """获取属性"""
