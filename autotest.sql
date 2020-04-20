@@ -210,6 +210,9 @@ INSERT INTO `keyword` VALUES (32, 0, 'select_by_index', 1, 'Autotest_platform.Pa
 INSERT INTO `keyword` VALUES (33, 0, 'select_by_value', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'select_by_value', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"value\"}]', '[]', '2020-1-3 15:06:29', '通过value属性');
 INSERT INTO `keyword` VALUES (34, 0, 'select_by_text', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'select_by_text', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"text\"}]', '[]', '2020-1-3 15:07:24', '通过text属性');
 INSERT INTO `keyword` VALUES (35, 0, 'save_screenshot', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'save_screenshot', '[{\"type\": \"string\", \"key\": \"img_path\"}]', '[]', '2020-1-3 15:08:06', '获取电脑屏幕截屏');
+INSERT INTO `keyword` VALUES (36, 0, 'uploaded', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'uploaded', '[{\"type\": \"string\", \"key\": \"path\"}]', '[]', '2020-4-15 19:55:13', '上传文件');
+INSERT INTO `keyword` VALUES (37, 0, 'get_text', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'get_text', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"make\"}]', '[]', '2020-4-15 21:04:27', '获取元素文本，传参make，传递文本');
+INSERT INTO `keyword` VALUES (38, 0, '断言函数', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'assert_text', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"text\"}]', '[]', '2020-4-20 08:51:10', '断言函数');
 
 -- ----------------------------
 -- Table structure for testcase
@@ -309,20 +312,3 @@ CREATE TABLE `SplitResult`  (
 -- ----------------------------
 -- Records of SplitResult
 -- ----------------------------
-INSERT INTO `splitresult` VALUES (1, 1, 1, 1, 0, '2019-12-30 22:19:18', '2019-12-30 22:19:18', '2019-12-30 22:19:34', '{\"expect\": true}', 1, 40, '执行测试用例第1步发生错误，请检查测试用例:(\'打开 https://www.baidu.com 页面加载超时！Message: timeout\\n  (Session info: chrome=76.0.3809.87)\\n  (Driver info: chromedriver=2.38.552522 (437e6fbedfa8762dec75e2c5b3ddb86763dc9dcb),platform=Windows NT 10.0.17763 x86_64)\\n\',)');
-INSERT INTO `splitresult` VALUES (2, 1, 1, 2, 0, '2019-12-30 22:20:44', '2019-12-30 22:20:45', '2019-12-30 22:20:52', '{\"expect\": true}', 1, 40, '执行测试用例第5步发生错误，请检查测试用例:(\"找不到元素:(\'selenium库的基本使用 - 简书\',)\",)');
-INSERT INTO `splitresult` VALUES (3, 1, 1, 3, 0, '2019-12-30 22:23:06', '2019-12-30 22:23:06', '2019-12-30 22:23:14', '{\"expect\": true}', 1, 40, '执行测试用例第5步发生错误，请检查测试用例:(\"找不到元素:(\'selenium库的基本使用 - 简书\',)\",)');
-INSERT INTO `splitresult` VALUES (4, 1, 1, 4, 0, '2019-12-30 22:24:57', '2019-12-30 22:24:57', '2019-12-30 22:25:36', '{\"expect\": true}', 1, 40, '当前元素定位已改变，请及时更新定位！');
-INSERT INTO `splitresult` VALUES (5, 1, 1, 5, 0, '2019-12-30 22:26:23', '2019-12-30 22:26:23', '2019-12-30 22:26:39', '{\"expect\": true}', 1, 40, '执行测试用例第1步发生错误，请检查测试用例:(\'打开 https://www.baidu.com 页面加载超时！Message: timeout\\n  (Session info: chrome=76.0.3809.87)\\n  (Driver info: chromedriver=2.38.552522 (437e6fbedfa8762dec75e2c5b3ddb86763dc9dcb),platform=Windows NT 10.0.17763 x86_64)\\n\',)');
-INSERT INTO `splitresult` VALUES (6, 1, 1, 6, 0, '2019-12-30 22:27:03', '2019-12-30 22:27:04', '2019-12-30 22:27:23', '{\"expect\": true}', 1, 30, '测试通过，预期断言值完全匹配实际断言值。');
-INSERT INTO `splitresult` VALUES (7, 1, 2, 7, 0, '2019-12-30 22:27:34', '2019-12-30 22:27:34', '2019-12-30 22:27:51', '{\"expect\": true}', 1, 30, '测试通过，预期断言值完全匹配实际断言值。');
-INSERT INTO `splitresult` VALUES (8, 2, 3, 8, 0, '2019-12-30 22:33:14', '2019-12-30 22:33:14', '2019-12-30 22:33:42', '{\"expect\": true}', 1, 30, '测试通过，预期断言值完全匹配实际断言值。');
-INSERT INTO `splitresult` VALUES (9, 3, 4, 9, 0, '2019-12-30 22:59:48', '2019-12-30 22:59:48', '2019-12-30 23:00:09', '{\"expect\": true}', 1, 40, '执行测试用例第1步发生错误，请检查测试用例:(\'An unknown server-side error occurred while processing the command. Original error: unknown error: unhandled inspector error: {\"code\":-32601,\"message\":\"\\\'Browser.setWindowBounds\\\' wasn\\\'t found\"}\\n  (Session info: chrome=74.0.3729.136)\\n  (Driver info: chromedriver=2.46.628402 (536cd7adbad73a3783fdc2cab92ab2ba7ec361e1),platform=Windows NT 10.0.17763 x86_64)\', None, None)');
-INSERT INTO `splitresult` VALUES (10, 3, 4, 10, 0, '2019-12-30 23:02:06', '2019-12-30 23:02:06', '2019-12-30 23:02:21', '{\"expect\": true}', 1, 40, '执行测试用例第1步发生错误，请检查测试用例:(\'An unknown server-side error occurred while processing the command. Original error: unknown error: unhandled inspector error: {\"code\":-32601,\"message\":\"\\\'Browser.setWindowBounds\\\' wasn\\\'t found\"}\\n  (Session info: chrome=74.0.3729.136)\\n  (Driver info: chromedriver=2.46.628402 (536cd7adbad73a3783fdc2cab92ab2ba7ec361e1),platform=Windows NT 10.0.17763 x86_64)\', None, None)');
-INSERT INTO `splitresult` VALUES (11, 3, 4, 11, 0, '2019-12-30 23:05:26', '2019-12-30 23:05:27', '2019-12-30 23:06:02', '{\"expect\": true}', 1, 40, '执行测试用例第3步发生错误，请检查测试用例:(\'找不到元素:下方系统栏\',)');
-INSERT INTO `splitresult` VALUES (12, 3, 4, 12, 0, '2019-12-30 23:07:33', '2019-12-30 23:07:33', '2019-12-30 23:07:55', '{\"expect\": true}', 1, 30, '测试通过，预期断言值完全匹配实际断言值。');
-INSERT INTO `splitresult` VALUES (13, 2, 3, 13, 0, '2019-12-30 23:08:41', '2019-12-30 23:08:41', '2019-12-30 23:09:23', '{\"expect\": true}', 1, 30, '测试通过，预期断言值完全匹配实际断言值。');
-INSERT INTO `splitresult` VALUES (14, 1, 1, 14, 0, '2019-12-30 23:09:42', '2019-12-30 23:09:42', '2019-12-30 23:10:02', '{\"expect\": true}', 1, 30, '测试通过，预期断言值完全匹配实际断言值。');
-INSERT INTO `splitresult` VALUES (15, 1, 2, 14, 0, '2019-12-30 23:09:42', '2019-12-30 23:09:42', '2019-12-30 23:10:01', '{\"expect\": true}', 1, 30, '测试通过，预期断言值完全匹配实际断言值。');
-INSERT INTO `splitresult` VALUES (16, 1, 2, 15, 0, '2019-12-31 09:30:11', '2019-12-31 09:30:11', '2019-12-31 09:30:32', '{\"expect\": true}', 1, 30, '测试通过，预期断言值完全匹配实际断言值。');
-INSERT INTO `splitresult` VALUES (17, 1, 1, 16, 0, '2019-12-31 09:37:43', '2019-12-31 09:37:44', '2019-12-31 09:38:02', '{\"expect\": true}', 1, 30, '测试通过，预期断言值完全匹配实际断言值。');

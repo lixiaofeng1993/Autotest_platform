@@ -421,13 +421,22 @@ class PageObject:
         return element.text.strip()
 
     def get_text(self, locator, make=None):
-        """获取文本"""
+        """
+        获取文本
+        :param locator:
+        :param make: 传递元素中的值，以make标记；make的值会作为全局变量存在字典中；
+        :return:
+        """
         element = self.find_element(self.driver, locator)
         return element.text.strip()
 
     def assert_text(self, locator, text=""):
-        """断言函数"""
-
+        """
+        断言函数
+        :param locator:
+        :param text: 不为空，判断等于、包含；为空，判断是否存在
+        :return:
+        """
         if text:
             element = self.find_element(self.driver, locator)
             element_text = element.text.strip()
