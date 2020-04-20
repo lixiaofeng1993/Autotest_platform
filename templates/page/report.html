@@ -7341,7 +7341,7 @@
                             login_num = login_num + 1;
                             html += "<br>";
                             var hl = "";
-                            if (st.keyName == "assert_text") {
+                            if (st.keyName == "断言函数") {
                                 html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：<span style='font-weight:900;font-size:16px'>断言</span>  <<<<<<----</p>";
                                 for (var q = 0; q < st.values.length; q++) {
                                     var key = st.values[q];
@@ -7386,7 +7386,7 @@
                     num = num + 1;
                     html1 += "<br>";
                     var ht = "";
-                    if (step.keywordName == "assert_text") {
+                    if (step.keywordName == "断言函数") {
                         html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：<span style='font-weight:900;font-size:16px'>断言</span> <<<<<<----</p>";
                         for (var j = 0; j < data.data.steps[i].viewData.length; j++) {
                             var value = data.data.steps[i].viewData[j];
