@@ -275,7 +275,16 @@ class Browser(models.Model):
         log.info("启动的浏览器名称是 : {}".format(browser))
         if browser not in ["android", "html"]:
             from selenium import webdriver
-            if browser == 'chrome':
+            if browser == 'chrome-no-web':
+                from selenium.webdriver.chrome.options import Options
+                executable_path = check_file(os.path.join(driver_path, "chromedriver.exe"))
+                options = Options()
+                options.add_argument('headless') # 不显示执行过程，不打开浏览器
+                options.add_argument("disable-infobars")
+                options.add_argument('no-sandbox')
+                options.add_argument('disable-dev-shm-usage')
+                browser = webdriver.Chrome(chrome_options=options, executable_path=executable_path)
+            elif browser == 'chrome':
                 from selenium.webdriver.chrome.options import Options
                 executable_path = check_file(os.path.join(driver_path, "chromedriver.exe"))
                 options = Options()
