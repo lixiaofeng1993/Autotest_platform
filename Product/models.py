@@ -324,7 +324,7 @@ class Browser(models.Model):
                 with subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as f:
                     text = f.communicate()[0].decode("utf-8")
             except Exception as e:
-                raise UnicodeDecodeError("apk名称可能存在问题，就确认后执行！{} {}".format(e, cmd))
+                raise Exception("apk名称可能存在问题，就确认后执行！{} {}".format(e, cmd))
             appPackage = re.compile("package: name='(.+?)' ")
             appActivity = re.compile("activity: name='(.+?)'")
             package = appPackage.findall(text)[0]
