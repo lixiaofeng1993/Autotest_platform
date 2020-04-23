@@ -163,10 +163,10 @@ class Environment:
         e = environment()
         e.projectId = parameter.get("projectId", 0)
         e.name = parameter.get("name", "")
-        host = parameter.get("host", "")
-        if isinstance(host, dict):
-            host = json.dumps(host)
-        e.host = host
+        e.host = parameter.get("host", "")
+        # if isinstance(host, dict):
+        #     host = json.dumps(host)
+        # e.host = host
         e.remark = parameter.get("remark", "")
         try:
             e.clean()

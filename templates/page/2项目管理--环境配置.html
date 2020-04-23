@@ -129,81 +129,87 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label"
-                                                           id="font-size">platformName</label>
+                                                    <label class="col-sm-2 control-label">apk路径</label>
                                                     <div class="col-sm-10">
-                                                        <input id='platformName' type="text" class="form-control"
-                                                               value="Android">
+                                                        <input id='apk_path' type="text" class="form-control">
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label" id="font-size">noReset</label>
-                                                    <div class="col-sm-10">
-                                                        <input id='noReset' type="text" class="form-control"
-                                                               placeholder="是否重置app"
-                                                               value="true">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label"
-                                                           id="font-size">autoLaunch</label>
-                                                    <div class="col-sm-10">
-                                                        <input id='autoLaunch' type="text" class="form-control"
-                                                               placeholder="是否自动打开app"
-                                                               value="true">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label"
-                                                           id="font-size">unicodeKeyboard</label>
-                                                    <div class="col-sm-10">
-                                                        <input id='unicodeKeyboard' type="text" class="form-control"
-                                                               placeholder="隐藏手机默认键盘"
-                                                               value="true">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label"
-                                                           id="font-size">resetKeyboard</label>
-                                                    <div class="col-sm-10">
-                                                        <input id='resetKeyboard' type="text" class="form-control"
-                                                               placeholder="隐藏手机默认键盘"
-                                                               value="true">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label"
-                                                           id="font-size">appPackage</label>
-                                                    <div class="col-sm-10">
-                                                        <input id='appPackage' type="text" class="form-control"
-                                                               placeholder="app包名">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label"
-                                                           id="font-size">appActivity</label>
-                                                    <div class="col-sm-10">
-                                                        <input id='appActivity' type="text" class="form-control"
-                                                               placeholder="app包启动页面">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label"
-                                                           id="font-size">platformVersion</label>
-                                                    <div class="col-sm-10">
-                                                        <input id='platformVersion' type="text" class="form-control"
-                                                               placeholder="android版本号<模拟器>"
-                                                               value="">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-2 control-label"
-                                                           id="font-size">browserName</label>
-                                                    <div class="col-sm-10">
-                                                        <input id='browserName' type="text" class="form-control"
-                                                               placeholder="手机浏览器名称">
-                                                    </div>
-                                                </div>
+                                                {#                                                <div class="form-group">#}
+                                                {#                                                    <label class="col-sm-2 control-label"#}
+                                                {#                                                           id="font-size">platformName</label>#}
+                                                {#                                                    <div class="col-sm-10">#}
+                                                {#                                                        <input id='platformName' type="text" class="form-control"#}
+                                                {#                                                               value="Android">#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
+                                                {#                                                <div class="form-group">#}
+                                                {#                                                    <label class="col-sm-2 control-label" id="font-size">noReset</label>#}
+                                                {#                                                    <div class="col-sm-10">#}
+                                                {#                                                        <input id='noReset' type="text" class="form-control"#}
+                                                {#                                                               placeholder="是否重置app"#}
+                                                {#                                                               value="true">#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
+                                                {#                                                <div class="form-group">#}
+                                                {#                                                    <label class="col-sm-2 control-label"#}
+                                                {#                                                           id="font-size">autoLaunch</label>#}
+                                                {#                                                    <div class="col-sm-10">#}
+                                                {#                                                        <input id='autoLaunch' type="text" class="form-control"#}
+                                                {#                                                               placeholder="是否自动打开app"#}
+                                                {#                                                               value="true">#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
+                                                {#                                                <div class="form-group">#}
+                                                {#                                                    <label class="col-sm-2 control-label"#}
+                                                {#                                                           id="font-size">unicodeKeyboard</label>#}
+                                                {#                                                    <div class="col-sm-10">#}
+                                                {#                                                        <input id='unicodeKeyboard' type="text" class="form-control"#}
+                                                {#                                                               placeholder="隐藏手机默认键盘"#}
+                                                {#                                                               value="true">#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
+                                                {#                                                <div class="form-group">#}
+                                                {#                                                    <label class="col-sm-2 control-label"#}
+                                                {#                                                           id="font-size">resetKeyboard</label>#}
+                                                {#                                                    <div class="col-sm-10">#}
+                                                {#                                                        <input id='resetKeyboard' type="text" class="form-control"#}
+                                                {#                                                               placeholder="隐藏手机默认键盘"#}
+                                                {#                                                               value="true">#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
+                                                {#                                                <div class="form-group">#}
+                                                {#                                                    <label class="col-sm-2 control-label"#}
+                                                {#                                                           id="font-size">appPackage</label>#}
+                                                {#                                                    <div class="col-sm-10">#}
+                                                {#                                                        <input id='appPackage' type="text" class="form-control"#}
+                                                {#                                                               placeholder="app包名">#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
+                                                {#                                                <div class="form-group">#}
+                                                {#                                                    <label class="col-sm-2 control-label"#}
+                                                {#                                                           id="font-size">appActivity</label>#}
+                                                {#                                                    <div class="col-sm-10">#}
+                                                {#                                                        <input id='appActivity' type="text" class="form-control"#}
+                                                {#                                                               placeholder="app包启动页面">#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
+                                                {#                                                <div class="form-group">#}
+                                                {#                                                    <label class="col-sm-2 control-label"#}
+                                                {#                                                           id="font-size">platformVersion</label>#}
+                                                {#                                                    <div class="col-sm-10">#}
+                                                {#                                                        <input id='platformVersion' type="text" class="form-control"#}
+                                                {#                                                               placeholder="android版本号<模拟器>"#}
+                                                {#                                                               value="">#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
+                                                {#                                                <div class="form-group">#}
+                                                {#                                                    <label class="col-sm-2 control-label"#}
+                                                {#                                                           id="font-size">browserName</label>#}
+                                                {#                                                    <div class="col-sm-10">#}
+                                                {#                                                        <input id='browserName' type="text" class="form-control"#}
+                                                {#                                                               placeholder="手机浏览器名称">#}
+                                                {#                                                    </div>#}
+                                                {#                                                </div>#}
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label" id="font-size">备注信息</label>
                                                     <div class="col-sm-10">
@@ -413,29 +419,20 @@
         }
 
         function save_phone() {
-            var name = $("#phone_name").val();
+            var apk_path = $("#apk_path").val();
             var remark = $("#remark").val();
-            var platformName = $("#platformName").val();
-            var noReset = $("#noReset").val();
-            var unicodeKeyboard = $("#unicodeKeyboard").val();
-            var resetKeyboard = $("#resetKeyboard").val();
-            var appPackage = $("#appPackage").val();
-            var appActivity = $("#appActivity").val();
-            var browserName = $("#browserName").val();
-            var platformVersion = $("#platformVersion").val();
-            var autoLaunch = $("#autoLaunch").val();
+            var name = $("#phone_name").val();
+            {#            var platformName = $("#platformName").val();#}
+            {#            var noReset = $("#noReset").val();#}
+            {#            var unicodeKeyboard = $("#unicodeKeyboard").val();#}
+            {#            var resetKeyboard = $("#resetKeyboard").val();#}
+            {#            var appPackage = $("#appPackage").val();#}
+            {#            var appActivity = $("#appActivity").val();#}
+            {#            var browserName = $("#browserName").val();#}
+            {#            var platformVersion = $("#platformVersion").val();#}
+            {#            var autoLaunch = $("#autoLaunch").val();#}
             var data = JSON.stringify({
-                "name": name, "host": {
-                    "platformName": platformName,
-                    "autoLaunch": autoLaunch,
-                    "platformVersion": platformVersion,
-                    "noReset": noReset,
-                    "unicodeKeyboard": unicodeKeyboard,
-                    "resetKeyboard": resetKeyboard,
-                    "appPackage": appPackage,
-                    "appActivity": appActivity,
-                    "browserName": browserName
-                }, "remark": remark, "projectId": projectId
+                "name": name, "host": apk_path, "remark": remark, "projectId": projectId
             });
             $.ajax({
                 url: '/api/v1/environment/create',

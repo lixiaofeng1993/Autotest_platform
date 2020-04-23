@@ -279,7 +279,7 @@ class Browser(models.Model):
                 from selenium.webdriver.chrome.options import Options
                 executable_path = check_file(os.path.join(driver_path, "chromedriver.exe"))
                 options = Options()
-                options.add_argument('headless') # 不显示执行过程，不打开浏览器
+                options.add_argument('headless')  # 不显示执行过程，不打开浏览器
                 options.add_argument("disable-infobars")
                 options.add_argument('no-sandbox')
                 options.add_argument('disable-dev-shm-usage')
@@ -309,38 +309,57 @@ class Browser(models.Model):
             return browser
         else:
             from appium import webdriver as app
-            host = eval(host)
+            # host = eval(host)
+            if not os.path.exists(host):
+                log.error("apk路径不存在！{}".format(host))
+                return
+            cmd = r"aapt dump badging {}".format(host)
+            try:
+                page = os.popen(cmd)
+                text = page.read()
+            except UnicodeDecodeError as e:
+                raise UnicodeDecodeError("apk名称可能存在问题，就确认后执行！")
+            appPackage = re.compile("package: name='(.+?)' ")
+            appActivity = re.compile("activity: name='(.+?)'")
+            package = appPackage.findall(text)[0]
+            activity = appActivity.findall(text)[0]
             try:
                 desired_caps = {
-                    "platformName": host.get("platformName", ""),
+                    # "platformName": host.get("platformName", ""),
+                    "platformName": "Android",
 
                     "deviceName": "Android",
 
                     # 不重置app
-                    "noReset": host.get("noReset", ""),
+                    # "noReset": host.get("noReset", ""),
+                    "noReset": True,
 
-                    "autoLaunch": host.get("autoLaunch", True),
+                    # "autoLaunch": host.get("autoLaunch", True),
+                    "autoLaunch": True,
 
                     # "udid": "" # 指定运行设备
                     # "chromeOptions": {"androidProcess": "com.tencent.mm:tools"}
                 }
 
                 if browser == "android":
-                    desired_caps.update({"appPackage": host.get("appPackage", ""),
+                    desired_caps.update({"appPackage": package,
 
-                                         "appActivity": host.get("appActivity", ""),
+                                         "appActivity": activity,
                                          # 隐藏手机默认键盘
-                                         "unicodeKeyboard": host.get("unicodeKeyboard", ""),
+                                         # "unicodeKeyboard": host.get("unicodeKeyboard", ""),
+                                         "unicodeKeyboard": True,
 
-                                         "resetKeyboard": host.get("unicodeKeyboard", ""),
+                                         # "resetKeyboard": host.get("unicodeKeyboard", ""),
+                                         "resetKeyboard": True,
 
                                          "automationName": "uiautomator2",
                                          })
                 elif browser == "simulator":
-                    desired_caps.update({"platformVersion": host.get("platformVersion", ""), })
+                    # desired_caps.update({"platformVersion": host.get("platformVersion", ""), })
+                    desired_caps.update({"platformVersion": "9.0", })
                 elif browser == "html":
                     executable_path = check_file(os.path.join(os.path.join(driver_path, "h5"), "chromedriver.exe"))
-                    desired_caps.update({"browserName": host.get("browserName", ""),
+                    desired_caps.update({"browserName": "chrome",
 
                                          "chromedriverExecutable": executable_path,
 
