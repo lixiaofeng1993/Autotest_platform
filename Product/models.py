@@ -309,20 +309,32 @@ class Browser(models.Model):
             return browser
         else:
             from appium import webdriver as app
+            import subprocess
             # host = eval(host)
             if not os.path.exists(host):
-                log.error("apk路径不存在！{}".format(host))
-                return
+                error = "apk路径不存在！{}".format(host)
+                log.error(error)
+                raise Exception(error)
+            if os.path.splitext(host)[-1] != ".apk":
+                error = "apk文件类型错误！{}".format(host)
+                log.error(error)
+                raise Exception(error)
             cmd = r"aapt dump badging {}".format(host)
             try:
-                page = os.popen(cmd)
-                text = page.read()
-            except UnicodeDecodeError as e:
-                raise UnicodeDecodeError("apk名称可能存在问题，就确认后执行！")
+                with subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as f:
+                    text = f.communicate()[0].decode("utf-8")
+            except Exception as e:
+                raise UnicodeDecodeError("apk名称可能存在问题，就确认后执行！{} {}".format(e, cmd))
             appPackage = re.compile("package: name='(.+?)' ")
             appActivity = re.compile("activity: name='(.+?)'")
             package = appPackage.findall(text)[0]
             activity = appActivity.findall(text)[0]
+            with os.popen("adb shell pm list packages", "r") as f:
+                all_package = f.read()
+            if package not in all_package:
+                log.info("当前设备为安装测试app，准备安装中~~~")
+                cmd = r"adb install {}".format(host)
+                os.system(cmd)
             try:
                 desired_caps = {
                     # "platformName": host.get("platformName", ""),

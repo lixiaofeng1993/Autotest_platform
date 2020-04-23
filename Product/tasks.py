@@ -127,14 +127,13 @@ def SplitTaskRunning(splitResult_id):
     img_path = os.path.join(settings.MEDIA_ROOT, now + ".png")
     try:
         driver = Browser.objects.get(id=split.browserId).buid(host)
-    except:
+    except Exception as e:
         split.status = 40
-        split.remark = '浏览器初始化失败'
+        split.remark = '浏览器初始化失败！{}'.format(e)
         split.finishTime = timezone.now()
         split.save()
         if driver:
             driver.quit()
-        log.error(split.remark)
         return
     if beforeLogin and len(beforeLogin) > 0:
         for bl in beforeLogin:
