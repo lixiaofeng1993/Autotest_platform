@@ -975,9 +975,19 @@ class TestResult:
         start_time = parameter.get("startTime", start_time) if parameter.get("startTime", start_time) else start_time
         now = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
         end_time = parameter.get("endTime", now) if parameter.get("endTime", now) else now
+        tr = TaskRelation.objects.all()
+        exclude_list = []
+        task_list = []
+        tasks_list = []
+        for t in tr:
+            task_list.append(t.result_id)
+            tasks_list += json.loads(t.result_id_list)
+        for result_id in tasks_list:
+            if result_id not in task_list:
+                exclude_list.append(result_id)
         try:
             res = Result.objects.filter(createTime__lt=end_time, createTime__gt=start_time,
-                                        title__contains=title).order_by("-createTime")
+                                        title__contains=title).order_by("-createTime").exclude(id__in=exclude_list)
             if taskId:
                 res = res.filter(taskId=taskId)
             elif projectId:
@@ -1029,6 +1039,8 @@ class TestResult:
             result_id_list = tr.result_id_list
         else:
             result_id_list.append(str(result_id))
+        if isinstance(result_id_list, list):
+            result_id_list = json.dumps(result_id_list)
         data_info = {}
         for index, result_id in enumerate(json.loads(result_id_list)):
             re = get_model(Result, id=result_id)
@@ -1122,7 +1134,7 @@ class TestResult:
             result["error_name"] = error_name
             result["step_num"] = step_num
             data_info.update({"case" + str(index): result})
-        return JsonResponse.OK(message="ok", data=data_info, )
+        return JsonResponse.OK(message="ok", data=data_info)
 
 
 class Public:

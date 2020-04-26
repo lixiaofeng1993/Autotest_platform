@@ -43,44 +43,28 @@
                         <div class="panel-body width-p9" style="min-height:600px">
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label for="firstname" class="col-sm-2 control-label">用例标题</label>
+                                    <label for="firstname" class="col-sm-2 control-label">用例/任务标题</label>
                                     <div class="col-sm-10  mar-top-6" id="testcaseTitle" data-resultId="{{ id }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="lastname" class="col-sm-2 control-label">浏览器</label>
-                                    <div id='browsers' class="col-sm-10 mar-top-6">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastname" class="col-sm-2 control-label">测试环境</label>
-                                    <div id='es' class="col-sm-10 mar-top-6">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastname" class="col-sm-2 control-label">测试结果</label>
-                                    <div id='result' class="col-sm-10 mar-top-6">
-                                    </div>
-                                </div>
+                                    <label class="col-sm-2 control-label">测试报告</label>
+                                    <div id="report" class="col-sm-10 mar-top-6">
 
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">断言类型</label>
-                                    <div id="checkType" class="col-sm-10 mar-top-6">
-                                        url
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">断言值</label>
-                                    <div id="checkValue" class="col-sm-10 mar-top-6">
-                                        url
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label">前置登录</label>
-                                    <div id='logins' class="col-sm-10 mar-top-6">
-                                    </div>
-                                </div>
+                                {#                                <div class="form-group">#}
+                                {#                                    <label class="col-sm-2 control-label">断言值</label>#}
+                                {#                                    <div id="checkValue" class="col-sm-10 mar-top-6">#}
+                                {#                                        url#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
+                                {##}
+                                {#                                <div class="form-group">#}
+                                {#                                    <label class="col-sm-2 control-label">前置登录</label>#}
+                                {#                                    <div id='logins' class="col-sm-10 mar-top-6">#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">结果详情</label>
@@ -91,15 +75,19 @@
                                                 <thead>
                                                 <tr>
                                                     <th>序号</th>
+                                                    <th>项目名称</th>
                                                     <th>浏览器</th>
                                                     <th>测试环境</th>
                                                     <th>测试数据</th>
+                                                    <th>前置登录</th>
+                                                    <th>断言类型</th>
+                                                    <th>断言值</th>
                                                     <th>预期结果</th>
                                                     <th>实际结果</th>
                                                     <th>备注信息</th>
                                                     <th>测试开始时间</th>
                                                     <th>测试结束时间</th>
-                                                    <th>测试报告</th>
+                                                    {#                                                    <th>测试报告</th>#}
                                                 </tr>
                                                 </thead>
                                                 <tbody id="splitResult">
@@ -158,26 +146,34 @@
                 success: function (res) {
                     if (res.code == 200) {
                         var num = 1;
+                        $("#report").append('<a href="/admin/report/' + resultId + '"><i class="fa fa-bar-chart"></i>');
                         for (var key in res.data) {
+                            var login_name = "";
                             var data = res.data[key];
                             $("#testcaseTitle").html("<a href='/admin/testcase/" + data.testcaseId + "'>" + data.title + "</a>");
-                            $("#browsers").html(data.browsers.join("  ,  "));
-                            var es = data.environments;
-                            $("#es").html(es.length > 0 ? es.join("  ,  ") : "-");
-                            var result = data.status;
-                            var resultText = result == 10 ? "队列中" : result == 20 ? "测试中" : result == 30 ? "成功" : result == 40 ? "失败" : "";
-                            if (result == 40) {
-                                $("#result").html('<div class="color-red">' + resultText + '</div>');
-                            } else {
-                                $("#result").html('<div class="color-green">' + resultText + '</div>');
-                            }
-                            $("#checkType").html(data.checkType);
-                            $("#checkValue").html(data.checkValue);
+                            {#                            $("#browsers").html(data.browsers.join("  ,  "));#}
+                            {#                            var es = data.environments;#}
+                            {#                            es.length > 0 ? es.join("  ,  ") : "-";#}
+                            {#                            environments += es + "，";#}
+                            {#                            $("#es").html(environments.slice(0, environments.length - 1));#}
+                            {#                            var result = data.status;#}
+                            {#                            var resultText = result == 10 ? "队列中" : result == 20 ? "测试中" : result == 30 ? "成功" : result == 40 ? "失败" : "";#}
+                            {#                            result_text += resultText + "，";#}
+                            {#                            if (result == 40) {#}
+                            {#                                $("#result").html('<div class="color-red">' + result_text.slice(0, result_text.length - 1) + '</div>');#}
+                            {#                            } else {#}
+                            {#                                $("#result").html('<div class="color-green">' + result_text.slice(0, result_text.length - 1) + '</div>');#}
+                            {#                            }#}
+                            {#                            $("#result").html('<div>' + result_text.slice(0, result_text.length - 1) + '</div>');#}
+                            {#                            check_type += data.checkType + "，";#}
+                            {#                            $("#checkType").html(check_type.slice(0, check_type.length - 1));#}
+                            {#                            check_value += data.checkValue + "，";#}
+                            {#                            $("#checkValue").html(check_value.slice(0, check_value.length - 1));#}
                             var logins = data.beforeLogin;
-                            console.log(logins);
                             for (i = 0; i < logins.length; i++) {
-                                $("#logins").html(logins[i].name);
+                                login_name = logins[i].name;
                             }
+                            {#                            $("#logins").html(login_name.slice(0, login_name.length - 1));#}
                             {#                        $("#logins").html(logins.length > 0 ? logins.join("  ,  ") : "无");#}
                             var splitResult = data.splitResults;
                             var sr = "";
@@ -185,6 +181,7 @@
                                 var resultDetails = splitResult[i];
                                 sr += '<tr class="odd">';
                                 sr += '<td class="center">' + num + '</td>';
+                                sr += '<td class="center">' + data.projectName + '</td>';
                                 sr += '<td class="center">' + resultDetails["browser"] + '</td>';
                                 sr += '<td class="center">' + resultDetails["environment"] + '</td>';
                                 sr += '<td class="center" id="remark">';
@@ -196,15 +193,18 @@
                                     sr += "</br>";
                                 }
                                 sr += '</td>';
+                                sr += '<td class="center">' + login_name + '</td>';
+                                sr += '<td class="center">' + data.checkType + '</td>';
+                                sr += '<td class="center">' + data.checkValue + '</td>';
                                 sr += '<td class="center">' + (resultDetails["expect"] ? "成功" : "失败") + '</td>';
                                 var status = resultDetails["status"];
                                 sr += '<td class="center">' + (status == 10 ? "队列中" : status == 20 ? "测试中" : status == 30 ? "成功" : status == 40 ? "失败" : status == 50 ? "跳过" : "") + '</td>';
                                 sr += '<td class="center" id="remark">' + resultDetails["remark"] + '</td>';
                                 sr += '<td class="center">' + resultDetails["startTime"] + '</td>';
                                 sr += '<td class="center">' + resultDetails["finishTime"] + '</td>';
-                                sr += '<td class="center" id="fa"><a href="/admin/report/' + resultId + '"><i class="fa fa-bar-chart"></i></a></td>';
                                 num++;
                             }
+                            {#                            sr += '<td class="center" id="fa"><a href="/admin/report/' + resultId + '"><i class="fa fa-bar-chart"></i></a></td>';#}
                             $("#splitResult").append(sr);
                         }
                     } else {
