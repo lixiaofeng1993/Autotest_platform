@@ -1121,8 +1121,8 @@ class TestResult:
             result["steps"] = steps_
             result["error_name"] = error_name
             result["step_num"] = step_num
-            data_info.update({"case"+str(index): result})
-        return JsonResponse.OK(message="ok", data=data_info,)
+            data_info.update({"case" + str(index): result})
+        return JsonResponse.OK(message="ok", data=data_info, )
 
 
 class Public:
@@ -1510,7 +1510,7 @@ class TestTasks:
             tc = get_model(testcase, id=tc.get("id", 0))
             r = Result.objects.create(projectId=tc.projectId, testcaseId=tc.id, checkValue=tc.checkValue,
                                       checkText=tc.checkText, selectText=tc.selectText,
-                                      checkType=tc.checkType, title=tc.title, beforeLogin=tc.beforeLogin,
+                                      checkType=tc.checkType, title=t.name, beforeLogin=tc.beforeLogin,
                                       steps=tc.steps, parameter=tc.parameter,
                                       browsers=json.dumps(browsers, ensure_ascii=False),
                                       environments=json.dumps(environments, ensure_ascii=False), taskId=t.id)
