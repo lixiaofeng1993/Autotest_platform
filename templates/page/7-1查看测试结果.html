@@ -156,6 +156,9 @@
                 type: 'post',
                 dataType: 'json',
                 success: function (res) {
+                    var response = JSON.stringify(res);// 转成JSON格式
+                    var res1 = JSON.parse(response);// 转成JSON对象
+                    console.log("返回结果：" + res1);
                     if (res.code == 200) {
                         $("#testcaseTitle").html("<a href='/admin/testcase/" + res.data.testcaseId + "'>" + res.data.title + "</a>");
                         $("#browsers").html(res.data.browsers.join("  ,  "));

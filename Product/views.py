@@ -8,7 +8,7 @@ from Product.models import Environment as environment
 from Product.models import Keyword as keyword
 from Product.models import Page as page
 from Product.models import Project as project
-from Product.models import Result, Task, LoginConfig, EnvironmentLogin
+from Product.models import Result, Task, LoginConfig, EnvironmentLogin, TaskRelation
 from Product.models import TestCase as testcase, Browser
 from djcelery.models import PeriodicTask, CrontabSchedule, IntervalSchedule, PeriodicTasks
 from .tasks import SplitTask
@@ -1023,97 +1023,106 @@ class TestResult:
 
     @staticmethod
     def get(request, result_id):
-        re = get_model(Result, id=result_id)
-        if not re:
-            return JsonResponse.BadRequest("该测试结果不存在")
-        result = model_to_dict(re, ["id", "projectId", "taskId", "testcaseId", 'title', 'status', 'checkType',
-                                    'checkValue', 'checkText', 'selectText', 'steps'])
-        result["parameter"] = json.loads(re.parameter) if re.parameter else []
-        result["steps"] = json.loads(re.steps) if re.steps else []
-        result["steps_num"] = len(result["steps"]) if result["steps"] else 0
-        checkValue = result["checkValue"]
-        if checkValue.isdigit():
-            el = get_model(element, id=checkValue)
-            result["checkValue"] = el.name if el else result["checkValue"]
-        beforeLogin = json.loads(re.beforeLogin) if re.beforeLogin else []
-        result["beforeLogin"] = list()
-        steps_num = 0
-        if beforeLogin:
-            for bl in beforeLogin:
-                login = get_model(LoginConfig, id=bl)
-                bl = model_to_dict(login,
-                                   ["name", "remark", "steps", "checkType", 'checkValue', 'checkText', 'selectText',
-                                    'params'])
-                bl["steps"] = json.loads(login.steps) if login.steps else []
-                steps_num = len(bl["steps"]) if bl["steps"] else 0
-                for step in bl["steps"]:
-                    kw = get_model(keyword, id=step["keywordId"])
-                    step["keyName"] = kw.method if kw else ""
-                    for value in step["values"]:
-                        if value["value"].isdigit():
-                            el = get_model(element, id=value["value"])
-                            value["value"] = el.name if el else value["value"]
-                result["beforeLogin"].append(bl)
-        result["steps_num"] = result["steps_num"] + steps_num
-        browsers = json.loads(re.browsers) if re.browsers else []
-        result["browsers"] = list()
-        for browser in browsers:
-            browser = get_model(Browser, id=browser)
-            browser = browser.name if browser else ""
-            result["browsers"].append(browser)
-        environments = json.loads(re.environments) if re.environments else []
-        result["environments"] = list()
-        if environments:
-            for e in environments:
-                e = get_model(environment, id=e)
-                e = e.name if e else ""
-                result["environments"].append(e)
-        result["createTime"] = re.createTime.strftime('%Y-%m-%d %H:%M:%S')
-        tc = get_model(project, id=re.projectId)
-        result["projectName"] = tc.name if tc else ""
-        from .models import SplitResult
-        split = get_model(SplitResult, False, resultId=re.id)
-        splitResult = list()
-        step_num = 0
-        error_name = ""
-        for s in split:
-            sd = model_to_dict(s, ["status", 'expect', 'remark', 'step_num', 'error_name'])
-            step_num = sd.get("step_num", 0)
-            error_name = sd.get("error_name", "")
-            sd['browser'] = get_model(Browser, id=s.browserId).name if get_model(Browser, id=s.browserId) else ""
-            sd['environment'] = get_model(environment, id=s.environmentId).name if get_model(environment,
-                                                                                             id=s.environmentId) else ""
-            sd["startTime"] = s.startTime.strftime('%Y-%m-%d %H:%M:%S') if s.startTime else None
-            sd["finishTime"] = s.finishTime.strftime('%Y-%m-%d %H:%M:%S') if s.finishTime else None
-            sd["parameter"] = json.loads(s.parameter) if s.parameter else {}
-            splitResult.append(sd)
-        result['splitResults'] = splitResult
-        steps_ = list()
-        for step in result["steps"]:
-            info = dict()
-            info["data"] = step
-            kw = get_model(keyword, id=step["keywordId"])
-            info["keywordName"] = kw.name if kw else ""
-            values = step["values"]
-            info_value = list()
-            for value in values:
-                pa = dict()
-                pa["isParameter"] = value.get("isParameter", False)
-                pa["type"] = value["type"]
-                pa["value"] = value["value"]
-                pa["key"] = value["key"]
-                if not value.get("isParameter", False):
-                    if value["type"] == "element":
-                        ele = get_model(element, id=value["value"])
-                        pa["pageId"] = ele.pageId
-                        pa["elementName"] = ele.name
-                info_value.append(pa)
-            info["viewData"] = info_value
-            steps_.append(info)
-        result["steps"] = steps_
-        result["error_name"] = error_name
-        result["step_num"] = step_num
-        return JsonResponse.OK(message="ok", data=result)
+        tr = get_model(TaskRelation, result_id=result_id)
+        result_id_list = []
+        if tr:
+            result_id_list = tr.result_id_list
+        else:
+            result_id_list.append(str(result_id))
+        data_info = {}
+        for index, result_id in enumerate(json.loads(result_id_list)):
+            re = get_model(Result, id=result_id)
+            if not re:
+                return JsonResponse.BadRequest("该测试结果不存在！id：{}".format(result_id))
+            result = model_to_dict(re, ["id", "projectId", "taskId", "testcaseId", 'title', 'status', 'checkType',
+                                        'checkValue', 'checkText', 'selectText', 'steps'])
+            result["parameter"] = json.loads(re.parameter) if re.parameter else []
+            result["steps"] = json.loads(re.steps) if re.steps else []
+            result["steps_num"] = len(result["steps"]) if result["steps"] else 0
+            checkValue = result["checkValue"]
+            if checkValue.isdigit():
+                el = get_model(element, id=checkValue)
+                result["checkValue"] = el.name if el else result["checkValue"]
+            beforeLogin = json.loads(re.beforeLogin) if re.beforeLogin else []
+            result["beforeLogin"] = list()
+            steps_num = 0
+            if beforeLogin:
+                for bl in beforeLogin:
+                    login = get_model(LoginConfig, id=bl)
+                    bl = model_to_dict(login,
+                                       ["name", "remark", "steps", "checkType", 'checkValue', 'checkText', 'selectText',
+                                        'params'])
+                    bl["steps"] = json.loads(login.steps) if login.steps else []
+                    steps_num = len(bl["steps"]) if bl["steps"] else 0
+                    for step in bl["steps"]:
+                        kw = get_model(keyword, id=step["keywordId"])
+                        step["keyName"] = kw.method if kw else ""
+                        for value in step["values"]:
+                            if value["value"].isdigit():
+                                el = get_model(element, id=value["value"])
+                                value["value"] = el.name if el else value["value"]
+                    result["beforeLogin"].append(bl)
+            result["steps_num"] = result["steps_num"] + steps_num
+            browsers = json.loads(re.browsers) if re.browsers else []
+            result["browsers"] = list()
+            for browser in browsers:
+                browser = get_model(Browser, id=browser)
+                browser = browser.name if browser else ""
+                result["browsers"].append(browser)
+            environments = json.loads(re.environments) if re.environments else []
+            result["environments"] = list()
+            if environments:
+                for e in environments:
+                    e = get_model(environment, id=e)
+                    e = e.name if e else ""
+                    result["environments"].append(e)
+            result["createTime"] = re.createTime.strftime('%Y-%m-%d %H:%M:%S')
+            tc = get_model(project, id=re.projectId)
+            result["projectName"] = tc.name if tc else ""
+            from .models import SplitResult
+            split = get_model(SplitResult, False, resultId=re.id)
+            splitResult = list()
+            step_num = 0
+            error_name = ""
+            for s in split:
+                sd = model_to_dict(s, ["status", 'expect', 'remark', 'step_num', 'error_name'])
+                step_num = sd.get("step_num", 0)
+                error_name = sd.get("error_name", "")
+                sd['browser'] = get_model(Browser, id=s.browserId).name if get_model(Browser, id=s.browserId) else ""
+                sd['environment'] = get_model(environment, id=s.environmentId).name if get_model(environment,
+                                                                                                 id=s.environmentId) else ""
+                sd["startTime"] = s.startTime.strftime('%Y-%m-%d %H:%M:%S') if s.startTime else None
+                sd["finishTime"] = s.finishTime.strftime('%Y-%m-%d %H:%M:%S') if s.finishTime else None
+                sd["parameter"] = json.loads(s.parameter) if s.parameter else {}
+                splitResult.append(sd)
+            result['splitResults'] = splitResult
+            steps_ = list()
+            for step in result["steps"]:
+                info = dict()
+                info["data"] = step
+                kw = get_model(keyword, id=step["keywordId"])
+                info["keywordName"] = kw.name if kw else ""
+                values = step["values"]
+                info_value = list()
+                for value in values:
+                    pa = dict()
+                    pa["isParameter"] = value.get("isParameter", False)
+                    pa["type"] = value["type"]
+                    pa["value"] = value["value"]
+                    pa["key"] = value["key"]
+                    if not value.get("isParameter", False):
+                        if value["type"] == "element":
+                            ele = get_model(element, id=value["value"])
+                            pa["pageId"] = ele.pageId
+                            pa["elementName"] = ele.name
+                    info_value.append(pa)
+                info["viewData"] = info_value
+                steps_.append(info)
+            result["steps"] = steps_
+            result["error_name"] = error_name
+            result["step_num"] = step_num
+            data_info.update({"case"+str(index): result})
+        return JsonResponse.OK(message="ok", data=data_info,)
 
 
 class Public:
@@ -1495,6 +1504,7 @@ class TestTasks:
             return JsonResponse(404, "该任务不存在")
         browsers = json.loads(t.kwargs)["browsers"] if t.kwargs else []
         testcases = json.loads(t.kwargs)["testcases"] if t.kwargs else []
+        result_id_list = []
         for tc in testcases:
             environments = tc.get("environments", [])
             tc = get_model(testcase, id=tc.get("id", 0))
@@ -1504,7 +1514,10 @@ class TestTasks:
                                       steps=tc.steps, parameter=tc.parameter,
                                       browsers=json.dumps(browsers, ensure_ascii=False),
                                       environments=json.dumps(environments, ensure_ascii=False), taskId=t.id)
+            result_id_list.append(str(r.id))
             SplitTask.delay(r.id)
+        tr = TaskRelation.objects.create(result_id_list=json.dumps(result_id_list), result_id=result_id_list[0])
+        tr.save()
         return JsonResponse.OK()
 
 

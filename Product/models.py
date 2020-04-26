@@ -556,3 +556,11 @@ class EnvironmentLogin(models.Model):
 
     class Meta:
         db_table = 'EnvironmentLogin'
+
+
+class TaskRelation(models.Model):
+    result_id_list = models.CharField(max_length=200, null=True)
+    result_id = models.ImageField(null=True)
+
+    class Meta:
+        db_table = 'TaskRelation'
