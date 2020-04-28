@@ -7068,36 +7068,36 @@
                                         <span class="form-control" id="testName"></span>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label text-navy">项目名称:</label>
-                                    <div class="col-sm-5">
-                                        <span class="form-control" id="project"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label text-navy">测试环境:</label>
-                                    <div class="col-sm-5">
-                                        <span class="form-control" id="environments"></span>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label text-navy">浏览器:</label>
-                                    <div class="col-sm-5">
-                                        <span class="form-control" id="browsers"></span>
-                                    </div>
-                                </div>
+                                {#                                <div class="form-group">#}
+                                {#                                    <label class="col-sm-2 control-label text-navy">项目名称:</label>#}
+                                {#                                    <div class="col-sm-5">#}
+                                {#                                        <span class="form-control" id="project"></span>#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
+                                {#                                <div class="form-group">#}
+                                {#                                    <label class="col-sm-2 control-label text-navy">测试环境:</label>#}
+                                {#                                    <div class="col-sm-5">#}
+                                {#                                        <span class="form-control" id="environments"></span>#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
+                                {#                                <div class="form-group">#}
+                                {#                                    <label class="col-sm-2 control-label text-navy">浏览器:</label>#}
+                                {#                                    <div class="col-sm-5">#}
+                                {#                                        <span class="form-control" id="browsers"></span>#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label text-navy">步骤总数:</label>
                                     <div class="col-sm-5">
                                         <span class="form-control" id="step_num"></span>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label text-navy">测试结果:</label>
-                                    <div class="col-sm-5">
-                                        <span class="form-control" id="status"></span>
-                                    </div>
-                                </div>
+                                {#                                <div class="form-group">#}
+                                {#                                    <label class="col-sm-2 control-label text-navy">测试结果:</label>#}
+                                {#                                    <div class="col-sm-5">#}
+                                {#                                        <span class="form-control" id="status"></span>#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label text-navy">开始时间:</label>
                                     <div class="col-sm-5">
@@ -7143,74 +7143,192 @@
                         </a>
                     </div>
                 </div>
-                <div class="ibox-content">
-                    <div class="input-group panel-heading"
-                         style="width: 100%; background-color: #1ab394; margin-bottom: 10px;">
-                        <div style="float: right">
-                            <label class="form-control">
-                                <span class="text-navy">步骤总数: </span><span class="text-navy b-r"
-                                                                           id="steps_num"></span><span> | </span>
-                                <span class="text-navy">执行结果: </span><span id="result"></span><span> | </span>
-                            </label>
-                        </div>
-                    </div>
-                    <table class="table table-bordered">
-                        <tbody id="detailBody">
-                        <tr id="tr-pass-1" hidden>
-                            <td id="login-info" style="font-size: 14px;color: #777"></td>
-                            <td>
-                                <button type='button' data-state="open" data-index="1"
-                                        id="expand"
-                                        class='btn btn-primary btn-xs expand-1'
-                                        style='margin-bottom: 0'>
-                                    展开
-                                </button>
-                            </td>
-                        </tr>
-                        <tr id="step-1" class="step" style="padding-left: 10%" hidden>
-                            <td colspan="2" id="step-login"></td>
-                        </tr>
-                        <tr id="tr-pass-2" hidden>
-                            <td id="test-case" style="font-size: 14px;color: #777"></td>
-                            <td>
-                                <button type='button' data-state="open" data-index="2"
-                                        id="expand"
-                                        class='btn btn-primary btn-xs expand-2'
-                                        style='margin-bottom: 0'>
-                                    展开
-                                </button>
-                            </td>
-                        </tr>
-                        <tr id="step-2" class="step" style="padding-left: 10%" hidden>
-                            <td colspan="2" id="step-case"></td>
-                        </tr>
-                        <tr id="tr-pass-3" hidden>
-                            <td id="test-result" style="font-size: 14px;color: #777"></td>
-                            <td>
-                                <button type='button' data-state="open" data-index="3"
-                                        id="expand"
-                                        class='btn btn-primary btn-xs expand-3'
-                                        style='margin-bottom: 0'>
-                                    展开
-                                </button>
-                            </td>
-                        </tr>
-                        <tr id="step-3" class="step" style="padding-left: 10%" hidden>
-                            <td colspan="2" id="step-result"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <button onclick="topFunction()" id="myBtn" title="回顶部">返回顶部</button>
+                <div class="ibox-content" id="detail-info">
+
                 </div>
             </div>
         </div>
     </div>
-
 </div>
+<button onclick="topFunction()" id="myBtn" title="回顶部">返回顶部</button>
 <script src={% static 'assets/js/jquery.min.js' %}></script>
 <script src={% static 'assets/js/bootstrap.min.js' %}></script>
 <script type="text/javascript">
+    init();
+    function init() {
+        var report_id = $("#report_id").attr("data-report-id");
+        $.ajax({
+            url: "/api/v1/result/" + report_id,
+            type: "get",
+            success: function (data) {
+                var number = 0;
+                var info = "";
+                for (var index in data.data) {
+                    var result_html = "";
+                    if (data.data[index].taskId) {
+                        $("#testName").html("<a href='/admin/task'>" + data.data[index].title + "</a>");
+                    } else {
+                        $("#testName").html("<a href='/admin/testcase/" + data.data[index].testcaseId + "'>" + data.data[index].title + "</a>");
+                    }
+                    var browser = data.data[index].browsers.join("  ,  ");
+                    number += parseInt(data.data[index].steps_num);
+                    $("#step_num").html(number);
+                    var result = data.data[index].status;
+                    var resultText = result == 10 ? "队列中" : result == 20 ? "测试中" : result == 30 ? "成功" : result == 40 ? "失败" : "";
+                    if (result == 40) {
+                        result_html = '<span class="color-green"style="color:red;font-weight: 500;">' + resultText + '</span>';
+                    } else {
+                        result_html = '<span class="color-green"style="color:green;font-weight: 500;">' + resultText + '</span>';
+                    }
+                    info += '<div><div class="input-group panel-heading" style="width: 100%; background-color: #1ab394; margin-bottom: 10px;">' +
+                        '<div style="float: right"><label class="form-control"><span class="text-navy">项目名称: </span><span id="result">' +
+                        data.data[index].projectName + '</span><span> | </span><span class="text-navy">测试环境: </span><span id="result">' +
+                        data.data[index].environments + '</span><span> | </span><span class="text-navy">浏览器: </span><span id="result">' +
+                        browser + '</span><span> | </span><span class="text-navy">步骤总数: </span>' +
+                        '<span class="text-navy b-r" id="steps_num">' + data.data[index].steps_num + '</span><span> | </span><span class="text-navy">' +
+                        '执行结果: </span><span id="result">' + result_html + '</span><span> | </span><span class="text-navy"><button onclick="topFunction()" id="myBtn" title="回顶部">返回顶部</button> </span></label> </div></div>';
+                    for (var i = 0; i < data.data[index].splitResults.length; i++) {
+                        var hp = "";
+                        var par = "";
+                        var split = data.data[index].splitResults[i];
+                        $("#beginTime").html(split.startTime);
+                        $("#finishTime").html(split.finishTime);
+                        for (var params in split.parameter) {
+                            if (params == "expect") {
+                                continue;
+                            } else {
+                                par += "<p style='font-family: Consolas;font-size:12px;'>[--------------------------------]  测试数据 ==> 参数：" + params + " --|-- 值：" + split.parameter[params] + "</p>"
+                            }
+                        }
+                        if (result == 40) {
+                            hp = "<p style='font-family: Consolas;font-size:12px;color:red;'>[--------------------------------]  测试结果： " + split.remark + "</p>";
+                        } else {
+                            hp = "<p style='font-family: Consolas;font-size:12px;color:black;'>[--------------------------------]  测试结果： " + split.remark + "</p>";
+                        }
+                        if (data.data[index].step_num == 999) {
+                            if (browser == "chrome" || chrome == "firefox") {
+                                hp += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
+                            } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
+                                hp += "<img src='/media/" + data.data[index].error_name + "' height='720' width='500'></img><br>"
+                            }
+                        }
 
+                    }
+                    var num = 0;
+                    var login_num = 0;
+                    var html = "";
+                    if (data.data[index].beforeLogin.length > 0) {
+                        $("#tr-pass-1").show();
+                        $("#login-info").html("前置登录执行步骤");
+                        for (var l = 0; l < data.data[index].beforeLogin.length; l++) {
+                            var login = data.data[index].beforeLogin[l];
+                            for (var k = 0; k < login.steps.length; k++) {
+                                var st = login.steps[k];
+                                login_num = login_num + 1;
+                                html += "<br>";
+                                var hl = "";
+                                if (st.keyName == "断言") {
+                                    html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：<span style='font-weight:900;font-size:16px'>断言</span>  <<<<<<----</p>";
+                                    for (var q = 0; q < st.values.length; q++) {
+                                        var key = st.values[q];
+                                        if (key.type == "element") {
+                                            hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言元素：" + key.value + " </p>";
+
+                                        } else {
+                                            if (key.value) {
+                                                hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言值：" + key.value + " </p>";
+                                            } else {
+                                            }
+                                        }
+                                        hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";
+                                    }
+                                } else {
+                                    html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：" + st.keyName + "  <<<<<<----</p>";
+                                    for (var q = 0; q < st.values.length; q++) {
+                                        var key = st.values[q];
+                                        hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";
+                                    }
+                                }
+                                html += hl;
+                            }
+                            if (data.data[index].step_num == 888) {
+                                html += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"
+                                if (browser == "chrome" || chrome == "firefox") {
+                                    html += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
+                                } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
+                                    html += "<img src='/media/" + data.data[index].error_name + "' height='720' width='500'></img><br>"
+                                }
+                            }
+                            html += "<br>";
+                        }
+                    }
+                    var html1 = "";
+                    var html2 = "";
+                    for (var i = 0; i < data.data[index].steps.length; i++) {
+                        var step = data.data[index].steps[i];
+                        num = num + 1;
+                        html1 += "<br>";
+                        var ht = "";
+                        if (step.keywordName == "断言") {
+                            html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：<span style='font-weight:900;font-size:16px'>断言</span> <<<<<<----</p>";
+                            for (var j = 0; j < data.data[index].steps[i].viewData.length; j++) {
+                                var value = data.data[index].steps[i].viewData[j];
+                                if (value.type == "element") {
+                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言元素：" + value.elementName + " </p>";
+
+                                } else {
+                                    if (value.value) {
+                                        ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言值：" + value.value + " </p>";
+                                    } else {
+                                    }
+                                }
+                            }
+                        } else {
+                            html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：" + step.keywordName + "  <<<<<<----</p>";
+                            for (var j = 0; j < data.data[index].steps[i].viewData.length; j++) {
+                                var value = data.data[index].steps[i].viewData[j];
+                                if (value.type == "element") {
+                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.elementName + " </p>";
+
+                                } else {
+                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.value + " </p>";
+
+                                }
+                            }
+                        }
+
+                        if (num == data.data[index].step_num) {
+                            ht += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>";
+                            if (browser == "chrome" || chrome == "firefox") {
+                                ht += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
+                            } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
+                                ht += "<img src='/media/" + data.data[index].error_name + "' height='720' width='500'></img><br>"
+                            }
+                        }
+                        html1 += ht;
+
+                        html1 += "<br>";
+                    }
+                    html2 += "<br>";
+                    html2 += "<p style='font-family: Consolas;font-size:12px;color:green;'>[---------------_----------------]  断言类型： " + data.data[index].checkType + " </p>";
+                    if (data.data[index].checkType == "element") {
+                        html2 += "<p style='font-family: Consolas;font-size:12px;color:green;'>[---------------_----------------]  断言 ==> 元素：" + data.data[index].checkValue + "--|-- 值：" + data.data[index].checkText + " </p>";
+                    } else {
+                        html2 += "<p style='font-family: Consolas;font-size:12px;color:green;'>[---------------_----------------]  断言 ==> 值：" + data.data[index].checkValue + "</p>";
+                    }
+                    html2 += "<br>";
+                    info += '<table class="table table-bordered"><tbody id="detailBody"> <tr id="tr-pass-1"> <td id="login-info" style="font-size: 14px;color: #777">前置登录执行步骤</td>' +
+                        ' <td> </td>' +
+                        ' </tr> <tr id="step-1" class="step" style="padding-left: 10%"> <td colspan="2" id="step-login"> ' + html + '</td> </tr> <tr id="tr-pass-2" > ' +
+                        '<td id="test-case" style="font-size: 14px;color: #777">测试用例执行步骤</td> <td>' +
+                        ' </td> </tr> <tr id="step-2" class="step" style="padding-left: 10%" > <td colspan="2" id="step-case"> ' + html1 + par + '</td> </tr> <tr id="tr-pass-3" > ' +
+                        '<td id="test-result" style="font-size: 14px;color: #777">测试结果</td> <td> </td>' +
+                        '</tr><tr id="step-3" class="step" style="padding-left: 10%" ><td colspan="2" id="step-result">' + html2 + hp + '</td></tr></tbody></table></div>';
+                }
+                $("#detail-info").append(info);
+            }
+        })
+    }
     $('#detailBody').on('click', '.btn-primary', function () {
         var id = this.dataset.index,
             state = this.dataset.state,
@@ -7228,6 +7346,7 @@
     };
 
     function scrollFunction() {
+        console.log(123);
         if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
             document.getElementById("myBtn").style.display = "block";
         } else {
@@ -7282,195 +7401,6 @@
         }), top == this) {
     }
 
-    init();
-    function init() {
-        var report_id = $("#report_id").attr("data-report-id");
-        $.ajax({
-            url: "/api/v1/result/" + report_id,
-            type: "get",
-            success: function (data) {
-                var environment = "";
-                var browsers = "";
-                var number = 0;
-                var result_text = "";
-                var project = "";
-                for (var index in data.data) {
-                    number += parseInt(data.data[index].steps_num);
-                    $("#step_num").html(number);
-                    project += data.data[index].projectName + "，";
-                    $("#project").html(project.slice(0, project.length - 1));
-                    $("#steps_num").html("<span style='color:#777;'>" + number + "</span>");
-                    var result = data.data[index].status;
-                    var browser = data.data[index].browsers.join("  ,  ");
-                    var resultText = result == 10 ? "队列中" : result == 20 ? "测试中" : result == 30 ? "成功" : result == 40 ? "失败" : "";
-                    result_text += resultText + "，";
-                    {#                    if (result == 40) {#}
-                    {#                        $("#status").html('<div class="color-red" style="color:red">' + resultText + '</div>');#}
-                    {#                        $("#result").html('<span class="color-green"style="color:red">' + resultText + '</span>');#}
-                    {#                    } else {#}
-                    {#                        $("#status").html('<div class="color-green"style="color:green">' + resultText + '</div>');#}
-                    {#                        $("#result").html('<span class="color-green"style="color:green;font-weight: 500;">' + resultText + '</span>');#}
-                    {#                    }#}
-                    $("#status").html('<div>' + result_text.slice(0, result_text.length - 1) + '</div>');
-                    $("#result").html('<span>' + result_text.slice(0, result_text.length - 1) + '</span>');
-                    for (var i = 0; i < data.data[index].splitResults.length; i++) {
-                        var hp = "";
-                        var par = "";
-                        var split = data.data[index].splitResults[i];
-                        $("#beginTime").html(split.startTime);
-                        $("#finishTime").html(split.finishTime);
-                        $("#tr-pass-3").show();
-                        $("#test-result").html("测试结果");
-                        for (var params in split.parameter) {
-                            if (params == "expect") {
-                                continue;
-                            } else {
-                                par += "<p style='font-family: Consolas;font-size:12px;'>[--------------------------------]  测试数据 ==> 参数：" + params + " --|-- 值：" + split.parameter[params] + "</p>"
-                            }
-                        }
-                        if (result == 40) {
-                            hp = "<p style='font-family: Consolas;font-size:12px;color:red;'>[--------------------------------]  测试结果： " + split.remark + "</p>";
-                        } else {
-                            hp = "<p style='font-family: Consolas;font-size:12px;color:black;'>[--------------------------------]  测试结果： " + split.remark + "</p>";
-                        }
-                        if (data.data[index].step_num == 999) {
-                            {#                        hp += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"#}
-                            if (browser == "chrome" || chrome == "firefox") {
-                                hp += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
-                            } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
-                                hp += "<img src='/media/" + data.data[index].error_name + "' height='720' width='500'></img><br>"
-                            }
-                        }
-                    }
-                    if (data.data[index].taskId) {
-                        $("#testName").html("<a href='/admin/task'>" + data.data[index].title + "</a>");
-                    } else {
-                        $("#testName").html("<a href='/admin/testcase/" + data.data[index].testcaseId + "'>" + data.data[index].title + "</a>");
-                    }
-
-                    browsers += browser + "，";
-                    $("#browsers").html(browsers.slice(0, browsers.length - 1));
-                    var es = data.data[index].environments;
-                    es.length > 0 ? es.join("  ,  ") : "-";
-                    environment += es + "，";
-                    $("#environments").html(environment.slice(0, environment.length - 1));
-                    var num = 0;
-                    var login_num = 0;
-                    var html = "";
-                    if (data.data[index].beforeLogin.length > 0) {
-                        $("#tr-pass-1").show();
-                        $("#login-info").html("前置登录执行步骤");
-                        html += "<p style='font-family: Consolas;font-size:12px'>项目名称：<span style='font-weight:900;font-size:16px'>" + data.data[index].projectName + "</span></p>";
-                        for (var l = 0; l < data.data[index].beforeLogin.length; l++) {
-                            var login = data.data[index].beforeLogin[l];
-                            for (var k = 0; k < login.steps.length; k++) {
-                                var st = login.steps[k];
-                                login_num = login_num + 1;
-                                html += "<br>";
-                                var hl = "";
-                                if (st.keyName == "断言") {
-                                    html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：<span style='font-weight:900;font-size:16px'>断言</span>  <<<<<<----</p>";
-                                    for (var q = 0; q < st.values.length; q++) {
-                                        var key = st.values[q];
-                                        if (key.type == "element") {
-                                            hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言元素：" + key.value + " </p>";
-
-                                        } else {
-                                            if (key.value) {
-                                                hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言值：" + key.value + " </p>";
-                                            } else {
-                                            }
-                                        }
-                                        {#                                    hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";#}
-                                    }
-                                } else {
-                                    html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：" + st.keyName + "  <<<<<<----</p>";
-                                    for (var q = 0; q < st.values.length; q++) {
-                                        var key = st.values[q];
-                                        hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";
-                                    }
-                                }
-                                html += hl;
-                            }
-                            if (data.data[index].step_num == 888) {
-                                {#                            html += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"#}
-                                if (browser == "chrome" || chrome == "firefox") {
-                                    html += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
-                                } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
-                                    html += "<img src='/media/" + data.data[index].error_name + "' height='720' width='500'></img><br>"
-                                }
-                            }
-                            html += "<br>";
-                            $("#step-login").append(html);
-                        }
-                    }
-                    var html1 = "";
-                    var html2 = "";
-                    $("#tr-pass-2").show();
-                    $("#test-case").html("测试用例执行步骤");
-                    html1 += "<p style='font-family: Consolas;font-size:12px'>项目名称：<span style='font-weight:900;font-size:16px'>" + data.data[index].projectName + "</span></p>";
-                    html2 += "<p style='font-family: Consolas;font-size:12px'>项目名称：<span style='font-weight:900;font-size:16px'>" + data.data[index].projectName + "</span></p>";
-                    for (var i = 0; i < data.data[index].steps.length; i++) {
-                        var step = data.data[index].steps[i];
-                        num = num + 1;
-                        html1 += "<br>";
-                        var ht = "";
-                        if (step.keywordName == "断言") {
-                            html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：<span style='font-weight:900;font-size:16px'>断言</span> <<<<<<----</p>";
-                            for (var j = 0; j < data.data[index].steps[i].viewData.length; j++) {
-                                var value = data.data[index].steps[i].viewData[j];
-                                if (value.type == "element") {
-                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言元素：" + value.elementName + " </p>";
-
-                                } else {
-                                    if (value.value) {
-                                        ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言值：" + value.value + " </p>";
-                                    } else {
-                                    }
-                                }
-                            }
-                        } else {
-                            html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：" + step.keywordName + "  <<<<<<----</p>";
-                            for (var j = 0; j < data.data[index].steps[i].viewData.length; j++) {
-                                var value = data.data[index].steps[i].viewData[j];
-                                if (value.type == "element") {
-                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.elementName + " </p>";
-
-                                } else {
-                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.value + " </p>";
-
-                                }
-                            }
-                        }
-
-                        if (num == data.data[index].step_num) {
-                            {#                        ht += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>"#}
-                            if (browser == "chrome" || chrome == "firefox") {
-                                ht += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
-                            } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
-                                ht += "<img src='/media/" + data.data[index].error_name + "' height='720' width='500'></img><br>"
-                            }
-                        }
-                        html1 += ht;
-
-                        html1 += "<br>";
-                    }
-                    html2 += "<br>";
-                    html2 += "<p style='font-family: Consolas;font-size:12px;color:green;'>[---------------_----------------]  断言类型： " + data.data[index].checkType + " </p>";
-                    if (data.data[index].checkType == "element") {
-                        html2 += "<p style='font-family: Consolas;font-size:12px;color:green;'>[---------------_----------------]  断言 ==> 元素：" + data.data[index].checkValue + "--|-- 值：" + data.data[index].checkText + " </p>";
-                    } else {
-                        html2 += "<p style='font-family: Consolas;font-size:12px;color:green;'>[---------------_----------------]  断言 ==> 值：" + data.data[index].checkValue + "</p>";
-                    }
-                    html2 += "<br>";
-                    $("#step-case").append(html1);
-                    $("#step-case").append(par);
-                    $("#step-result").append(html2);
-                    $("#step-result").append(hp);
-                }
-            }
-        })
-    }
 </script>
 </body>
 </html>

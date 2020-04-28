@@ -368,6 +368,7 @@ def timingRunning(*args, **kwargs):
                                       steps=tc.steps, parameter=tc.parameter,
                                       browsers=json.dumps(browsers, ensure_ascii=False),
                                       environments=json.dumps(environments, ensure_ascii=False), taskId=periodic.id)
+            result_id_list.append(str(r.id))
             SplitTask.delay(r.id)
         tr = TaskRelation.objects.create(result_id_list=json.dumps(result_id_list), result_id=result_id_list[0])
         tr.save()
