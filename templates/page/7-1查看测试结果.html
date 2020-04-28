@@ -21,6 +21,11 @@
             white-space: normal;
             overflow: auto;
         }
+
+        #div {
+            margin-right: -10%;
+            margin-left: -10%;
+        }
     </style>
 {% endblock %}
 {% block body %}
@@ -42,12 +47,12 @@
                         <!--<div class="panel-heading">表格名字</div>-->
                         <div class="panel-body width-p9" style="min-height:600px">
                             <form class="form-horizontal" role="form">
-                                <div class="form-group">
+                                <div class="form-group" id="div">
                                     <label for="firstname" class="col-sm-2 control-label">用例/任务标题</label>
                                     <div class="col-sm-10  mar-top-6" id="testcaseTitle" data-resultId="{{ id }}">
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" id="div">
                                     <label class="col-sm-2 control-label">测试报告</label>
                                     <div id="report" class="col-sm-10 mar-top-6">
 
@@ -66,7 +71,7 @@
                                 {#                                    </div>#}
                                 {#                                </div>#}
 
-                                <div class="form-group">
+                                <div class="form-group" id="div">
                                     <label class="col-sm-2 control-label">结果详情</label>
                                     <div class="col-sm-10 mar-top-6">
                                         <div class="table-responsive">
@@ -85,8 +90,8 @@
                                                     <th>预期结果</th>
                                                     <th>实际结果</th>
                                                     <th>备注信息</th>
-                                                    <th>测试开始时间</th>
-                                                    <th>测试结束时间</th>
+                                                    <th>开始时间</th>
+                                                    <th>结束时间</th>
                                                     {#                                                    <th>测试报告</th>#}
                                                 </tr>
                                                 </thead>
@@ -150,7 +155,12 @@
                         for (var key in res.data) {
                             var login_name = "";
                             var data = res.data[key];
-                            $("#testcaseTitle").html("<a href='/admin/testcase/" + data.testcaseId + "'>" + data.title + "</a>");
+                            if (data.taskId) {
+                                $("#testcaseTitle").html("<a href='/admin/task'>" + data.title + "</a>");
+                            } else {
+                                $("#testcaseTitle").html("<a href='/admin/testcase/" + data.testcaseId + "'>" + data.title + "</a>");
+                            }
+
                             {#                            $("#browsers").html(data.browsers.join("  ,  "));#}
                             {#                            var es = data.environments;#}
                             {#                            es.length > 0 ? es.join("  ,  ") : "-";#}
@@ -181,9 +191,9 @@
                                 var resultDetails = splitResult[i];
                                 sr += '<tr class="odd">';
                                 sr += '<td class="center">' + num + '</td>';
-                                sr += '<td class="center">' + data.projectName + '</td>';
+                                sr += '<td class="center" id="remark">' + data.projectName + '</td>';
                                 sr += '<td class="center">' + resultDetails["browser"] + '</td>';
-                                sr += '<td class="center">' + resultDetails["environment"] + '</td>';
+                                sr += '<td class="center" id="remark">' + resultDetails["environment"] + '</td>';
                                 sr += '<td class="center" id="remark">';
                                 for (var j in resultDetails["parameter"]) {
                                     if (j == "expect") {
@@ -193,9 +203,9 @@
                                     sr += "</br>";
                                 }
                                 sr += '</td>';
-                                sr += '<td class="center">' + login_name + '</td>';
-                                sr += '<td class="center">' + data.checkType + '</td>';
-                                sr += '<td class="center">' + data.checkValue + '</td>';
+                                sr += '<td class="center" id="remark">' + login_name + '</td>';
+                                sr += '<td class="center" id="remark">' + data.checkType + '</td>';
+                                sr += '<td class="center" id="remark">' + data.checkValue + '</td>';
                                 sr += '<td class="center">' + (resultDetails["expect"] ? "成功" : "失败") + '</td>';
                                 var status = resultDetails["status"];
                                 sr += '<td class="center">' + (status == 10 ? "队列中" : status == 20 ? "测试中" : status == 30 ? "成功" : status == 40 ? "失败" : status == 50 ? "跳过" : "") + '</td>';

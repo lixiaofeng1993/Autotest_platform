@@ -7342,7 +7342,12 @@
                             }
                         }
                     }
-                    $("#testName").html("<a href='/admin/testcase/" + data.data[index].testcaseId + "'>" + data.data[index].title + "</a>");
+                    if (data.data[index].taskId) {
+                        $("#testName").html("<a href='/admin/task'>" + data.data[index].title + "</a>");
+                    } else {
+                        $("#testName").html("<a href='/admin/testcase/" + data.data[index].testcaseId + "'>" + data.data[index].title + "</a>");
+                    }
+
                     browsers += browser + "，";
                     $("#browsers").html(browsers.slice(0, browsers.length - 1));
                     var es = data.data[index].environments;
