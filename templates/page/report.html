@@ -7041,6 +7041,7 @@
         <button id="back_home" onclick="window.location.href='/admin/result/'+'{{ report_id }}'">返回报告模块</button>
     </div>
 </div>
+<button onclick="topFunction()" id="myBtn" title="回顶部">返回顶部</button>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-12">
@@ -7150,7 +7151,6 @@
         </div>
     </div>
 </div>
-<button onclick="topFunction()" id="myBtn" title="回顶部">返回顶部</button>
 <script src={% static 'assets/js/jquery.min.js' %}></script>
 <script src={% static 'assets/js/bootstrap.min.js' %}></script>
 <script type="text/javascript">
@@ -7275,7 +7275,6 @@
                                 var value = data.data[index].steps[i].viewData[j];
                                 if (value.type == "element") {
                                     ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言元素：" + value.elementName + " </p>";
-
                                 } else {
                                     if (value.value) {
                                         ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言值：" + value.value + " </p>";
@@ -7298,7 +7297,7 @@
                         }
 
                         if (num == data.data[index].step_num) {
-                            ht += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>";
+                            {#                            ht += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>";#}
                             if (browser == "chrome" || chrome == "firefox") {
                                 ht += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
                             } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
