@@ -1162,8 +1162,8 @@ class TestResult:
             result["error_name"] = error_name
             result["step_num"] = step_num
             data_info.append(result)
-        pic_name = DrawPie(pass_num, error_num, skip_num)
         if request.method == "GET":
+            pic_name = DrawPie(pass_num, error_num, skip_num)
             return render(request, "page/report.html",
                           {"report": data_info, "report_id": result_id, "project_name": project_name,
                            "browsers": device.strip("、"),
