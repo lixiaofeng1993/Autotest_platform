@@ -207,7 +207,6 @@
                 dataType: 'json',
                 data: data,
                 success: function (res) {
-                    console.log(res, 1111111111111111);
                     $('#dataTables-example').dataTable().fnClearTable();//清空数据.fnClearTable();//清空数据
                     $('#dataTables-example').dataTable().fnDestroy(); //还原初始化了的datatable
                     for (var i = 0; i < res.data.results.length; i++) {
