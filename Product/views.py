@@ -12,9 +12,11 @@ from Product.models import Result, Task, LoginConfig, EnvironmentLogin, TaskRela
 from Product.models import TestCase as testcase, Browser
 from djcelery.models import PeriodicTask, CrontabSchedule, IntervalSchedule, PeriodicTasks
 from .tasks import SplitTask
+# from django.conf import settings
 from django.shortcuts import render
 from datetime import datetime
-import json
+from .public import DrawPie
+import json, os
 
 
 # Create your views here.
@@ -1048,6 +1050,9 @@ class TestResult:
         title = ""
         project_name = ""
         device = ""
+        pass_num = 0
+        error_num = 0
+        skip_num = 0
         for index, _id in enumerate(json.loads(result_id_list)):
             re = get_model(Result, id=_id)
             if not re:
@@ -1056,6 +1061,12 @@ class TestResult:
                                         'checkValue', 'checkText', 'selectText', 'steps'])
             tc = testcase.objects.get(id=result["testcaseId"])
             result["case_name"] = tc.title
+            if result["status"] == 30:
+                pass_num += 1
+            elif result["status"] == 40:
+                error_num += 1
+            elif result["status"] == 50:
+                skip_num += 1
             result["parameter"] = json.loads(re.parameter) if re.parameter else []
             result["steps"] = json.loads(re.steps) if re.steps else []
             result["steps_num"] = len(result["steps"]) if result["steps"] else 0
@@ -1151,13 +1162,13 @@ class TestResult:
             result["error_name"] = error_name
             result["step_num"] = step_num
             data_info.append(result)
-
+        pic_name = DrawPie(pass_num, error_num, skip_num)
         if request.method == "GET":
             return render(request, "page/report.html",
                           {"report": data_info, "report_id": result_id, "project_name": project_name,
                            "browsers": device.strip("、"),
                            "steps_total": steps_total, "start_time": start_time, "finish_time": finish_time,
-                           "title": title, "total": len(data_info)})
+                           "title": title, "total": len(data_info), "pic_name": pic_name})
         elif request.method == "POST":
             return JsonResponse.OK(message="ok", data=data_info)
 
@@ -1504,7 +1515,6 @@ class TestTasks:
         result = dict()
         result["total"] = total
         result["tasks"] = _list
-        print(result, 11111111111111)
         return JsonResponse.OK(message="ok", data=result)
 
     @staticmethod
@@ -1534,7 +1544,6 @@ class TestTasks:
             testcaseInfo.append(oneTestCase)
         result["testcases"] = testcaseInfo
         result["createTime"] = t.date_changed.strftime('%Y-%m-%d %H:%M:%S')
-        print(result, 222222222222)
         return JsonResponse.OK(message="ok", data=result)
 
     @staticmethod

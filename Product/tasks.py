@@ -6,6 +6,7 @@ from django.conf import settings
 from faker import Faker
 from celery.task import task
 import logging
+from .public import remove_logs
 
 faker = Faker('zh_CN')
 log = logging.getLogger('log')  # 初始化log
@@ -450,28 +451,3 @@ def delete_logs():
         log.info('remove logs------->没有要删除的文件.<--------------')
     else:
         log.info('remove logs------->删除过期日志文件数量：{}<--------------'.format(total_num))
-
-
-def remove_logs(path):
-    """
-    到期删除日志文件
-    :param path:
-    :return:
-    """
-    file_list = os.listdir(path)  # 返回目录下的文件list
-    now_time = datetime.now()
-    num = 0
-    for file in file_list:
-        file_path = os.path.join(path, file)
-        if os.path.isfile(file_path):
-            file_ctime = datetime(*time.localtime(os.path.getctime(file_path))[:6])
-            if (now_time - file_ctime).days > 6:
-                try:
-                    os.remove(file_path)
-                    num += 1
-                    log.info('------删除文件------->>> {}'.format(file_path))
-                except PermissionError as e:
-                    log.warning('删除文件失败：{}'.format(e))
-        else:
-            log.info('文件夹跳过：{}'.format(file_path))
-    return num

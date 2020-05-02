@@ -84,9 +84,9 @@
                                     <thead>
                                     <tr>
                                         <th>序号</th>
-                                        <th>用例标题</th>
+                                        <th>用例/任务标题</th>
                                         <th>所属项目</th>
-                                        <th>所属任务</th>
+                                        <th>浏览器</th>
                                         <th>测试状态</th>
                                         <th>创建时间</th>
                                         <th>操作</th>
@@ -207,6 +207,7 @@
                 dataType: 'json',
                 data: data,
                 success: function (res) {
+                    console.log(res, 1111111111111111);
                     $('#dataTables-example').dataTable().fnClearTable();//清空数据.fnClearTable();//清空数据
                     $('#dataTables-example').dataTable().fnDestroy(); //还原初始化了的datatable
                     for (var i = 0; i < res.data.results.length; i++) {
@@ -225,9 +226,25 @@
                         } else {
                             num_status = "失败";
                         }
+                        var browser = "";
+                        for (var b in res.data.results[i].browsers) {
+                            if (res.data.results[i].browsers[b] == 1) {
+                                browser += "chrome" + "，"
+                            } else if (res.data.results[i].browsers[b] == 2) {
+                                browser += "firefox" + "，"
+                            } else if (res.data.results[i].browsers[b] == 3) {
+                                browser += "app" + "，"
+                            } else if (res.data.results[i].browsers[b] == 4) {
+                                browser += "手机浏览器" + "，"
+                            } else if (res.data.results[i].browsers[b] == 5) {
+                                browser += "模拟器" + "，"
+                            } else if (res.data.results[i].browsers[b] == 6) {
+                                browser += "chrome-no-web" + "，"
+                            }
+                        }
                         $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' +
                             res.data.results[i].title + '</td><td class="center">' + res.data.results[i].projectName
-                            + '</td><td class="center">' + res.data.results[i].taskName + '</td><td class="center">' +
+                            + '</td><td class="center">' + browser.slice(0, browser.length - 1) + '</td><td class="center">' +
                             num_status + '</td><td class="center">' + res.data.results[i].createTime
                             + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' +
                             res.data.results[i].id + '" onclick="seeDetails(this)"><i class="fa fa-edit"></i></a> &nbsp;&nbsp;&nbsp; ' +
@@ -291,9 +308,25 @@
                         } else {
                             num_status = "失败";
                         }
+                        var browser = "";
+                        for (var b in res.data.results[i].browsers) {
+                            if (res.data.results[i].browsers[b] == 1) {
+                                browser += "chrome" + "，"
+                            } else if (res.data.results[i].browsers[b] == 2) {
+                                browser += "firefox" + "，"
+                            } else if (res.data.results[i].browsers[b] == 3) {
+                                browser += "app" + "，"
+                            } else if (res.data.results[i].browsers[b] == 4) {
+                                browser += "手机浏览器" + "，"
+                            } else if (res.data.results[i].browsers[b] == 5) {
+                                browser += "模拟器" + "，"
+                            } else if (res.data.results[i].browsers[b] == 6) {
+                                browser += "chrome-no-web" + "，"
+                            }
+                        }
                         $(".js_table").append('<tr class="odd"><td class="center">' + (i + 1) + '</td><td class="center">' +
                             res.data.results[i].title + '</td><td class="center">' + res.data.results[i].projectName
-                            + '</td><td class="center">' + res.data.results[i].taskName + '</td><td class="center">' +
+                            + '</td><td class="center">' + browser.slice(0, browser.length - 1) + '</td><td class="center">' +
                             num_status + '</td><td class="center">' + res.data.results[i].createTime
                             + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' +
                             res.data.results[i].id + '" onclick="seeDetails(this)"><i class="fa fa-edit"></i></a> &nbsp;&nbsp;&nbsp; ' +

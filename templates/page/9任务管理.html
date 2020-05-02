@@ -502,7 +502,6 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res, 2222222222222)
                     if (res.code == 200) {
                         $("#taskName").val(res.data.name);
                         $("input:radio[value='" + res.data.enabled + "']").prop('checked', true);
@@ -551,7 +550,6 @@
                 tlist.push(JSON.parse($(v).text()));
             });
             testCases = tlist;
-            console.log(testCases, 7777777777777777777)
             $.ajax({
                 url: '/api/v1/task/edit/' + id,
                 type: 'post',
@@ -599,7 +597,6 @@
                 dataType: 'json',
                 data: data,
                 success: function (res) {
-                    console.log(res, 1111111111111);
                     $('#dataTables-example').dataTable().fnClearTable();//清空数据.fnClearTable();//清空数据
                     $('#dataTables-example').dataTable().fnDestroy(); //还原初始化了的datatable
                     var tr = '';
@@ -665,7 +662,6 @@
                 dataType: 'json',
                 data: JSON.stringify({"pageSize": 999999}),
                 success: function (res) {
-                    console.log(res, 3333333333333333)
                     if (res.code == 200) {
                         for (var i = 0; i < res.data.projects.length; i++) {
                             $("#projectSelect").append("<option value='" + res.data.projects[i].id + "'>" + res.data.projects[i].name + "</option>")
