@@ -1041,16 +1041,25 @@ class TestResult:
             result_id_list.append(str(result_id))
         if isinstance(result_id_list, list):
             result_id_list = json.dumps(result_id_list)
-        data_info = {}
-        for index, result_id in enumerate(json.loads(result_id_list)):
-            re = get_model(Result, id=result_id)
+        data_info = []
+        steps_total = 0
+        start_time = ""
+        finish_time = ""
+        title = ""
+        project_name = ""
+        device = ""
+        for index, _id in enumerate(json.loads(result_id_list)):
+            re = get_model(Result, id=_id)
             if not re:
-                return JsonResponse.BadRequest("该测试结果不存在！id：{}".format(result_id))
+                return JsonResponse.BadRequest("该测试结果不存在！id：{}".format(_id))
             result = model_to_dict(re, ["id", "projectId", "taskId", "testcaseId", 'title', 'status', 'checkType',
                                         'checkValue', 'checkText', 'selectText', 'steps'])
+            tc = testcase.objects.get(id=result["testcaseId"])
+            result["case_name"] = tc.title
             result["parameter"] = json.loads(re.parameter) if re.parameter else []
             result["steps"] = json.loads(re.steps) if re.steps else []
             result["steps_num"] = len(result["steps"]) if result["steps"] else 0
+            title = result["title"]
             checkValue = result["checkValue"]
             if checkValue.isdigit():
                 el = get_model(element, id=checkValue)
@@ -1067,20 +1076,24 @@ class TestResult:
                     bl["steps"] = json.loads(login.steps) if login.steps else []
                     steps_num = len(bl["steps"]) if bl["steps"] else 0
                     for step in bl["steps"]:
+                        steps_total += 1
                         kw = get_model(keyword, id=step["keywordId"])
                         step["keyName"] = kw.method if kw else ""
                         for value in step["values"]:
-                            if value["value"].isdigit():
-                                el = get_model(element, id=value["value"])
-                                value["value"] = el.name if el else value["value"]
+                            # if value["value"].isdigit():
+                            # el = get_model(element, id=value["value"])
+                            # value["value"] = el.name if el else value["value"]
+                            value["value"] = value["value"]
                     result["beforeLogin"].append(bl)
             result["steps_num"] = result["steps_num"] + steps_num
             browsers = json.loads(re.browsers) if re.browsers else []
             result["browsers"] = list()
+            device = ""
             for browser in browsers:
                 browser = get_model(Browser, id=browser)
                 browser = browser.name if browser else ""
                 result["browsers"].append(browser)
+                device += browser + "、"
             environments = json.loads(re.environments) if re.environments else []
             result["environments"] = list()
             if environments:
@@ -1090,7 +1103,7 @@ class TestResult:
                     result["environments"].append(e)
             result["createTime"] = re.createTime.strftime('%Y-%m-%d %H:%M:%S')
             tc = get_model(project, id=re.projectId)
-            result["projectName"] = tc.name if tc else ""
+            result["projectName"] = project_name = tc.name if tc else ""
             from .models import SplitResult
             split = get_model(SplitResult, False, resultId=re.id)
             splitResult = list()
@@ -1104,12 +1117,16 @@ class TestResult:
                 sd['environment'] = get_model(environment, id=s.environmentId).name if get_model(environment,
                                                                                                  id=s.environmentId) else ""
                 sd["startTime"] = s.startTime.strftime('%Y-%m-%d %H:%M:%S') if s.startTime else None
-                sd["finishTime"] = s.finishTime.strftime('%Y-%m-%d %H:%M:%S') if s.finishTime else None
+                start_time = s.startTime.strftime('%Y-%m-%d %H:%M:%S') if s.startTime else None
+                sd["startTime"] = start_time
+                finish_time = s.finishTime.strftime('%Y-%m-%d %H:%M:%S') if s.finishTime else None
+                sd["finishTime"] = finish_time
                 sd["parameter"] = json.loads(s.parameter) if s.parameter else {}
                 splitResult.append(sd)
             result['splitResults'] = splitResult
             steps_ = list()
             for step in result["steps"]:
+                steps_total += 1
                 info = dict()
                 info["data"] = step
                 kw = get_model(keyword, id=step["keywordId"])
@@ -1133,8 +1150,16 @@ class TestResult:
             result["steps"] = steps_
             result["error_name"] = error_name
             result["step_num"] = step_num
-            data_info.update({"case" + str(index): result})
-        return JsonResponse.OK(message="ok", data=data_info)
+            data_info.append(result)
+
+        if request.method == "GET":
+            return render(request, "page/report.html",
+                          {"report": data_info, "report_id": result_id, "project_name": project_name,
+                           "browsers": device.strip("、"),
+                           "steps_total": steps_total, "start_time": start_time, "finish_time": finish_time,
+                           "title": title, "total": len(data_info)})
+        elif request.method == "POST":
+            return JsonResponse.OK(message="ok", data=data_info)
 
 
 class Public:
@@ -1479,6 +1504,7 @@ class TestTasks:
         result = dict()
         result["total"] = total
         result["tasks"] = _list
+        print(result, 11111111111111)
         return JsonResponse.OK(message="ok", data=result)
 
     @staticmethod
@@ -1496,7 +1522,9 @@ class TestTasks:
             TC = get_model(testcase, id=tci.get("id"))
             oneTestCase["testcaseTitle"] = TC.title if TC else ""
             pro = get_model(project, id=TC.projectId)
-            oneTestCase["projectName"] = pro.name if pro else ""
+            project_name = pro.name if pro else ""
+            result["projectName"] = project_name
+            oneTestCase["projectName"] = project_name
             ES = list()
             for e in tci.get("environments"):
                 E = get_model(environment, id=e)
@@ -1506,6 +1534,7 @@ class TestTasks:
             testcaseInfo.append(oneTestCase)
         result["testcases"] = testcaseInfo
         result["createTime"] = t.date_changed.strftime('%Y-%m-%d %H:%M:%S')
+        print(result, 222222222222)
         return JsonResponse.OK(message="ok", data=result)
 
     @staticmethod

@@ -115,7 +115,6 @@ urlpatterns = [
     path('admin/task', task, name="task"),
     path('admin/result', result, name="result"),
     path('admin/result/<int:result_id>', result_see),
-    path("admin/report/<int:report_id>", report, name="report"),
     path("admin/change_password/", change_password, name="change_password"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

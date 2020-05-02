@@ -7066,31 +7066,31 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label text-navy">用例/任务名称:</label>
                                     <div class="col-sm-5">
-                                        <span class="form-control" id="testName"></span>
+                                        <span class="form-control" id="testName">{{ title }}</span>
                                     </div>
                                 </div>
-                                {#                                <div class="form-group">#}
-                                {#                                    <label class="col-sm-2 control-label text-navy">项目名称:</label>#}
-                                {#                                    <div class="col-sm-5">#}
-                                {#                                        <span class="form-control" id="project"></span>#}
-                                {#                                    </div>#}
-                                {#                                </div>#}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">项目名称:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="project">{{ project_name }}</span>
+                                    </div>
+                                </div>
                                 {#                                <div class="form-group">#}
                                 {#                                    <label class="col-sm-2 control-label text-navy">测试环境:</label>#}
                                 {#                                    <div class="col-sm-5">#}
                                 {#                                        <span class="form-control" id="environments"></span>#}
                                 {#                                    </div>#}
                                 {#                                </div>#}
-                                {#                                <div class="form-group">#}
-                                {#                                    <label class="col-sm-2 control-label text-navy">浏览器:</label>#}
-                                {#                                    <div class="col-sm-5">#}
-                                {#                                        <span class="form-control" id="browsers"></span>#}
-                                {#                                    </div>#}
-                                {#                                </div>#}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">浏览器:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="browsers">{{ browsers }}</span>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label text-navy">步骤总数:</label>
                                     <div class="col-sm-5">
-                                        <span class="form-control" id="step_num"></span>
+                                        <span class="form-control" id="step_num">{{ steps_total }}</span>
                                     </div>
                                 </div>
                                 {#                                <div class="form-group">#}
@@ -7102,13 +7102,13 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label text-navy">开始时间:</label>
                                     <div class="col-sm-5">
-                                        <span class="form-control" id="beginTime"></span>
+                                        <span class="form-control" id="beginTime">{{ start_time }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label text-navy">结束时间:</label>
                                     <div class="col-sm-5">
-                                        <span class="form-control" id="finishTime"></span>
+                                        <span class="form-control" id="finishTime">{{ finish_time }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group" hidden id="failure">
@@ -7144,200 +7144,304 @@
                         </a>
                     </div>
                 </div>
-                <div class="ibox-content" id="detail-info">
 
+                <div class="ibox-content">
+                    {% for foo in report %}
+                        <table class="table table-bordered">
+                            <tbody id="detailBody-{{ forloop.counter }}">
+
+                            <div class="input-group panel-heading"
+                                 style="width: 100%; background-color: #1ab394; margin-bottom: 10px;">
+                                <div style="float: right">
+                                    <label class="form-control">
+                                        <span class="text-navy">用例名称: </span><span class="text-navy b-r"
+                                                                                   id="environments"
+                                                                                   style="color: #999">{{ foo.case_name }}</span><span> | </span>
+                                        <span class="text-navy">测试环境: </span><span class="text-navy b-r"
+                                                                                   id="environments"
+                                                                                   style="color: #999">{{ foo.environments }}</span><span> | </span>
+                                        <span class="text-navy">步骤数量: </span><span class="text-navy b-r"
+                                                                                   id="steps_num"
+                                                                                   style="color: #999">{{ foo.steps_num }}</span><span> | </span>
+                                        {% if foo.status == 30 %}
+                                            <span class="text-navy">执行结果: </span><span id="result">成功</span>
+                                            <span> | </span>
+                                        {% elif foo.status == 40 %}
+                                            <span class="text-navy">执行结果: </span>
+                                            <span id="result" style="color: red">失败</span><span> | </span>
+                                        {% elif foo.status == 10 %}
+                                            <span class="text-navy">执行结果: </span>
+                                            <span id="result">队列中</span><span> | </span>
+                                        {% elif foo.status == 20 %}
+                                            <span class="text-navy">执行结果: </span>
+                                            <span id="result">测试中</span><span> | </span>
+                                        {% elif foo.status == 50 %}
+                                            <span class="text-navy">执行结果: </span>
+                                            <span id="result" style="color: #999">跳过</span><span> | </span>
+                                        {% endif %}
+
+                                    </label>
+                                </div>
+                            </div>
+                            {% if foo.beforeLogin %}
+                                <tr id="tr-pass-1">
+                                    <td id="login-info" style="font-size: 14px;color: #777">前置登录执行步骤</td>
+                                    <td>
+                                        <button type='button' data-state="open" data-index="{{ forloop.counter }}1"
+                                                id="expand"
+                                                class='btn btn-primary btn-xs expand-{{ forloop.counter }}1'
+                                                style='margin-bottom: 0'>
+                                            展开
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr id="step-{{ forloop.counter }}1" class="step" style="padding-left: 10%" hidden>
+                                    {% for fo in foo.beforeLogin %}
+                                        <td colspan="2" id="step-login">
+                                            <p style='font-family: Consolas;font-size:12px'>
+                                                [--------------------------------]---->>>>>>
+                                                <span
+                                                        style='font-weight:900;font-size:16px'>断言</span>：{{ fo.checkType }}
+                                                <<<<<<----</p>
+                                            <p style='font-family: Consolas;font-size:12px'>
+                                                [--------------------------------]---->>>>>>
+                                                <span>值</span>：{{ fo.checkValue }}
+                                                <<<<<<----</p>
+                                            <br>
+                                            {% for f in fo.steps %}
+                                                {% if f.keyName == "assert_text" %}
+                                                    <p style='font-family: Consolas;font-size:12px'>
+                                                        [--------------------------------]---->>>>>>
+                                                        步骤 {{ forloop.counter }}：<span
+                                                            style='font-weight:900;font-size:16px'>断言</span> <<<<<<----
+                                                    </p>
+                                                    {% for f_ in f.values %}
+                                                        {% if f_.type == "element" %}
+                                                            <p style='font-family: Consolas;font-size:12px'>
+                                                                [--------------------------------]
+                                                                断言元素：{{ f_.value }}</p>
+                                                        {% else %}
+                                                            {% if f_.value %}
+                                                                <p style='font-family: Consolas;font-size:12px'>
+                                                                    [--------------------------------]
+                                                                    断言值：{{ f_.value }} </p>
+                                                            {% endif %}
+                                                        {% endif %}
+
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <p style='font-family: Consolas;font-size:12px'>
+                                                        [--------------------------------]---->>>>>>
+                                                        步骤 {{ forloop.counter }}：<span
+                                                            style='font-weight:300;font-size:14px'>{{ f.keyName }}</span>
+                                                        <<<<<<----
+                                                    </p>
+                                                    {% for f_ in f.values %}
+                                                        <p style='font-family: Consolas;font-size:12px'>
+                                                            [--------------------------------]
+                                                            参数： {{ f_.key }} --|-- 类型：{{ f_.type }}--|--
+                                                            值：{{ f_.value }} </p>
+
+                                                    {% endfor %}
+                                                    <br>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if foo.step_num == 888 %}
+                                                {% for b in foo.browsers %}
+                                                    <br>
+                                                    <p style='font-family: Consolas;font-size:12px'>
+                                                        [--------------------------------] 浏览器：{{ b }}</p>
+                                                    {% if b == "chrome" or b == "firefox" %}
+                                                        <img src='/media/{{ foo.error_name }}' height='500'
+                                                             width='720'>
+                                                    {% elif b == "app" or b == "手机浏览器" or b == "模拟器" %}
+                                                        <img src='/media/{{ fo0.error_name }}' height='720'
+                                                             width='500'>
+                                                    {% endif %}<br>
+
+                                                {% endfor %}<br>
+                                            {% endif %}
+
+                                        </td>
+                                    {% endfor %}
+
+
+                                </tr>
+                            {% endif %}
+
+
+                            <tr id="tr-pass-2">
+                                <td id="test-case" style="font-size: 14px;color: #777">测试用例执行步骤</td>
+                                <td>
+                                    <button type='button' data-state="open" data-index="{{ forloop.counter }}2"
+                                            id="expand"
+                                            class='btn btn-primary btn-xs expand-{{ forloop.counter }}2'
+                                            style='margin-bottom: 0'>
+                                        展开
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr id="step-{{ forloop.counter }}2" class="step" style="padding-left: 10%" hidden>
+                                <td colspan="2" id="step-case">
+                                    <p style='font-family: Consolas;font-size:12px'>
+                                        [--------------------------------]---->>>>>>
+                                        <span
+                                                style='font-weight:900;font-size:16px'>断言</span>：{{ foo.checkType }}
+                                        <<<<<<----</p>
+                                    {% if foo.checkType == "element" %}
+                                        <p style='font-family: Consolas;font-size:12px'>
+                                            [--------------------------------] 断言元素：{{ foo.checkValue }}</p>
+                                        {% if foo.selectText == "all" %}
+                                            <p style='font-family: Consolas;font-size:12px'>
+                                                [--------------------------------] 匹配类型：完全匹配</p>
+                                        {% else %}
+                                            <p style='font-family: Consolas;font-size:12px'>
+                                                [--------------------------------] 匹配类型：包含匹配</p>
+                                        {% endif %}
+                                        <p style='font-family: Consolas;font-size:12px'>
+                                            [---------------_----------------] 断言值：{{ foo.checkText }} </p>
+                                    {% else %}
+                                        <p style='font-family: Consolas;font-size:12px'>
+                                            [---------------_----------------] 断言元素：{{ foo.checkValue }}</p>
+                                        <p style='font-family: Consolas;font-size:12px'>
+                                    {% endif %}
+                                    <br>
+                                    {% for fo in foo.steps %}
+                                        {% if fo.keywordName == "assert_text" %}
+                                            <p style='font-family: Consolas;font-size:12px'>
+                                                [------^-----------------^-------]---->>>>>>
+                                                步骤 {{ forloop.counter }}：<span
+                                                    style='font-weight:900;font-size:16px'>断言</span> <<<<<<----</p>
+                                            {% for f in fo.viewData %}
+                                                {% if f.type == "element" %}
+                                                    <p style='font-family: Consolas;font-size:12px'>
+                                                        [---------------_----------------] 断言元素：{{ f.elementName }}</p>
+                                                {% else %}
+                                                    {% if f.value %}
+                                                        <p style='font-family: Consolas;font-size:12px'>
+                                                            [---------------_----------------] 断言值：{{ f.value }} </p>
+                                                    {% endif %}<br>
+                                                {% endif %}
+
+                                            {% endfor %}
+
+                                        {% else %}
+                                            <p style='font-family: Consolas;font-size:12px'>
+                                                [------^-----------------^-------]---->>>>>>
+                                                步骤 {{ forloop.counter }}：<span
+                                                    style='font-weight:300;font-size:14px'>{{ fo.keywordName }}</span>
+                                                <<<<<<----</p>
+                                            {% for f in fo.viewData %}
+                                                {% if f.type == "element" %}
+                                                    <p style='font-family: Consolas;font-size:12px'>
+                                                        [---------------_----------------] 参数： {{ f.key }} --|--
+                                                        类型： {{ f.type }}--|-- 值：{{ f.elementName }} </p>
+                                                {% else %}
+                                                    <p style='font-family: Consolas;font-size:12px'>
+                                                        [---------------_----------------] 参数： {{ f.key }} --|--
+                                                        类型：{{ f.type }}--|-- 值：{{ f.value }} </p>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <br>
+                                        {% endif %}
+                                        {% if forloop.counter == foo.step_num %}
+                                            {% for b in foo.browsers %}
+                                                <p style='font-family: Consolas;font-size:12px'>
+                                                    [--------------------------------] 浏览器：{{ b }}</p>
+                                                {% if b == "chrome" or b == "firefox" %}
+                                                    <p><img src='/media/{{ foo.error_name }}' height='500' width='720'/>
+                                                    </p>
+                                                {% elif b == "app" or b == "手机浏览器" or b == "模拟器" %}
+                                                    <p><img src='/media/{{ fo0.error_name }}' height='720'
+                                                            width='500'></p>
+                                                {% endif %}<br>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </td>
+
+                            </tr>
+                            <tr id="tr-pass-3">
+                                <td id="test-result" style="font-size: 14px;color: #777">测试结果</td>
+                                <td>
+                                    <button type='button' data-state="open" data-index="{{ forloop.counter }}3"
+                                            id="expand"
+                                            class='btn btn-primary btn-xs expand-{{ forloop.counter }}3'
+                                            style='margin-bottom: 0'>
+                                        展开
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr id="step-{{ forloop.counter }}3" class="step" style="padding-left: 10%" hidden>
+                                <td colspan="2" id="step-result">
+                                    {% for fo in foo.parameter %}
+                                        {% for key, value in fo.items %}
+                                            {% if key != "expect" %}
+
+                                                <p style='font-family: Consolas;font-size:12px;'>
+                                                    [--------------------------------]
+                                                    测试数据 ==> 参数：{{ key }} --|-- 值：{{ value }}</p>
+
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for fo in foo.splitResults %}
+                                        <p style='font-family: Consolas;font-size:12px;'>
+                                            [--------------------------------] 浏览器：{{ fo.browser }}</p>
+                                        {% if foo.status == 30 %}
+                                            <p style='font-family: Consolas;font-size:12px;color:green;'>
+                                                [--------------------------------] 测试结果：{{ fo.remark }}</p>
+                                        {% elif foo.status == 40 %}
+                                            <p style='font-family: Consolas;font-size:12px;color:red;'>
+                                                [--------------------------------] 测试结果：{{ fo.remark }}</p>
+                                        {% else %}
+                                            <p style='font-family: Consolas;font-size:12px;color:black;'>
+                                                [--------------------------------] 测试结果：{{ fo.remark }}</p>
+
+                                        {% endif %}
+                                        {% if foo.step_num == 999 %}
+                                            {#                                        {% if fo.error_name %}#}
+                                            <br>
+                                            {% if fo.browser == "chrome" or fo.browser == "firefox" %}
+                                                <p><img src='/media/{{ fo.error_name }}' height='500' width='720'></p>
+                                            {% elif fo.browser == "app" or fo.browser == "手机浏览器" or fo.browser == "模拟器" %}
+                                                <p><img src='/media/{{ fo.error_name }}' height='720' width='500'></p>
+                                            {% endif %}<br>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
+
 </div>
+
+
 <script src={% static 'assets/js/jquery.min.js' %}></script>
 <script src={% static 'assets/js/bootstrap.min.js' %}></script>
 <script type="text/javascript">
-    init();
-    function init() {
-        var report_id = $("#report_id").attr("data-report-id");
-        $.ajax({
-            url: "/api/v1/result/" + report_id,
-            type: "get",
-            success: function (data) {
-                var number = 0;
-                var info = "";
-                for (var index in data.data) {
-                    var result_html = "";
-                    if (data.data[index].taskId) {
-                        $("#testName").html("<a href='/admin/task'>" + data.data[index].title + "</a>");
-                    } else {
-                        $("#testName").html("<a href='/admin/testcase/" + data.data[index].testcaseId + "'>" + data.data[index].title + "</a>");
-                    }
-                    var browser = data.data[index].browsers.join("  ,  ");
-                    number += parseInt(data.data[index].steps_num);
-                    $("#step_num").html(number);
-                    var result = data.data[index].status;
-                    var resultText = result == 10 ? "队列中" : result == 20 ? "测试中" : result == 30 ? "成功" : result == 40 ? "失败" : "";
-                    if (result == 40) {
-                        result_html = '<span class="color-green"style="color:red;font-weight: 500;">' + resultText + '</span>';
-                    } else {
-                        result_html = '<span class="color-green"style="color:green;font-weight: 500;">' + resultText + '</span>';
-                    }
-                    info += '<div><div class="input-group panel-heading" style="width: 100%; background-color: #1ab394; margin-bottom: 10px;">' +
-                        '<div style="float: right"><label class="form-control"><span class="text-navy">项目名称: </span><span id="result">' +
-                        data.data[index].projectName + '</span><span> | </span><span class="text-navy">测试环境: </span><span id="result">' +
-                        data.data[index].environments + '</span><span> | </span><span class="text-navy">浏览器: </span><span id="result">' +
-                        browser + '</span><span> | </span><span class="text-navy">步骤总数: </span>' +
-                        '<span class="text-navy b-r" id="steps_num">' + data.data[index].steps_num + '</span><span> | </span><span class="text-navy">' +
-                        '执行结果: </span><span id="result">' + result_html + '</span><span> | </span><span class="text-navy"><button onclick="topFunction()" id="myBtn" title="回顶部">返回顶部</button> </span></label> </div></div>';
-                    for (var i = 0; i < data.data[index].splitResults.length; i++) {
-                        var hp = "";
-                        var par = "";
-                        var split = data.data[index].splitResults[i];
-                        $("#beginTime").html(split.startTime);
-                        $("#finishTime").html(split.finishTime);
-                        for (var params in split.parameter) {
-                            if (params == "expect") {
-                                continue;
-                            } else {
-                                par += "<p style='font-family: Consolas;font-size:12px;'>[--------------------------------]  测试数据 ==> 参数：" + params + " --|-- 值：" + split.parameter[params] + "</p>"
-                            }
-                        }
-                        if (result == 40) {
-                            hp = "<p style='font-family: Consolas;font-size:12px;color:red;'>[--------------------------------]  测试结果： " + split.remark + "</p>";
-                        } else {
-                            hp = "<p style='font-family: Consolas;font-size:12px;color:black;'>[--------------------------------]  测试结果： " + split.remark + "</p>";
-                        }
-                        if (data.data[index].step_num == 999) {
-                            if (browser == "chrome" || chrome == "firefox") {
-                                hp += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
-                            } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
-                                hp += "<img src='/media/" + data.data[index].error_name + "' height='720' width='500'></img><br>"
-                            }
-                        }
 
-                    }
-                    var num = 0;
-                    var login_num = 0;
-                    var html = "";
-                    if (data.data[index].beforeLogin.length > 0) {
-                        $("#tr-pass-1").show();
-                        $("#login-info").html("前置登录执行步骤");
-                        for (var l = 0; l < data.data[index].beforeLogin.length; l++) {
-                            var login = data.data[index].beforeLogin[l];
-                            for (var k = 0; k < login.steps.length; k++) {
-                                var st = login.steps[k];
-                                login_num = login_num + 1;
-                                html += "<br>";
-                                var hl = "";
-                                if (st.keyName == "断言") {
-                                    html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：<span style='font-weight:900;font-size:16px'>断言</span>  <<<<<<----</p>";
-                                    for (var q = 0; q < st.values.length; q++) {
-                                        var key = st.values[q];
-                                        if (key.type == "element") {
-                                            hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言元素：" + key.value + " </p>";
-
-                                        } else {
-                                            if (key.value) {
-                                                hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言值：" + key.value + " </p>";
-                                            } else {
-                                            }
-                                        }
-                                        hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";
-                                    }
-                                } else {
-                                    html += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + login_num + "：" + st.keyName + "  <<<<<<----</p>";
-                                    for (var q = 0; q < st.values.length; q++) {
-                                        var key = st.values[q];
-                                        hl += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + key.key + " --|-- 类型：" + key.type + "--|-- 值：" + key.value + " </p>";
-                                    }
-                                }
-                                html += hl;
-                            }
-                            if (data.data[index].step_num == 888) {
-                                {#                                html += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>";#}
-                                if (browser == "chrome" || chrome == "firefox") {
-                                    html += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
-                                } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
-                                    html += "<img src='/media/" + data.data[index].error_name + "' height='720' width='500'></img><br>"
-                                }
-                            }
-                            html += "<br>";
-                        }
-                    }
-                    var html1 = "";
-                    var html2 = "";
-                    for (var i = 0; i < data.data[index].steps.length; i++) {
-                        var step = data.data[index].steps[i];
-                        num = num + 1;
-                        html1 += "<br>";
-                        var ht = "";
-                        if (step.keywordName == "断言") {
-                            html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：<span style='font-weight:900;font-size:16px'>断言</span> <<<<<<----</p>";
-                            for (var j = 0; j < data.data[index].steps[i].viewData.length; j++) {
-                                var value = data.data[index].steps[i].viewData[j];
-                                if (value.type == "element") {
-                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言元素：" + value.elementName + " </p>";
-                                } else {
-                                    if (value.value) {
-                                        ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  断言值：" + value.value + " </p>";
-                                    } else {
-                                    }
-                                }
-                            }
-                        } else {
-                            html1 += "<p style='font-family: Consolas;font-size:12px'>[------^-----------------^-------]---->>>>>>  步骤  " + num + "：" + step.keywordName + "  <<<<<<----</p>";
-                            for (var j = 0; j < data.data[index].steps[i].viewData.length; j++) {
-                                var value = data.data[index].steps[i].viewData[j];
-                                if (value.type == "element") {
-                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.elementName + " </p>";
-
-                                } else {
-                                    ht += "<p style='font-family: Consolas;font-size:12px'>[---------------_----------------]  参数： " + value.key + " --|-- 类型：" + value.type + "--|-- 值：" + value.value + " </p>";
-
-                                }
-                            }
-                        }
-
-                        if (num == data.data[index].step_num) {
-                            {#                            ht += "<img src='/media/" + data.data.error_name + "' height='500' width='720'></img><br>";#}
-                            if (browser == "chrome" || chrome == "firefox") {
-                                ht += "<img src='/media/" + data.data[index].error_name + "' height='500' width='720'></img><br>"
-                            } else if (browser == "app" || browser == "手机浏览器" || browser == "模拟器") {
-                                ht += "<img src='/media/" + data.data[index].error_name + "' height='720' width='500'></img><br>"
-                            }
-                        }
-                        html1 += ht;
-
-                        html1 += "<br>";
-                    }
-                    html2 += "<br>";
-                    html2 += "<p style='font-family: Consolas;font-size:12px;color:green;'>[---------------_----------------]  断言类型： " + data.data[index].checkType + " </p>";
-                    if (data.data[index].checkType == "element") {
-                        html2 += "<p style='font-family: Consolas;font-size:12px;color:green;'>[---------------_----------------]  断言 ==> 元素：" + data.data[index].checkValue + "--|-- 值：" + data.data[index].checkText + " </p>";
-                    } else {
-                        html2 += "<p style='font-family: Consolas;font-size:12px;color:green;'>[---------------_----------------]  断言 ==> 值：" + data.data[index].checkValue + "</p>";
-                    }
-                    html2 += "<br>";
-                    info += '<table class="table table-bordered"><tbody id="detailBody"> <tr id="tr-pass-1"> <td id="login-info" style="font-size: 14px;color: #777">前置登录执行步骤</td>' +
-                        ' <td> </td>' +
-                        ' </tr> <tr id="step-1" class="step" style="padding-left: 10%"> <td colspan="2" id="step-login"> ' + html + '</td> </tr> <tr id="tr-pass-2" > ' +
-                        '<td id="test-case" style="font-size: 14px;color: #777">测试用例执行步骤</td> <td>' +
-                        ' </td> </tr> <tr id="step-2" class="step" style="padding-left: 10%" > <td colspan="2" id="step-case"> ' + html1 + par + '</td> </tr> <tr id="tr-pass-3" > ' +
-                        '<td id="test-result" style="font-size: 14px;color: #777">测试结果</td> <td> </td>' +
-                        '</tr><tr id="step-3" class="step" style="padding-left: 10%" ><td colspan="2" id="step-result">' + html2 + hp + '</td></tr></tbody></table></div>';
-                }
-                $("#detail-info").append(info);
-            }
-        })
+    for (i = 1; i <={{ total }}; i++) {
+        $("#detailBody-" + i + "").on('click', '.btn-primary', function () {
+            var id = this.dataset.index,
+                state = this.dataset.state,
+                node = $("#step-" + id + "");
+            console.log(id, state, node);
+            node.toggle();
+            state == 'open'
+                ? $(this).html('收起').attr("data-state", "close").css('background-color', '#ff7575')
+                : $(this).html('展开').attr("data-state", "open").css('background-color', '#1ab394')
+        });
     }
-    $('#detailBody').on('click', '.btn-primary', function () {
-        var id = this.dataset.index,
-            state = this.dataset.state,
-            node = $("#step-" + id + "");
-        console.log(id, state);
-        node.toggle();
-        state == 'open'
-            ? $(this).html('收起').attr("data-state", "close").css('background-color', '#ff7575')
-            : $(this).html('展开').attr("data-state", "open").css('background-color', '#1ab394')
-    });
 
     // 当网页向下滑动 20px 出现"返回顶部" 按钮
     window.onscroll = function () {
@@ -7345,7 +7449,6 @@
     };
 
     function scrollFunction() {
-        console.log(123);
         if (document.body.scrollTop > 10 || document.documentElement.scrollTop > 10) {
             document.getElementById("myBtn").style.display = "block";
         } else {
@@ -7399,7 +7502,6 @@
             o.remove()
         }), top == this) {
     }
-
 </script>
 </body>
 </html>

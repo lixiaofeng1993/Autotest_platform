@@ -384,10 +384,25 @@
             projectName = $("#projectSelect option:selected").text();
             testcaseId = $("#testcaseSelect option:selected").val();
             testcaseTitle = $("#testcaseSelect option:selected").text();
-            var data = {"id": testcaseId, "environments": esid};
+            var data = {"id": testcaseId, "environments": esid, "projectId": projectId, "projectName": projectName};
             es = $("#es option:selected").map(function () {
                 return $(this).text();
             }).get();
+            var tlist = [];
+            var tcElements = $("#testcases").find("tr").find("td.data");
+            tcElements.each(function (i, v) {
+                debugger;
+                tlist.push(JSON.parse($(v).text()));
+            });
+            if (tlist) {
+                for (var t in tlist) {
+                    if (tlist[t].projectId != projectId) {
+                        $("#addTestCaseMessage").html("请选择项目：" + tlist[t].projectName + " 中的测试用例");
+                        return
+                    }
+                }
+            }
+
             if (esid.length == 0 || typeof(testcaseId) == "undefined") {
                 $("#addTestCaseMessage").html("请选择测试用例与测试环境")
             } else {
@@ -487,6 +502,7 @@
                 type: 'POST',
                 dataType: 'json',
                 success: function (res) {
+                    console.log(res, 2222222222222)
                     if (res.code == 200) {
                         $("#taskName").val(res.data.name);
                         $("input:radio[value='" + res.data.enabled + "']").prop('checked', true);
@@ -535,6 +551,7 @@
                 tlist.push(JSON.parse($(v).text()));
             });
             testCases = tlist;
+            console.log(testCases, 7777777777777777777)
             $.ajax({
                 url: '/api/v1/task/edit/' + id,
                 type: 'post',
@@ -582,6 +599,7 @@
                 dataType: 'json',
                 data: data,
                 success: function (res) {
+                    console.log(res, 1111111111111);
                     $('#dataTables-example').dataTable().fnClearTable();//清空数据.fnClearTable();//清空数据
                     $('#dataTables-example').dataTable().fnDestroy(); //还原初始化了的datatable
                     var tr = '';
@@ -640,14 +658,14 @@
             });
 
             $("#projectSelect").find("option").remove();
-            $("#projectSelect").append("<option value='999999999'>选择项目</option>"
-            );
+            $("#projectSelect").append("<option value='999999999'>选择项目</option>");
             $.ajax({
                 url: '/api/v1/project?p=1',
                 type: 'post',
                 dataType: 'json',
                 data: JSON.stringify({"pageSize": 999999}),
                 success: function (res) {
+                    console.log(res, 3333333333333333)
                     if (res.code == 200) {
                         for (var i = 0; i < res.data.projects.length; i++) {
                             $("#projectSelect").append("<option value='" + res.data.projects[i].id + "'>" + res.data.projects[i].name + "</option>")

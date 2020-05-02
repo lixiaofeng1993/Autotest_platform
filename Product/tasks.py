@@ -163,8 +163,8 @@ def SplitTaskRunning(splitResult_id):
                     Step(loginStep.get("keywordId"), loginStep.get("values")).perform(driver, loginParameter, host)
                 except Exception as e:
                     split.loginStatus = 2
-                    split.status = 50
-                    # driver.save_screenshot(img_path)
+                    split.status = 40
+                    driver.save_screenshot(img_path)
                     split.step_num = 888
                     split.error_name = now + ".png"
                     split.remark = "初始化登陆失败</br>登陆名称={}, </br>错误信息={}".format(login.name, e)
@@ -179,7 +179,7 @@ def SplitTaskRunning(splitResult_id):
                 if loginCheckType == Check.TYPE_URL:
                     if not driver.current_url.endswith(str(loginCheckValue)):
                         split.loginStatus = 2
-                        split.status = 50
+                        split.status = 40
                         driver.save_screenshot(img_path)
                         split.step_num = 888
                         split.error_name = now + ".png"
@@ -198,7 +198,7 @@ def SplitTaskRunning(splitResult_id):
                         PageObject().find_element(driver, element)
                     except:
                         split.loginStatus = 2
-                        split.status = 50
+                        split.status = 40
                         driver.save_screenshot(img_path)
                         split.step_num = 888
                         split.error_name = now + ".png"
@@ -350,7 +350,7 @@ def SplitTaskRunning(splitResult_id):
 
 @task
 def timingRunning(*args, **kwargs):
-    from Product.models import TestCase, Result,TaskRelation
+    from Product.models import TestCase, Result, TaskRelation
     from Autotest_platform.helper.util import get_model
     from djcelery.models import PeriodicTask
     if kwargs:

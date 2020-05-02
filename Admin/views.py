@@ -161,9 +161,10 @@ def loginConfig_edit(request, login_id):
     return render(request, "page/8-1编辑登录配置.html", {"id": login_id})
 
 
-@login_required
-def report(request, report_id):
-    return render(request, "page/report.html", {"report_id": report_id})
+# @login_required
+# def report(request, report_id):
+#
+#     return render(request, "page/report.html", {"report_id": report_id})
 
 
 # 400

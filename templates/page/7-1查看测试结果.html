@@ -53,24 +53,22 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="div">
+                                    <label class="col-sm-2 control-label">项目名称</label>
+                                    <div id="project" class="col-sm-10 mar-top-6">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="div">
+                                    <label class="col-sm-2 control-label">浏览器</label>
+                                    <div id='browsers' class="col-sm-10 mar-top-6">
+                                    </div>
+                                </div>
+                                <div class="form-group" id="div">
                                     <label class="col-sm-2 control-label">测试报告</label>
                                     <div id="report" class="col-sm-10 mar-top-6">
 
                                     </div>
                                 </div>
-                                {#                                <div class="form-group">#}
-                                {#                                    <label class="col-sm-2 control-label">断言值</label>#}
-                                {#                                    <div id="checkValue" class="col-sm-10 mar-top-6">#}
-                                {#                                        url#}
-                                {#                                    </div>#}
-                                {#                                </div>#}
-                                {##}
-                                {#                                <div class="form-group">#}
-                                {#                                    <label class="col-sm-2 control-label">前置登录</label>#}
-                                {#                                    <div id='logins' class="col-sm-10 mar-top-6">#}
-                                {#                                    </div>#}
-                                {#                                </div>#}
-
                                 <div class="form-group" id="div">
                                     <label class="col-sm-2 control-label">结果详情</label>
                                     <div class="col-sm-10 mar-top-6">
@@ -80,7 +78,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th>序号</th>
-                                                    <th>项目名称</th>
+                                                    {#                                                    <th>项目名称</th>#}
                                                     <th>浏览器</th>
                                                     <th>测试环境</th>
                                                     <th>测试数据</th>
@@ -151,7 +149,7 @@
                 success: function (res) {
                     if (res.code == 200) {
                         var num = 1;
-                        $("#report").append('<a href="/admin/report/' + resultId + '"><i class="fa fa-bar-chart"></i>');
+                        $("#report").append('<a href="/api/v1/result/' + resultId + '"><i class="fa fa-bar-chart"></i>');
                         for (var key in res.data) {
                             var login_name = "";
                             var data = res.data[key];
@@ -161,7 +159,8 @@
                                 $("#testcaseTitle").html("<a href='/admin/testcase/" + data.testcaseId + "'>" + data.title + "</a>");
                             }
 
-                            {#                            $("#browsers").html(data.browsers.join("  ,  "));#}
+                            $("#browsers").html(data.browsers.join("  ,  "));
+                            $("#project").html(data.projectName);
                             {#                            var es = data.environments;#}
                             {#                            es.length > 0 ? es.join("  ,  ") : "-";#}
                             {#                            environments += es + "，";#}
@@ -191,7 +190,7 @@
                                 var resultDetails = splitResult[i];
                                 sr += '<tr class="odd">';
                                 sr += '<td class="center">' + num + '</td>';
-                                sr += '<td class="center" id="remark">' + data.projectName + '</td>';
+                                {#                                sr += '<td class="center" id="remark">' + data.projectName + '</td>';#}
                                 sr += '<td class="center">' + resultDetails["browser"] + '</td>';
                                 sr += '<td class="center" id="remark">' + resultDetails["environment"] + '</td>';
                                 sr += '<td class="center" id="remark">';
@@ -208,13 +207,14 @@
                                 sr += '<td class="center" id="remark">' + data.checkValue + '</td>';
                                 sr += '<td class="center">' + (resultDetails["expect"] ? "成功" : "失败") + '</td>';
                                 var status = resultDetails["status"];
-                                sr += '<td class="center">' + (status == 10 ? "队列中" : status == 20 ? "测试中" : status == 30 ? "成功" : status == 40 ? "失败" : status == 50 ? "跳过" : "") + '</td>';
+                                sr += '<td class="center">' + (status == 10 ? "队列中" : status == 20 ? "测试中" : status == 30 ? "<span style='color:green'>成功</span>" : status == 40 ? "<span style='color:red'>失败</span>" : status == 50 ? "跳过" : "") + '</td>';
                                 sr += '<td class="center" id="remark">' + resultDetails["remark"] + '</td>';
                                 sr += '<td class="center">' + resultDetails["startTime"] + '</td>';
                                 sr += '<td class="center">' + resultDetails["finishTime"] + '</td>';
                                 num++;
                             }
                             {#                            sr += '<td class="center" id="fa"><a href="/admin/report/' + resultId + '"><i class="fa fa-bar-chart"></i></a></td>';#}
+
                             $("#splitResult").append(sr);
                         }
                     } else {

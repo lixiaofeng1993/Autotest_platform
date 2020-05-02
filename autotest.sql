@@ -212,7 +212,7 @@ INSERT INTO `keyword` VALUES (34, 0, 'select_by_text', 1, 'Autotest_platform.Pag
 INSERT INTO `keyword` VALUES (35, 0, 'save_screenshot', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'save_screenshot', '[{\"type\": \"string\", \"key\": \"img_path\"}]', '[]', '2020-1-3 15:08:06', '获取电脑屏幕截屏');
 INSERT INTO `keyword` VALUES (36, 0, 'uploaded', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'uploaded', '[{\"type\": \"string\", \"key\": \"path\"}]', '[]', '2020-4-15 19:55:13', '上传文件');
 INSERT INTO `keyword` VALUES (37, 0, 'get_text', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'get_text', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"make\"}]', '[]', '2020-4-15 21:04:27', '获取元素文本，传参make，传递文本');
-INSERT INTO `keyword` VALUES (38, 0, '断言', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'assert_text', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"text\"}]', '[]', '2020-4-20 08:51:10', '断言函数');
+INSERT INTO `keyword` VALUES (38, 0, 'assert_text', 1, 'Autotest_platform.PageObject.base_page', 'PageObject', 'assert_text', '[{\"type\": \"element\", \"key\": \"locator\"}, {\"type\": \"string\", \"key\": \"text\"}]', '[]', '2020-4-20 08:51:10', '断言函数');
 
 -- ----------------------------
 -- Table structure for testcase
