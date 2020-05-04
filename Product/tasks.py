@@ -124,7 +124,7 @@ def SplitTaskRunning(splitResult_id):
     make_params = {}
     step_num = 0
     error_name = ""
-    now = time.strftime('%Y-%m-%d %H-%M-%S')
+    now = datetime.utcnow().strftime('%Y-%m-%d %H-%M-%S-%f')[:-1]
     img_path = os.path.join(settings.MEDIA_ROOT, now + ".png")
     try:
         driver = Browser.objects.get(id=split.browserId).buid(host)
