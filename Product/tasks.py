@@ -1,6 +1,7 @@
 import json
 import time
 import os
+import random
 from datetime import datetime
 from django.conf import settings
 from faker import Faker
@@ -34,9 +35,8 @@ def SplitTask(result_id):
                                 if '#time#' in v:
                                     v = v.replace('#time#',
                                                   time.strftime('%Y%m%d', time.localtime(time.time())))
-                                if '#random#' in v:
-                                    import random
-                                    v = v.replace('#random#', str(random.randint(1000, 9999)))
+                                if '#random_num#' in v:
+                                    v = v.replace('#random_num#', str(random.randint(100000, 99999999)))
                                 if '#null#' == v:
                                     v = None
                                 if '#logo#' == v:
@@ -59,14 +59,16 @@ def SplitTask(result_id):
                     for k, v in params.items():
                         if v and isinstance(v, str):
                             if '#time#' in v:
-                                v = v.replace('#time#', time.strftime('%Y%m%d', time.localtime(time.time())))
-                            if '#random#' in v:
-                                import random
-                                v = v.replace('#random#', str(random.randint(1000, 9999)))
+                                v = v.replace('#time#',
+                                              time.strftime('%Y%m%d', time.localtime(time.time())))
+                            if '#random_num#' in v:
+                                v = v.replace('#random_num#', str(random.randint(100000, 99999999)))
                             if '#null#' == v:
                                 v = None
                             if '#logo#' == v:
                                 v = "/home/Atp/logo.png"
+                            if '#random_text#' in v:
+                                v = v.replace('#random_text#', faker.text(5))
                             params[k] = v
                     sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id,
                                                     parameter=json.dumps(params, ensure_ascii=False),

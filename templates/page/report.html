@@ -7375,8 +7375,8 @@
                             </tr>
                             <tr id="step-{{ forloop.counter }}3" class="step" style="padding-left: 10%" hidden>
                                 <td colspan="2" id="step-result">
-                                    {% for fo in foo.parameter %}
-                                        {% for key, value in fo.items %}
+                                    {% for fo in foo.splitResults %}
+                                        {% for key, value in fo.parameter.items %}
                                             {% if key != "expect" %}
 
                                                 <p style='font-family: Consolas;font-size:12px;'>
@@ -7385,8 +7385,7 @@
 
                                             {% endif %}
                                         {% endfor %}
-                                    {% endfor %}
-                                    {% for fo in foo.splitResults %}
+
                                         <p style='font-family: Consolas;font-size:12px;'>
                                             [--------------------------------] 浏览器：{{ fo.browser }}</p>
                                         {% if foo.status == 30 %}
