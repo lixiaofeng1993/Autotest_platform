@@ -356,7 +356,8 @@
         }
 
         //搜索中所属项目联动
-        $("#newSel").on('click', function () {
+        {#        $("#newSel").on('click', function () {#}
+        $("#newSel").change(function () {
             var newNum = $("#newSel option:selected").attr('id');//所属项目
             $("#newpage").find('option').remove();
             $("#newpage").append('<option>所属页面</option>');
@@ -380,7 +381,8 @@
             });
         });
         //新建中所属项目联动
-        $("#newSel1").on('click', function () {
+        {#        $("#newSel1").on('click', function () {#}
+        $("#newSel1").change(function () {
             var newNum = $("#newSel1 option:selected").attr('id');//所属项目
             $("#newpage1").find('option').remove();
             $("#newpage1").append('<option>所属页面</option>');
