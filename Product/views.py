@@ -1035,6 +1035,7 @@ class TestResult:
 
     @staticmethod
     def get(request, result_id):
+        status = request.GET.get("status", "")
         tr = get_model(TaskRelation, result_id=result_id)
         result_id_list = []
         if tr:
@@ -1059,8 +1060,11 @@ class TestResult:
                 return JsonResponse.BadRequest("该测试结果不存在！id：{}".format(_id))
             result = model_to_dict(re, ["id", "projectId", "taskId", "testcaseId", 'title', 'status', 'checkType',
                                         'checkValue', 'checkText', 'selectText', 'steps'])
+            if status and status != str(result["status"]):
+                continue
             tc = testcase.objects.get(id=result["testcaseId"])
             result["case_name"] = tc.title
+
             if result["status"] == 30:
                 pass_num += 1
             elif result["status"] == 40:
@@ -1163,12 +1167,13 @@ class TestResult:
             result["step_num"] = step_num
             data_info.append(result)
         if request.method == "GET":
-            pic_name = DrawPie(pass_num, error_num, skip_num)
+            # pic_name = DrawPie(pass_num, error_num, skip_num) "pic_name": pic_name,
             return render(request, "page/report.html",
                           {"report": data_info, "report_id": result_id, "project_name": project_name,
-                           "browsers": device.strip("、"),
+                           "browsers": device.strip("、"), "status": status,
                            "steps_total": steps_total, "start_time": start_time, "finish_time": finish_time,
-                           "title": title, "total": len(data_info), "pic_name": pic_name})
+                           "title": title, "total": len(data_info), "case_num": len(data_info),
+                           "pass_num": pass_num, "error_num": error_num, "skip_num": skip_num})
         elif request.method == "POST":
             return JsonResponse.OK(message="ok", data=data_info)
 

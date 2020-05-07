@@ -7088,6 +7088,12 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">用例总数:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="case_num">{{ case_num }}</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="col-sm-2 control-label text-navy">步骤总数:</label>
                                     <div class="col-sm-5">
                                         <span class="form-control" id="step_num">{{ steps_total }}</span>
@@ -7121,8 +7127,8 @@
                         </div>
                         <div class="col-sm-6">
                             <div style="height:350px" id="echarts-map-chart">
-                                <img src='/media/{{ pic_name }}' height="370" width="520"
-                                     style="margin-left: 10%; margin-bottom: 3%;">
+                                {#                                <img src='/media/{{ pic_name }}' height="370" width="520"#}
+                                {#                                     style="margin-left: 10%; margin-bottom: 3%;">#}
                             </div>
                         </div>
                     </div>
@@ -7146,6 +7152,23 @@
                 </div>
 
                 <div class="ibox-content">
+                    <div class="input-group panel-heading"
+                         style="margin-bottom: 10px; text-align: left; font-family: Consolas;">
+                        <select class="chosen-select form-control" data-placeholder="----------" style="width: 200px;"
+                                name="filterResult" id="filterResult">
+                            {% if status == "30" %}
+                                <option value="30">成功</option>
+                            {% elif status == "40" %}
+                                <option value="40">失败</option>
+                            {% elif status == "50" %}
+                                <option value="50">跳过</option>
+                            {% endif %}
+                            <option value="">----------</option>
+                            <option value="30">成功</option>
+                            <option value="40">失败</option>
+                            <option value="50">跳过</option>
+                        </select>
+                    </div>
                     {% for foo in report %}
                         <table class="table table-bordered">
                             <tbody id="detailBody-{{ forloop.counter }}">
@@ -7412,8 +7435,6 @@
 
                                 </td>
                             </tr>
-
-
                             </tbody>
                         </table>
                     {% endfor %}
@@ -7427,7 +7448,18 @@
 
 <script src={% static 'assets/js/jquery.min.js' %}></script>
 <script src={% static 'assets/js/bootstrap.min.js' %}></script>
+<script src="https://cdn.bootcss.com/echarts/3.8.5/echarts.min.js"></script>
 <script type="text/javascript">
+
+    $("#filterResult").on('change', function () {
+        var caseResult = $("#filterResult").val();
+        console.log(caseResult);
+        if (caseResult) {
+            window.location.href = "/api/v1/result/{{ report_id }}?status=" + caseResult;
+        } else {
+            window.location.href = "/api/v1/result/{{ report_id }}";
+        }
+    });
 
     for (i = 1; i <={{ total }}; i++) {
         $("#detailBody-" + i + "").on('click', '.btn-primary', function () {
@@ -7500,6 +7532,47 @@
             var o = $(this).closest("div.ibox");
             o.remove()
         }), top == this) {
+    }
+    pie();
+    function pie() {
+        var option = {
+            title: {
+                text: '测试用例运行结果',
+                subtext: '',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['失败', '跳过', '成功']
+            },
+            series: [
+                {
+                    name: '运行结果',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data: [
+                        {value: {{ error_num }}, name: '失败'},
+                        {value: {{ skip_num }}, name: '跳过'},
+                        {value: {{ pass_num }}, name: '成功'}
+                    ],
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        var chart = echarts.init(document.getElementById("echarts-map-chart"));
+        chart.setOption(option);
     }
 </script>
 </body>
