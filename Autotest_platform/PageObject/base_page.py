@@ -38,8 +38,7 @@ class PageObject:
             self.driver.get(url)
         except TimeoutException as e:
             log.error("打开 {} 页面加载超时！{}".format(url, e))
-            self.driver.execute_script("window.stop()")
-            self.quit()
+            # self.driver.execute_script("window.stop()")
             raise TimeoutException("打开 {} 页面加载超时！{}".format(url, e))
         if title != "":
             try:
