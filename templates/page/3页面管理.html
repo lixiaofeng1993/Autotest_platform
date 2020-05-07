@@ -294,7 +294,7 @@
                     for (var i = 0; i < res.data.pages.length; i++) {
                         $(".js_table").append('<tr><td class="center">' + (i + 1) + '</td><td class="center">' + res.data.pages[i].name +
                             '</td><td class="center">' + res.data.pages[i].projectName + '</td><td class="center">' + res.data.pages[i].createTime +
-                            '</td><td class="center">' + res.data.pages[i].elementNum + '</td><td class="center">' + res.data.pages[i].remark +
+                            '</td><td class="center"><a href="/admin/element">' + res.data.pages[i].elementNum + '</a></td><td class="center">' + res.data.pages[i].remark +
                             '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.pages[i].id + '' +
                             '" onclick="editList(this)"><i class="fa fa-pencil"></i></a> ' + '&nbsp;&nbsp;&nbsp;' + ' <a href="javascript:void(0);' +
                             '" class="pointer" Did="' + res.data.pages[i].id +
@@ -343,8 +343,8 @@
                     for (var i = 0; i < res.data.pages.length; i++) {
                         $(".js_table").append('<tr><td class="center">' + (i + 1) + '</td><td class="center">' +
                             res.data.pages[i].name + '</td><td class="center">' + res.data.pages[i].projectName + '' +
-                            '</td><td class="center">' + res.data.pages[i].createTime + '</td><td class="center">'
-                            + res.data.pages[i].elementNum + '</td><td class="center">' + res.data.pages[i].remark +
+                            '</td><td class="center">' + res.data.pages[i].createTime + '</td><td class="center"><a href="/admin/element">'
+                            + res.data.pages[i].elementNum + '</a></td><td class="center">' + res.data.pages[i].remark +
                             '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' + res.data.pages[i].id +
                             '" onclick="editList(this)"><i class="fa fa-pencil"></i></a> '+'&nbsp;&nbsp;&nbsp;'+' <a href="javascript:void(0);" class="pointer" Did="' +
                             res.data.pages[i].id + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a></td></tr>');
