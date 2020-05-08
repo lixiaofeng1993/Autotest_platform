@@ -462,8 +462,16 @@
         function search() {
             var nameTxt, name_xmT, name_xmS, creatTime1, creatTime2;
             nameTxt = $("#name").val();           //页面名称
-            name_xmT = $("#newSel option:selected").attr('id');  //所属项目
-            name_xmS = $("#newpage option:selected").attr('id');  //所属项目
+            if ({{ projectId }}) {
+                name_xmT ={{ projectId }};
+            } else {
+                name_xmT = $("#newSel option:selected").attr('id');  //所属项目
+            }
+            if ({{ pageId }}) {
+                name_xmS = {{ pageId }};
+            } else {
+                name_xmS = $("#newpage option:selected").attr('id');  //所属页面
+            }
             creatTime1 = $('#dtp_input_start').val();//开始时间
             creatTime2 = $('#dtp_input_end').val();//结束时间
             var datas = {
@@ -474,7 +482,6 @@
                 "endTime": creatTime2,
                 "pageSize": 99999
             };
-            console.log(datas, "666");
             var data = JSON.stringify(datas);
             $.ajax({
                 url: '/api/v1/element?p=1',
@@ -483,7 +490,6 @@
                 data: data,
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res, "5555");
                     $('#dataTables-example').dataTable().fnClearTable();//清空数据.fnClearTable();//清空数据
                     $('#dataTables-example').dataTable().fnDestroy(); //还原初始化了的datatable
                     for (var i = 0; i < res.data.elements.length; i++) {

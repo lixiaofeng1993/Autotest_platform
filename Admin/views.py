@@ -90,7 +90,10 @@ def page(request):
 
 @login_required
 def element(request):
-    return render(request, "page/4页面元素.html")
+    projectId = request.GET.get("projectId", "false")
+    pageId = request.GET.get("pageId", "false")
+    info = {"projectId": projectId, "pageId": pageId}
+    return render(request, "page/4页面元素.html", info)
 
 
 @login_required
