@@ -7277,10 +7277,10 @@
                                                         <p style='font-family: Consolas;font-size:12px'>
                                                             [--------------------------------] 浏览器：{{ b }}</p>
                                                         {% if b == "chrome" or b == "firefox" %}
-                                                            <img src='/media/{{ foo.error_name }}' height='500'
+                                                            <img src='/media/{{ foo.error_name }}' height='auto'
                                                                  width='720'>
                                                         {% elif b == "app" or b == "手机浏览器" or b == "模拟器" %}
-                                                            <img src='/media/{{ fo0.error_name }}' height='720'
+                                                            <img src='/media/{{ fo0.error_name }}' height='auto'
                                                                  width='500'>
                                                         {% endif %}<br>
 
@@ -7376,11 +7376,11 @@
                                                     <p style='font-family: Consolas;font-size:12px'>
                                                         [--------------------------------] 浏览器：{{ b }}</p>
                                                     {% if b == "chrome" or b == "firefox" %}
-                                                        <p><img src='/media/{{ foo.error_name }}' height='500'
+                                                        <p><img src='/media/{{ foo.error_name }}' height='auto'
                                                                 width='720'/>
                                                         </p>
                                                     {% elif b == "app" or b == "手机浏览器" or b == "模拟器" %}
-                                                        <p><img src='/media/{{ fo0.error_name }}' height='720'
+                                                        <p><img src='/media/{{ fo0.error_name }}' height='auto'
                                                                 width='500'></p>
                                                     {% endif %}<br>
                                                 {% endfor %}
@@ -7431,10 +7431,10 @@
                                                 {#                                        {% if fo.error_name %}#}
                                                 <br>
                                                 {% if fo.browser == "chrome" or fo.browser == "firefox" %}
-                                                    <p><img src='/media/{{ fo.error_name }}' height='500' width='720'>
+                                                    <p><img src='/media/{{ fo.error_name }}' height='auto' width='720'>
                                                     </p>
                                                 {% elif fo.browser == "app" or fo.browser == "手机浏览器" or fo.browser == "模拟器" %}
-                                                    <p><img src='/media/{{ fo.error_name }}' height='720' width='500'>
+                                                    <p><img src='/media/{{ fo.error_name }}' height='auto' width='500'>
                                                     </p>
                                                 {% endif %}<br>
                                             {% endif %}
