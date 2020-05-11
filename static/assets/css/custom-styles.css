@@ -394,7 +394,7 @@ footer p {
 }
 
 .active-menu {
-    background-color: #CCFFFF !important;
+    background-color: #1f2d3d !important;
 }
 
 .arrow {
@@ -431,7 +431,7 @@ footer p {
 }
 
 .sidebar-collapse .nav > li > a {
-    color: black;
+    color: #bfcbd9 !important;
     background: transparent;
     text-shadow: none;
 
@@ -443,6 +443,10 @@ footer p {
 
 .sidebar-collapse > .nav > li {
     border-bottom: 1px solid rgba(107, 108, 109, 0.19);
+}
+
+.sidebar-collapse > .nav > li:hover {
+    background-color: #263445 !important;
 }
 
 ul.nav.nav-second-level.collapse.in {

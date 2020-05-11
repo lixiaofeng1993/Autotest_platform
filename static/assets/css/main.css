@@ -201,8 +201,12 @@ html.fullscreen-bg #wrapper {
     padding: 0;
     margin: 0;
     border: none;
-    background-color: #fff;
+    background-color: #001528 !important;
     opacity: 0.7;
+}
+
+#nav-top {
+    background-color: #fff !important;
 }
 
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
