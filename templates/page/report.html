@@ -7278,10 +7278,10 @@
                                                             [--------------------------------] 浏览器：{{ b }}</p>
                                                         {% if b == "chrome" or b == "firefox" %}
                                                             <img src='/media/{{ foo.error_name }}' height='auto'
-                                                                 width='720' onclick="enlarge(this)"/>
+                                                                 width='720' onclick="enlarge(this)" flag="1"/>
                                                         {% elif b == "app" or b == "手机浏览器" or b == "模拟器" %}
                                                             <img src='/media/{{ foo.error_name }}' height='auto'
-                                                                 width='500' onclick="enlarge(this)"/>
+                                                                 flag="1" width='500' onclick="enlarge(this)"/>
                                                         {% endif %}<br>
 
                                                     {% endfor %}<br>
@@ -7377,11 +7377,11 @@
                                                         [--------------------------------] 浏览器：{{ b }}</p>
                                                     {% if b == "chrome" or b == "firefox" %}
                                                         <p><img src='/media/{{ foo.error_name }}' height='auto'
-                                                                width='720' onclick="enlarge(this)"/>
+                                                                width='720' onclick="enlarge(this)" flag="1"/>
                                                         </p>
                                                     {% elif b == "app" or b == "手机浏览器" or b == "模拟器" %}
                                                         <p><img src='/media/{{ foo.error_name }}' height='auto'
-                                                                width='500' onclick="enlarge(this)"/></p>
+                                                                width='500' onclick="enlarge(this)" flag="1"/></p>
                                                     {% endif %}<br>
                                                 {% endfor %}
                                             {% endif %}
@@ -7432,11 +7432,11 @@
                                                 <br>
                                                 {% if fo.browser == "chrome" or fo.browser == "firefox" %}
                                                     <p><img src='/media/{{ fo.error_name }}' height='auto' width='720'
-                                                            onclick="enlarge(this)"/>
+                                                            onclick="enlarge(this)" flag="1"/>
                                                     </p>
                                                 {% elif fo.browser == "app" or fo.browser == "手机浏览器" or fo.browser == "模拟器" %}
                                                     <p><img src='/media/{{ fo.error_name }}' height='auto' width='500'
-                                                            onclick="enlarge(this)"/>
+                                                            onclick="enlarge(this)" flag="1"/>
                                                     </p>
                                                 {% endif %}<br>
                                             {% endif %}
@@ -7588,26 +7588,29 @@
     }
     function enlarge(obj) {
         console.log(obj);
-        var flag = true,//状态true为正常的状态,false为放大的状态
-            imgH,//图片的高度
+        var flag = obj.getAttribute("flag"); // 获取图片是否放大
+        //var flag = true,//状态true为正常的状态,false为放大的状态
+        var imgH,//图片的高度
             imgW; //图片的宽度
-        obj.onclick = function () {
-            //图片点击事件
-            imgH = obj.height; //获取图片的高度
-            imgW = obj.width; //获取图片的宽度
-            console.log(obj.src, "555");
-            if (flag) {
-                //图片为正常状态,设置图片宽高为现在宽高的2倍
-                flag = false;//把状态设为放大状态
-                obj.height = imgH * 2;
-                obj.width = imgW * 2;
-            } else {
-                //图片为放大状态,设置图片宽高为现在宽高的二分之一
-                flag = true;//把状态设为正常状态
-                obj.height = imgH / 2;
-                obj.width = imgW / 2;
-            }
+        //obj.onclick = function () {
+        //图片点击事件
+        imgH = obj.height; //获取图片的高度
+        imgW = obj.width; //获取图片的宽度
+        console.log(obj.src, "555");
+        if (flag == "1") {
+            //图片为正常状态,设置图片宽高为现在宽高的2倍
+            //flag = false;//把状态设为放大状态
+            obj.setAttribute("flag", "0");
+            obj.height = imgH * 2;
+            obj.width = imgW * 2;
+        } else {
+            //图片为放大状态,设置图片宽高为现在宽高的二分之一
+            //flag = true;//把状态设为正常状态
+            obj.setAttribute("flag", "1");
+            obj.height = imgH / 2;
+            obj.width = imgW / 2;
         }
+        //}
     }
 
 
