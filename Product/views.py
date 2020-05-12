@@ -8,18 +8,18 @@ from Product.models import Environment as environment
 from Product.models import Keyword as keyword
 from Product.models import Page as page
 from Product.models import Project as project
-from Product.models import Result, Task, LoginConfig, EnvironmentLogin, TaskRelation
+from Product.models import Result, Task, LoginConfig, EnvironmentLogin, TaskRelation, SplitResult
 from Product.models import TestCase as testcase, Browser
 from djcelery.models import PeriodicTask, CrontabSchedule, IntervalSchedule, PeriodicTasks
 from .tasks import SplitTask
 # from django.conf import settings
 from django.shortcuts import render
 from datetime import datetime
-from .public import DrawPie
-import json, os
+from .public import remove_logs
+import json, logging
 
+log = logging.getLogger('log')  # 初始化log
 
-# Create your views here.
 
 class Project:
     @staticmethod
@@ -1024,13 +1024,45 @@ class TestResult:
 
     @staticmethod
     def delete(request, result_id):
-        kw = get_model(Result, id=result_id)
-        if not kw:
-            return JsonResponse(404, "该关键字不存在")
-        try:
-            kw.delete()
-        except:
-            return JsonResponse(500, "服务器发生错误")
+        tr = get_model(TaskRelation, result_id=result_id)
+        if tr:
+            result_id_list = eval(tr.result_id_list)
+            for ret_id in result_id_list:
+                sts = get_model(SplitResult, get=False, resultId=int(ret_id))
+                re = get_model(Result, id=int(ret_id))
+                if not re:
+                    return JsonResponse(404, "该测试结果不存在！")
+                try:
+                    re.delete()
+                except Exception:
+                    return JsonResponse(500, "服务器发生错误")
+                for st in sts:
+                    try:
+                        error_name = st.error_name
+                        remove_logs(error_name)
+                        st.delete()
+                    except Exception as e:
+                        log.warning(e)
+            try:
+                tr.delete()
+            except Exception as e:
+                log.warning(e)
+        else:
+            sts = get_model(SplitResult, get=False, resultId=result_id)
+            re = get_model(Result, id=result_id)
+            try:
+                re.delete()
+            except Exception:
+                return JsonResponse(500, "服务器发生错误")
+            if not re:
+                return JsonResponse(404, "该测试结果不存在！")
+            for st in sts:
+                try:
+                    error_name = st.error_name
+                    remove_logs(error_name)
+                    st.delete()
+                except Exception as e:
+                    log.warning(e)
         return JsonResponse.OK()
 
     @staticmethod

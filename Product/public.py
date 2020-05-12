@@ -72,37 +72,47 @@ def DrawPie(pass_num=0, error=0, skip=0):
     plt.tight_layout()
     plt.cla()  # 不覆盖
     pie_name = str(now_time) + "pie.png"
-    remove_logs(pic_path, pie_name)
     return pie_name
 
 
-def remove_logs(path, name=""):
+def remove_logs(path):
     """
     到期删除日志文件
     :param path:
     :return:
     """
-    file_list = os.listdir(path)  # 返回目录下的文件list
-    now_time = datetime.now()
-    num = 0
-    for file in file_list:
-        file_path = os.path.join(path, file)
-        if os.path.isfile(file_path):
-            file_ctime = datetime(*time.localtime(os.path.getctime(file_path))[:6])
-            if (now_time - file_ctime).days > 6:
-                try:
-                    os.remove(file_path)
-                    num += 1
-                    log.info('------删除文件------->>> {}'.format(file_path))
-                except PermissionError as e:
-                    log.warning('删除文件失败：{}'.format(e))
-            if name not in file_path and "pie" in file_path:
-                try:
-                    os.remove(file_path)
-                    num += 1
-                    log.info('------删除文件------->>> {}'.format(file_path))
-                except PermissionError as e:
-                    log.warning('删除文件失败：{}'.format(e))
+    if os.path.isdir(path):
+        file_list = os.listdir(path)  # 返回目录下的文件list
+        now_time = datetime.now()
+        num = 0
+        for file in file_list:
+            file_path = os.path.join(path, file)
+            if os.path.isfile(file_path):
+                file_ctime = datetime(*time.localtime(os.path.getctime(file_path))[:6])
+                if (now_time - file_ctime).days > 6:
+                    try:
+                        os.remove(file_path)
+                        num += 1
+                        log.info('------删除文件------->>> {}'.format(file_path))
+                    except PermissionError as e:
+                        log.warning('删除文件失败：{}'.format(e))
+                        # if name not in file_path and "pie" in file_path:
+                        #     try:
+                        #         os.remove(file_path)
+                        #         num += 1
+                        #         log.info('------删除文件------->>> {}'.format(file_path))
+                        #     except PermissionError as e:
+                        #         log.warning('删除文件失败：{}'.format(e))
+            else:
+                log.info('文件夹跳过：{}'.format(file_path))
+        return num
+    else:
+        pic_path = os.path.join(settings.MEDIA_ROOT, path)
+        if os.path.isfile(pic_path):
+            try:
+                os.remove(pic_path)
+                log.info('------删除文件------->>> {}'.format(pic_path))
+            except PermissionError as e:
+                log.warning('删除文件失败：{}'.format(e))
         else:
-            log.info('文件夹跳过：{}'.format(file_path))
-    return num
+            log.warning('不是文件或者文件不存在：{}'.format(pic_path))

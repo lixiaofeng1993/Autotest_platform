@@ -167,7 +167,10 @@ def SplitTaskRunning(splitResult_id):
                 except Exception as e:
                     split.loginStatus = 2
                     split.status = 40
-                    driver.save_screenshot(img_path)
+                    try:
+                        driver.save_screenshot(img_path)
+                    except Exception as msg:
+                        log.warning("页面加载超时：{}".format(msg))
                     split.step_num = 888
                     split.error_name = now + ".png"
                     split.remark = "初始化登陆失败</br>登陆名称={}, </br>错误信息={}".format(login.name, e)
