@@ -352,7 +352,7 @@ footer p {
     position: relative;
     display: block;
     padding: 19px 15px;
-    color: #77C0FD;
+    color: #555;
 }
 
 .top-navbar .nav > li > a:hover, .top-navbar .nav > li > a:focus {
@@ -394,7 +394,8 @@ footer p {
 }
 
 .active-menu {
-    background-color: #1f2d3d !important;
+    background-color: #000 !important;
+    color: #409eff !important;
 }
 
 .arrow {
@@ -431,7 +432,7 @@ footer p {
 }
 
 .sidebar-collapse .nav > li > a {
-    color: #bfcbd9 !important;
+    color: #bfcbd9;
     background: transparent;
     text-shadow: none;
 
