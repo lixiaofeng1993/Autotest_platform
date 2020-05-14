@@ -1,12 +1,29 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
+
+{% block css %}
+    <style>
+        #font-size {
+            font-size: 12px;
+        }
+
+        .this-page {
+            background-color: #f5f5f5;
+        }
+
+        .this-page:hover {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div id="page-wrapper">
         <div id="page-inner">
             <div class="row">
                 <div class="col-md-12">
                     <h1 class="page-header">
-                        <a href="/admin/keyword"><span class="this-page">关键字库</span> </a> - 新建关键字
+                        <a href="/admin/keyword"><span class="this-page">关键字库</span></a> - 新建关键字
                     </h1>
                 </div>
             </div>

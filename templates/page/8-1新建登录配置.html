@@ -1,12 +1,29 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
+
+{% block css %}
+    <style>
+        #font-size {
+            font-size: 12px;
+        }
+
+        .this-page {
+            background-color: #f5f5f5;
+        }
+
+        .this-page:hover {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div id="page-wrapper">
         <div id="page-inner">
             <div class="row">
                 <div class="col-md-12">
                     <h1 class="page-header">
-                        <a href="/admin/loginConfig"><span class="this-page">登录配置</span> </a> - 新建配置
+                        <a href="/admin/loginConfig"><span class="this-page">登录配置</span></a> - 新建配置
                     </h1>
                 </div>
             </div>

@@ -1,12 +1,29 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
+
+{% block css %}
+    <style>
+        #font-size {
+            font-size: 12px;
+        }
+
+        .this-page {
+            background-color: #f5f5f5;
+        }
+
+        .this-page:hover {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div id="page-wrapper">
         <div id="page-inner">
             <div class="row">
                 <div class="col-md-12">
                     <h1 class="page-header">
-                        <a href="/admin/testcase"><span class="this-page">测试用例</span> </a> - 编辑测试用例
+                        <a href="/admin/testcase"><span class="this-page">测试用例</span></a> - 编辑测试用例
                     </h1>
                 </div>
             </div>
