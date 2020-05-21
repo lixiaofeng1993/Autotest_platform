@@ -76,7 +76,7 @@ footer {
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
-    width: calc(100% - 260px);
+    width: calc(100% - 200px);
     left: 0;
     position: relative;
     float: right;
@@ -85,7 +85,7 @@ footer {
 
 #wrapper #sidebar-nav,
 #wrapper .main {
-    padding-top: 80px;
+    padding-top: 7%;
 }
 
 @media screen and (max-width: 767px) {

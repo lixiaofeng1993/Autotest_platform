@@ -35,8 +35,16 @@
         .form-control-custom {
             margin-top: -3px;
         }
-        a:hover{
+
+        a:hover {
             color: red;
+        }
+
+        #nav .sidebar-collapse nav .nav li {
+            border-bottom: 1px solid rgba(107, 108, 109, 0.19);
+        }
+        .active-menu{
+
         }
     </style>
     {% block css %}
@@ -60,7 +68,10 @@
                                                  class="img-responsive logo"></a>
             </div>
         </div>
-        <div id="navbar-menu1">
+        <div class="container-fluid">
+            <div class="navbar-btn">
+                <button type="button" class="btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></button>
+            </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="img"><img
@@ -73,8 +84,8 @@
                         </li>
                         <li><a href="/admin/"><i class="fa fa-bookmark"></i> <span>站点管理</span></a></li>
                         <li><a href="https://www.cnblogs.com/changqing8023" target="_blank"><i
-                                    class="fa fa-rouble"></i> <span>博客园地址</span></a>
-                            </li>
+                                class="fa fa-rouble"></i> <span>博客园地址</span></a>
+                        </li>
                         <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> <span>退出</span></a></li>
                     </ul>
                 </li>
@@ -83,51 +94,62 @@
     </nav>
     <!-- 头部bar end -->
     <!-- 左侧导航  -->
-    <nav class="navbar-default navbar-side" role="navigation" id="nav" style="overflow-y:auto; overflow-x:auto; width:11%; height:100%;">
-        <div class="sidebar-collapse">
-            <ul class="nav" id="main-menu" style="margin-top: 15px">
-                <li>
-                    <a href="{% url 'index' %}"><i class="fa fa-dashboard"></i> 主页</a>
-                </li>
-                <li>
-                    <a href="{% url 'project' %}"><i class="fa fa-desktop"></i> 项目管理</a>
-                </li>
-                <li>
-                    <a href="{% url 'page' %}"><i class="fa fa-bar-chart"></i> 页面管理</a>
-                </li>
-                <li>
-                    <a href="{% url 'element' %}"><i class="fa  fa-fw fa-qrcode"></i> 页面元素</a>
-                </li>
+    <div class="navbar-default navbar-side sidebar" role="navigation" id="nav"
+         style="overflow-y:auto; overflow-x:auto; width:11%; height:100%;">
+        <div class="sidebar-collapse sidebar-scroll">
+            <nav>
+                <ul class="nav" id="main-menu" style="margin-top: 15px">
+                    <li>
+                        <a href="{% url 'index' %}" class=""><i class="fa fa-dashboard"></i> 主页</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'project' %}" class=""><i class="fa fa-desktop"></i> 项目管理</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'page' %}" class=""><i class="fa fa-bar-chart"></i> 页面管理</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'element' %}" class=""><i class="fa  fa-fw fa-qrcode"></i> 页面元素</a>
+                    </li>
 
-                <li>
-                    <a href="{% url 'keyword' %}"><i class="fa fa-fw fa-table"></i> 关键字库</a>
-                </li>
-                <li>
-                    <a href="{% url 'testcase' %}"><i class="fa fa-fw fa-edit"></i> 测试用例 </a>
-                </li>
-                <li>
-                    <a href="{% url 'result' %}"><i class="fa fa-fw fa-file"></i> 测试结果 </a>
-                </li>
-                <li>
-                    <a href="{% url 'loginConfig' %}"><i class="fa fa-fw fa-building"></i> 登录配置 </a>
-                </li>
-                <li>
-                    <a href="{% url 'task' %}"><i class="fa fa-fw fa-sitemap"></i> 任务管理 </a>
-                </li>
-            </ul>
+                    <li>
+                        <a href="{% url 'keyword' %}" class=""><i class="fa fa-fw fa-table"></i> 关键字库</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'testcase' %}" class=""><i class="fa fa-fw fa-edit"></i> 测试用例 </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'result' %}" class=""><i class="fa fa-fw fa-file"></i> 测试结果 </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'loginConfig' %}" class=""><i class="fa fa-fw fa-building"></i> 登录配置 </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'task' %}" class=""><i class="fa fa-fw fa-sitemap"></i> 任务管理 </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
-    </nav>
+    </div>
     <!-- 左侧导航  -->
-    {% block body %}
+    <div class="main">
+        <div class="main-content">
+            <div class="container-fluid">
+                {% block body %}
 
-    {% endblock %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
     <!-- /. PAGE WRAPPER  -->
 </div>
 {% block alert %}
 
 {% endblock %}
 <script src="{% static 'assets/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/klorofil-common.js' %}"></script>
 <script>
     $(document).ready(function () {
         var a_name = $("a").text();

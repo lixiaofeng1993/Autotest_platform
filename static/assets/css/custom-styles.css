@@ -11,7 +11,7 @@ body {
 }
 
 #page-wrapper {
-    padding: 15px 15px;
+    /*padding: 15px 15px;*/
     min-height: 600px;
     /*background:#E5EBF2;*/
 
@@ -19,11 +19,11 @@ body {
 
 #page-inner {
     width: 100%;
-    margin: 10px 20px 10px 0px;
+    /*margin: 10px 20px 10px 0px;*/
     background-color: transparent;
-    padding: 10px;
+    /*padding: 10px;*/
     /*min-height:1200px;*/
-    margin-top: 7%;
+    margin-top: 0;
 }
 
 .mar-rignt-20 {
@@ -531,8 +531,8 @@ ul.nav.nav-second-level.collapse.in {
 
 @media (min-width: 768px) {
     #page-wrapper {
-        margin: 0 0 0 200px;
-        padding: 15px 30px;
+        margin: 0 0 0 0;
+        /*padding: 15px 30px;*/
         /*min-height: 1200px;*/
 
     }
@@ -544,7 +544,7 @@ ul.nav.nav-second-level.collapse.in {
     }
 
     .navbar {
-        border-radius: 0px;
+        border-radius: 0;
     }
 
 }
