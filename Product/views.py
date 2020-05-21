@@ -113,9 +113,10 @@ class Project:
         now = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
         end_time = parameter.get("endTime", now) if parameter.get("endTime", now) else now
         name = parameter.get("name") if parameter.get("name", "") else ""
+        creator = parameter.get("creator") if parameter.get("creator", "") else ""
         try:
             projects = project.objects.filter(createTime__lt=end_time, createTime__gt=start_time,
-                                              name__contains=name).order_by("-createTime")
+                                              name__contains=name, creator__contains=creator).order_by("-createTime")
             total = len(projects)
         except:
             return JsonResponse(400, "时间参数错误")
@@ -124,7 +125,7 @@ class Project:
         for p in projects:
             dic = model_to_dict(p, ["id", 'name', 'creator', 'remark'])
             dic["createTime"] = p.createTime.strftime('%Y-%m-%d %H:%M:%S')
-            dic["creatorName"] = p.creator  # "少年"#u.nickname if u.nickname else u.userName
+            dic["creatorName"] = p.creator
             es = get_model(environment, False, projectId=p.id)
             e_list = list()
             for e in es:

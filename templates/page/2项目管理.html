@@ -26,7 +26,7 @@
                                         </div>
                                         <div class="form-group">
                                             <!--<label class="sr-only" for="name">名称</label>-->
-                                            <input type="text" class="form-control" placeholder="创建人">
+                                            <input type="text" class="form-control" placeholder="创建人" id="creator">
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label width-80 text-right">创建时间：</label>
@@ -281,7 +281,7 @@
             $("#message").html();
             var projectName, creator, creatTime1, creatTime2;
             projectName = $("#pName").val();
-            creator = $("#pName").val();//页面名称
+            creator = $("#creator").val();//页面名称
             creatTime1 = $('#dtp_input_start').val();//开始时间
             creatTime2 = $('#dtp_input_end').val();//结束时间
             var datas = {
