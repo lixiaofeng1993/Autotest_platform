@@ -206,8 +206,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" onclick="closeDown()">取消</button>
-                    <button type="button" class="btn btn-primary" onclick="NewList()">保存</button>
+                    <button type="button" class="btn btn-default" onclick="closeDown()" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="NewList()" data-dismiss="modal">保存</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -316,6 +316,7 @@
     </div>
 {% endblock %}
 {% block js %}
+    <script src="{% static 'assets/js/jquery-1.10.2.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'assets/js/jquery.metisMenu.js' %}"></script>
     <script src="{% static 'assets/js/morris/raphael-2.1.0.min.js' %}"></script>
