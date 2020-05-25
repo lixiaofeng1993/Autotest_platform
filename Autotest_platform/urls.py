@@ -81,6 +81,7 @@ urlpatterns = [
     path('api/v1/login', Login.find),
     path('api/v1/login/<int:login_id>', Login.get),
     path('api/v1/login/bind/<int:login_id>', Login.bind),
+    path('api/v1/login/copy/<int:login_id>', Login.copy),
     path('api/v1/login/unbind/<int:EnvironmentLogin_id>', Login.unbind),
     path('api/v1/login/bind/edit/<int:EnvironmentLogin_id>', Login.edit_bind),
 

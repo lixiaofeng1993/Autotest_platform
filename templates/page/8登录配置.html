@@ -1,6 +1,7 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
 {% block body %}
+    <div class="alert"></div>
     <div id="page-wrapper">
         <div id="page-inner">
             <div class="row">
@@ -503,6 +504,7 @@
                         tr += ' &nbsp;&nbsp;&nbsp;';
                         tr += '<a href="/admin/loginConfig/edit/' + res.data.logins[i].id + '" class="pointer"><i class="fa fa-pencil"></i></a>';
                         tr += ' &nbsp;&nbsp;&nbsp;';
+                        tr += '<a href="javascript:void(0);" class="pointer" Cid="' + res.data.logins[i].id + '" onclick="copyNew(this)"><i class="fa fa-copy"></i></a> &nbsp;&nbsp;&nbsp; ';
                         tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.logins[i].id + ')"><i class="fa fa-times"></i></a>';
                         tr += '</td></tr>';
                     }
@@ -529,6 +531,53 @@
                             }
                         }
                     })
+                }
+            });
+        }
+
+        /*复制方法*/
+        function copyNew(_this) {
+            // $('#CopyProject1').modal('show');
+            CopyID = $(_this).attr('Cid');
+            // $(".js_Copymessage").html("");
+            $.ajax({
+                url: '/api/v1/login/copy/' + CopyID,
+                type: 'post',
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == 200) {
+
+                        var data = {
+                            "projectId": res.data.projectId,
+                            "name": res.data.name + ' - 副本',
+                            "remark": res.data.remark,
+                            "params": res.data.params,
+                            "steps": res.data.steps,
+                            "checkType": res.data.checkType,
+                            "checkValue": res.data.checkValue,
+                            "checkText": res.data.checkText,
+                            "selectText": res.data.selectText
+                        };
+                        $.ajax({
+                            url: '/api/v1/login/create',
+                            type: 'post',
+                            dataType: 'json',
+                            data: JSON.stringify(data),
+                            success: function (res) {
+                                if (res.code == 200) {
+                                    $('.alert').html('复制新建成功').addClass('alert-success').show().delay(1500).fadeOut();
+                                    setTimeout(function () {
+                                        //重新获取下列表
+                                        search();
+                                    }, 1000)
+                                } else {
+                                    $('.alert').html(res.message).addClass('alert-warning').show().delay(1500).fadeOut();
+                                }
+                            }
+                        });
+                    }
+                    else
+                        $('.alert').html(res.message);
                 }
             });
         }

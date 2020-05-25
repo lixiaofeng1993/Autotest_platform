@@ -43,7 +43,8 @@
         #nav .sidebar-collapse nav .nav li {
             border-bottom: 1px solid rgba(107, 108, 109, 0.19);
         }
-        .active-menu{
+
+        .active-menu {
 
         }
     </style>
@@ -73,7 +74,7 @@
                 <button type="button" class="btn-toggle-fullwidth"><i class="fa fa-arrow-left"></i></button>
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
+                <li class="dropdown" onclick="select_ul()">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="img"><img
                             src="{% static 'assets/img/comment_img.jpeg' %}"
                             class="img-circle" alt="Avatar">
@@ -187,6 +188,11 @@
 
             }
         })
+    }
+    function select_ul() {
+        console.log(1);
+        $(".dropdown").attr("class", "dropdown open");
+        $("#img").attr("aria-expanded", "true");
     }
 </script>
 {% block js %}

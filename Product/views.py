@@ -1868,6 +1868,26 @@ class Login:
 
     @staticmethod
     @post
+    def copy(request, login_id):
+        lc = get_model(LoginConfig, id=login_id)
+        if not lc:
+            return JsonResponse.BadRequest("该登录配置不存在")
+        result = model_to_dict(lc,
+                               ["id", "projectId", 'name', 'remark', 'checkType', 'checkValue', 'checkText',
+                                'selectText'])
+        result['projectName'] = get_model(project, id=lc.projectId).name
+        if lc.checkType == "element":
+            page_element = get_model(element, id=lc.checkValue)
+            pageId = page_element.pageId if page_element else 0
+            result["pageId"] = pageId
+        steps = json.loads(lc.steps) if lc.steps else []
+        result["steps"] = steps
+        result["params"] = json.loads(lc.params) if lc.params else []
+        result["createTime"] = lc.createTime.strftime('%Y-%m-%d %H:%M:%S')
+        return JsonResponse.OK(message="ok", data=result)
+
+    @staticmethod
+    @post
     def unbind(request, EnvironmentLogin_id):
         el = get_model(EnvironmentLogin, id=EnvironmentLogin_id)
         if not el:
