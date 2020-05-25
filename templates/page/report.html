@@ -7254,6 +7254,7 @@
                                                             {% endif %}
 
                                                         {% endfor %}
+                                                        <br>
                                                     {% else %}
                                                         <p style='font-family: Consolas;font-size:12px'>
                                                             [--------------------------------]---->>>>>>
@@ -7452,20 +7453,20 @@
                                                 {% endif %}
                                             {% endfor %}
                                             {% if fo.again %}
-                                                <p style='font-family: Consolas;font-size:12px;color: #006666;'>
-                                                    [--------------------------------] again：再次执行标记</p>
+                                                <p style='font-family: Consolas;font-size:12px;'>
+                                                    [--------------------------------] make：<span style="color:#006666;">再次执行标记</span></p>
                                             {% endif %}
                                             <p style='font-family: Consolas;font-size:12px;'>
                                                 [--------------------------------] 浏览器：{{ fo.browser }}</p>
                                             {% if fo.status == 30 %}
-                                                <p style='font-family: Consolas;font-size:12px;color:green;'>
-                                                    [--------------------------------] 测试结果：{{ fo.remark }}</p>
+                                                <p style='font-family: Consolas;font-size:12px;'>
+                                                    [--------------------------------] 测试结果：<span style="color:green;">{{ fo.remark }}</span></p>
                                             {% elif fo.status == 40 %}
-                                                <p style='font-family: Consolas;font-size:12px;color:red;'>
-                                                    [--------------------------------] 测试结果：{{ fo.remark }}</p>
+                                                <p style='font-family: Consolas;font-size:12px;'>
+                                                    [--------------------------------] 测试结果：<span style="color:red;">{{ fo.remark }}</span></p>
                                             {% else %}
-                                                <p style='font-family: Consolas;font-size:12px;color:black;'>
-                                                    [--------------------------------] 测试结果：{{ fo.remark }}</p>
+                                                <p style='font-family: Consolas;font-size:12px;'>
+                                                    [--------------------------------] 测试结果：<span style="color:black;">{{ fo.remark }}</span></p>
                                             {% endif %}
                                             {% if fo.step_num == 999 %}
                                                 {#                                        {% if fo.error_name %}#}

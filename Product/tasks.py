@@ -190,10 +190,10 @@ def SplitTaskRunning(splitResult_id):
                     split.status = 40
                     try:
                         driver.save_screenshot(img_path)
+                        split.error_name = now + ".png"
                     except Exception as msg:
                         log.warning("页面加载超时：{}".format(msg))
-                    split.step_num = 888
-                    split.error_name = now + ".png"
+                    split.step_num = 777  # 页面加载超时异常，无法截图
                     split.remark = "初始化登陆失败</br>登陆名称={}, </br>错误信息={}".format(login.name, e)
                     split.finishTime = timezone.now()
                     split.save()
