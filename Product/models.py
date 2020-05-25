@@ -419,6 +419,7 @@ class SplitResult(models.Model):
     remark = models.TextField(null=True)
     step_num = models.IntegerField(default=0)
     error_name = models.CharField(max_length=200, default="")
+    again = models.IntegerField(default=0, null=True)  # 再次执行标记
 
     class Meta:
         db_table = 'SplitResult'

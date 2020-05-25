@@ -74,6 +74,19 @@
                                         </div>
 
                                         <button type="submit" class="btn btn-primary" onclick="search()">搜索</button>
+                                        <div class="form-group" style="margin-left: 10px;">
+                                            <!--<label class="sr-only" for="name">名称</label>-->
+                                            <select class="form-control" id="newstatus1">
+                                                <option>---</option>
+                                                <option id="10">队列中</option>
+                                                <option id="20">测试中</option>
+                                                <option id="40">失败</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary" onclick="execute()">再次执行
+                                            </button>
+                                            <span id="error" style="display: none; margin-left: 10px;color: red;font-size: 12px;margin-top: 10px;"></span>
+                                        </div>
+
                                     </div>
 
                                 </div>
@@ -154,6 +167,27 @@
         });
     </script>
     <script>
+
+        function execute() {
+            var status = $("#newstatus1 option:selected").attr('id');
+            $.ajax({
+                url: '/api/v1/result/execute',
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify({"status": status}),
+                success: function (res) {
+                    if (res.code == 200) {
+                        alert("再次执行成功！稍后刷新页面查看测试结果.");
+                        window.location.reload()
+                    } else {
+                        var error = $("#error");
+                        error.html(res.message);
+                        error.css("display","block");
+                    }
+
+                }
+            });
+        }
         var DeleteID = 0;
         seleList();
         ListsNew();

@@ -17,7 +17,7 @@ log = logging.getLogger('log')  # 初始化log
 
 
 @task
-def SplitTask(result_id):
+def SplitTask(result_id, status=False):
     from Product.models import Result, SplitResult
     result = Result.objects.get(id=result_id)
     result.status = 20
@@ -44,14 +44,26 @@ def SplitTask(result_id):
                                 if '#random_text#' in v:
                                     v = v.replace('#random_text#', faker.text(5))
                                 params[k] = v
-                        sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
-                                                        resultId=result.id,
-                                                        parameter=json.dumps(params, ensure_ascii=False),
-                                                        expect=params.get('expect', True))
+                        if status:
+                            sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
+                                                            resultId=result.id, again=1,
+                                                            parameter=json.dumps(params, ensure_ascii=False),
+                                                            expect=params.get('expect', True))
+                        else:
+                            sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
+                                                            resultId=result.id,
+                                                            parameter=json.dumps(params, ensure_ascii=False),
+                                                            expect=params.get('expect', True))
                         SplitTaskRunning.delay(sr.id)
                 else:
-                    sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser, resultId=result.id,
-                                                    parameter={}, expect=True)
+                    if status:
+                        sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
+                                                        resultId=result.id, again=1,
+                                                        parameter={}, expect=True)
+                    else:
+                        sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
+                                                        resultId=result.id,
+                                                        parameter={}, expect=True)
                     SplitTaskRunning.delay(sr.id)
         else:
             if parameter:
@@ -70,13 +82,22 @@ def SplitTask(result_id):
                             if '#random_text#' in v:
                                 v = v.replace('#random_text#', faker.text(5))
                             params[k] = v
-                    sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id,
-                                                    parameter=json.dumps(params, ensure_ascii=False),
-                                                    expect=params.get('expect', True))
+                    if status:
+                        sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id,
+                                                        parameter=json.dumps(params, ensure_ascii=False), again=1,
+                                                        expect=params.get('expect', True))
+                    else:
+                        sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id,
+                                                        parameter=json.dumps(params, ensure_ascii=False),
+                                                        expect=params.get('expect', True))
                     SplitTaskRunning.delay(sr.id)
             else:
-                sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id,
-                                                parameter={}, expect=True)
+                if status:
+                    sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id, again=1,
+                                                    parameter={}, expect=True)
+                else:
+                    sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id,
+                                                    parameter={}, expect=True)
                 SplitTaskRunning.delay(sr.id)
     SplitTaskRan.delay(result_id)
 

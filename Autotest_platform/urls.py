@@ -88,6 +88,7 @@ urlpatterns = [
     path('api/v1/result', TestResult.find),
     path('api/v1/result/delete/<int:result_id>', TestResult.delete),
     path('api/v1/result/<int:result_id>', TestResult.get),
+    path('api/v1/result/execute', TestResult.execute),
     path('api/v1/browser', Public.data),
     path('api/v1/projectSummary', Public.index),
     path('api/v1/barChar', Public.bar_char),

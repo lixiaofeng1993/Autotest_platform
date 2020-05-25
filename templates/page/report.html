@@ -7451,7 +7451,10 @@
 
                                                 {% endif %}
                                             {% endfor %}
-
+                                            {% if fo.again %}
+                                                <p style='font-family: Consolas;font-size:12px;color: #006666;'>
+                                                    [--------------------------------] again：再次执行标记</p>
+                                            {% endif %}
                                             <p style='font-family: Consolas;font-size:12px;'>
                                                 [--------------------------------] 浏览器：{{ fo.browser }}</p>
                                             {% if fo.status == 30 %}
@@ -7463,7 +7466,6 @@
                                             {% else %}
                                                 <p style='font-family: Consolas;font-size:12px;color:black;'>
                                                     [--------------------------------] 测试结果：{{ fo.remark }}</p>
-
                                             {% endif %}
                                             {% if fo.step_num == 999 %}
                                                 {#                                        {% if fo.error_name %}#}
@@ -7478,6 +7480,7 @@
                                                     </p>
                                                 {% endif %}<br>
                                             {% endif %}
+                                            <br>
                                         {% endfor %}
 
                                     </td>

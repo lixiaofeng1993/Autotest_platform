@@ -197,7 +197,11 @@
                             for (var i = 0; i < splitResult.length; i++) {
                                 var resultDetails = splitResult[i];
                                 sr += '<tr class="odd">';
-                                sr += '<td class="center">' + num + '</td>';
+                                if (resultDetails["again"] == 1) {
+                                    sr += '<td class="center"  title="再次执行标记" style="background-color:#FFFFCC">' + num + '</td>';
+                                } else {
+                                    sr += '<td class="center">' + num + '</td>';
+                                }
                                 {#                                sr += '<td class="center" id="remark">' + data.projectName + '</td>';#}
                                 sr += '<td class="center">' + resultDetails["browser"] + '</td>';
                                 sr += '<td class="center" id="remark">' + resultDetails["environment"] + '</td>';

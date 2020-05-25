@@ -1152,13 +1152,12 @@ class TestResult:
             result["createTime"] = re.createTime.strftime('%Y-%m-%d %H:%M:%S')
             tc = get_model(project, id=re.projectId)
             result["projectName"] = project_name = tc.name if tc else ""
-            from .models import SplitResult
             split = get_model(SplitResult, False, resultId=re.id)
             splitResult = list()
             step_num = 0
             error_name = ""
             for s in split:
-                sd = model_to_dict(s, ["status", 'expect', 'remark', 'step_num', 'error_name'])
+                sd = model_to_dict(s, ["status", 'expect', 'remark', 'step_num', 'error_name', "again"])
                 step_num = sd.get("step_num", 0)
                 error_name = sd.get("error_name", "")
                 sd['browser'] = get_model(Browser, id=s.browserId).name if get_model(Browser, id=s.browserId) else ""
@@ -1209,6 +1208,28 @@ class TestResult:
                            "pass_num": pass_num, "error_num": error_num, "skip_num": skip_num})
         elif request.method == "POST":
             return JsonResponse.OK(message="ok", data=data_info)
+
+    @staticmethod
+    def execute(request):
+        try:
+            parameter = get_request_body(request)
+        except ValueError:
+            return JsonResponse.BadRequest("json格式错误")
+        status = parameter.get("status", "")
+        if not status:
+            return JsonResponse.BadRequest("请选择结果状态")
+        if status == "10":
+            res = get_model(Result, get=False, status=10)
+        elif status == "20":
+            res = get_model(Result, get=False, status=20)
+        elif status == "40":
+            res = get_model(Result, get=False, status=40)
+        if not res:
+            return JsonResponse.BadRequest("未查询到测试用例")
+        for re in res:
+            # SplitResult.objects.get(resultId=re.id).delete()
+            SplitTask.delay(re.id, status=True)
+        return JsonResponse.OK()
 
 
 class Public:
