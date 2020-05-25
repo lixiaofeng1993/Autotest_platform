@@ -49,6 +49,7 @@ urlpatterns = [
     path('api/v1/element/create', Element.create),
     path('api/v1/element/delete/<int:element_id>', Element.delete),
     path('api/v1/element/edit/<int:element_id>', Element.edit),
+    path('api/v1/element/copy/<int:element_id>', Element.copy),
     path('api/v1/element', Element.find),
     path('api/v1/element/<int:element_id>', Element.get),
     # keyword

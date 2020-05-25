@@ -461,6 +461,15 @@ class Element:
         return JsonResponse.OK()
 
     @staticmethod
+    @post
+    def copy(request, element_id):
+        el = get_model(element, id=element_id)
+        if not el:
+            return JsonResponse.BadRequest("该元素不存在")
+        result = model_to_dict(el, ["id", "projectId", 'name', 'remark', 'by', 'locator', 'pageId'])
+        return JsonResponse.OK(message="ok", data=result)
+
+    @staticmethod
     def find(request):
         try:
             parameter = get_request_body(request)

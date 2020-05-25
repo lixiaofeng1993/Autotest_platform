@@ -15,9 +15,48 @@
             white-space: normal;
             overflow: auto;
         }
+
+        .alert {
+            display: none;
+            position: fixed;
+            top: 3%;
+            left: 50%;
+            min-width: 300px;
+            max-width: 600px;
+            transform: translate(-50%, -50%);
+            z-index: 99999;
+            text-align: center;
+            padding: 15px;
+            border-radius: 3px;
+        }
+
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+
+        .alert-info {
+            color: #31708f;
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+        }
+
+        .alert-warning {
+            color: #8a6d3b;
+            background-color: #fcf8e3;
+            border-color: #faebcc;
+        }
+
+        .alert-danger {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
     </style>
 {% endblock %}
 {% block body %}
+    <div class="alert"></div>
     <div id="page-wrapper">
         <div id="page-inner">
             <div class="row">
@@ -334,6 +373,49 @@
         seleList();
         search();
 
+        /*复制方法*/
+        function copyNew(_this) {
+            // $('#CopyProject1').modal('show');
+            CopyID = $(_this).attr('Cid');
+            // $(".js_Copymessage").html("");
+            $.ajax({
+                url: '/api/v1/element/copy/' + CopyID,
+                type: 'post',
+                dataType: 'json',
+                success: function (res) {
+                    if (res.code == 200) {
+                        var data = {
+                            "projectId": res.data.projectId,
+                            "name": res.data.name + ' - 副本',
+                            "remark": res.data.remark,
+                            "by": res.data.by,
+                            "locator": res.data.locator,
+                            "pageId": res.data.pageId
+                        };
+                        $.ajax({
+                            url: '/api/v1/element/create',
+                            type: 'post',
+                            dataType: 'json',
+                            data: JSON.stringify(data),
+                            success: function (res) {
+                                if (res.code == 200) {
+                                    $('.alert').html('复制新建成功').addClass('alert-success').show().delay(1500).fadeOut();
+                                    setTimeout(function () {
+                                        //重新获取下列表
+                                        search();
+                                    }, 1000)
+                                } else {
+                                    $('.alert').html(res.message).addClass('alert-warning').show().delay(1500).fadeOut();
+                                }
+                            }
+                        });
+                    }
+                    else
+                        $('.alert').html(res.message);
+                }
+            });
+        }
+
         function seleList() {
             $("#newSel,#newSel1,#newSel2").find('option').remove();
             $("#newpage,#newpage1,#newpage2").find('option').remove();
@@ -501,7 +583,8 @@
                             + '</td><td class="center" id="locator">' + res.data.elements[i].locator + '</td><td class="center">' +
                             res.data.elements[i].remark + '</td><td class="center"><a href="javascript:void(0);" class="pointer" id="' +
                             res.data.elements[i].id + '" onclick="editList(this)"><i class="fa fa-pencil"></i></a> ' + '&nbsp;&nbsp;&nbsp;'
-                            + ' <a href="javascript:void(0);" class="pointer" Did="' +
+                            + '<a href="javascript:void(0);" class="pointer" Cid="' + res.data.elements[i].id + '" onclick="copyNew(this)"><i class="fa fa-copy"></i></a> &nbsp;&nbsp;&nbsp;' +
+                            ' <a href="javascript:void(0);" class="pointer" Did="' +
                             res.data.elements[i].id + '" onclick="deleteNew(this)"><i class="fa fa-times"></i></a></td></tr>');
                     }
                     $('#dataTables-example').dataTable({
