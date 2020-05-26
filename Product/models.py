@@ -256,6 +256,7 @@ class Browser(models.Model):
     name = models.CharField(max_length=20, null=False)
     value = models.CharField(max_length=20, null=False)
     remark = models.TextField(null=True)
+    status = models.IntegerField(default=0, null=True)  # 区分web和app
     installPath = models.TextField(null=True)
     driverPath = models.TextField(null=True)
 

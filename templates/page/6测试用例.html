@@ -455,20 +455,20 @@
             $(_this).attr("href", url);
         }
 
-        $.ajax({
-            url: '/api/v1/browser',
-            type: 'POST',
-            dataType: 'json',
-            success: function (res) {
-                if (res.code == 200) {
-                    var options = "";
-                    for (var i = 0; i < res.data.browsers.length; i++) {
-                        options += '<option value="' + res.data.browsers[i].id + '">' + res.data.browsers[i].name + '</option>';
-                    }
-                    $("#browsers").append(options)
-                }
-            }
-        });
+        {#        $.ajax({#}
+        {#            url: '/api/v1/browser',#}
+        {#            type: 'POST',#}
+        {#            dataType: 'json',#}
+        {#            success: function (res) {#}
+        {#                if (res.code == 200) {#}
+        {#                    var options = "";#}
+        {#                    for (var i = 0; i < res.data.browsers.length; i++) {#}
+        {#                        options += '<option value="' + res.data.browsers[i].id + '">' + res.data.browsers[i].name + '</option>';#}
+        {#                    }#}
+        {#                    $("#browsers").append(options)#}
+        {#                }#}
+        {#            }#}
+        {#        });#}
 
         /*获取列表*/
         function running(projectId, testcaseId) {
@@ -476,6 +476,21 @@
             $("#browsers").val("");
             $("#es").find("option").remove();
             $("#running").modal("show");
+            $.ajax({
+                url: '/api/v1/browser',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({"projectId": projectId}),
+                success: function (res) {
+                    if (res.code == 200) {
+                        var options = "";
+                        for (var i = 0; i < res.data.browsers.length; i++) {
+                            options += '<option value="' + res.data.browsers[i].id + '">' + res.data.browsers[i].name + '</option>';
+                        }
+                        $("#browsers").append(options)
+                    }
+                }
+            });
             $.ajax({
                 url: '/api/v1/environment?p=1',
                 type: 'post',
@@ -492,6 +507,7 @@
                 }
             });
             $("#runningTestCase").attr("onclick", "runningTest(" + testcaseId + ")");
+            $("#browsers").html("");
         }
 
         function runningTest(testcaseId) {
@@ -547,7 +563,7 @@
         //获得当前时间
         var newDate = new Date();
         var endTimeT1 = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()).Format("yyyy-MM-dd");
-        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1)
+        $("#pzTime,#pzqxTime").attr("data-date", endTimeT1);
         //开始时间
         $("#pzTime").datetimepicker({
             language: 'zh-CN',

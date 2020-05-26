@@ -16,7 +16,7 @@ from .tasks import SplitTask
 from django.shortcuts import render
 from datetime import datetime
 from .public import remove_logs
-import json, logging
+import json, logging, os
 
 log = logging.getLogger('log')  # 初始化log
 
@@ -1245,7 +1245,19 @@ class Public:
     @staticmethod
     def data(request):
         from .models import Browser
-        browsers = Browser.objects.all()
+        try:
+            parameter = get_request_body(request)
+        except ValueError:
+            return JsonResponse.BadRequest("json格式错误")
+        if parameter:
+            en = get_model(environment, projectId=parameter.get("projectId", 0))
+            print(os.path.splitext(en.host))
+            if ".apk" in os.path.splitext(en.host):
+                browsers = Browser.objects.filter(status=1)
+            else:
+                browsers = Browser.objects.filter(status=0)
+        else:
+            browsers = Browser.objects.all()
         browser_re = list()
         for browser in browsers:
             dic = model_to_dict(browser, ['id', "name", "value", "remark"])
