@@ -1250,12 +1250,15 @@ class Public:
         except ValueError:
             return JsonResponse.BadRequest("json格式错误")
         if parameter:
-            en = get_model(environment, projectId=parameter.get("projectId", 0))
-            print(os.path.splitext(en.host))
-            if ".apk" in os.path.splitext(en.host):
-                browsers = Browser.objects.filter(status=1)
+            en = get_model(environment, get=False, projectId=parameter.get("projectId", 0))
+            if len(en) == 1:
+                for e in en:
+                    if ".apk" in os.path.splitext(e.host):
+                        browsers = Browser.objects.filter(status=1)
+                    else:
+                        browsers = Browser.objects.filter(status=0)
             else:
-                browsers = Browser.objects.filter(status=0)
+                browsers = Browser.objects.all()
         else:
             browsers = Browser.objects.all()
         browser_re = list()
