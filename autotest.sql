@@ -50,21 +50,21 @@ CREATE TABLE `Browser`  (
   `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `value` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `remark` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `status` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `installPath` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `driverPath` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `status` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of Browser
 -- ----------------------------
-INSERT INTO `Browser` VALUES (1, 'chrome', 'chrome', NULL, NULL, NULL, 0);
-INSERT INTO `Browser` VALUES (2, 'firefox', 'firefox', NULL, NULL, NULL, 0);
-INSERT INTO `Browser` VALUES (3, 'app', 'android', NULL, NULL, NULL, 1);
-INSERT INTO `Browser` VALUES (4, '手机浏览器', 'html', NULL, NULL, NULL, 1);
-INSERT INTO `Browser` VALUES (5, '模拟器', 'simulator', NULL, NULL, NULL, 1);
-INSERT INTO `Browser` VALUES (6, 'chrome-no-web', 'chrome-no-web', NULL, NULL, NULL, 0);
+INSERT INTO `Browser` VALUES (1, 'chrome', 'chrome', NULL, 0,NULL, NULL);
+INSERT INTO `Browser` VALUES (2, 'firefox', 'firefox', NULL,0, NULL, NULL);
+INSERT INTO `Browser` VALUES (3, 'app', 'android', NULL, NULL,1, NULL);
+INSERT INTO `Browser` VALUES (4, '手机浏览器', 'html', NULL, 1,NULL, NULL);
+INSERT INTO `Browser` VALUES (5, '模拟器', 'simulator', NULL, 1,NULL, NULL);
+INSERT INTO `Browser` VALUES (6, 'chrome-no-web', 'chrome-no-web', NULL,0, NULL, NULL);
 -- ----------------------------
 -- Table structure for project
 -- ----------------------------

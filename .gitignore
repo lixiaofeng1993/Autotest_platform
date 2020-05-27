@@ -64,7 +64,7 @@ target/
 .iml
 
 
-# migrations/
+migrations/
 *_initial.py
 !migrations/__init__.py
 collectedstatic/
