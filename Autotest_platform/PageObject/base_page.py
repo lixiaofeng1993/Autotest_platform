@@ -167,7 +167,7 @@ class PageObject:
         """选中一组元素中的一个，发送文本，清空后输入"""
         if not str(n).isdigit():
             return
-        log.info("选中一组元素 {} 中的 {} 个，发送文本 {}，清空后输入.".format(locator, text, n))
+        log.info("选中一组元素 {} 中的 {} 个，发送文本 {}，清空后输入.".format(locator, n, text))
         element = self.find_element(self.driver, locator, more=True)[int(n)]
         element.clear()
         element.send_keys(text)
