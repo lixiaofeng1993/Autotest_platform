@@ -128,7 +128,7 @@ def delete_testcase(file_path):
     """
     if os.path.exists(file_path):
         dir_list = get_file_sorted(file_path)
-        if len(dir_list) > 10:
+        if dir_list and len(dir_list) > 10:
             dir_list = dir_list[0:-10]
             for d in dir_list:
                 d_path = os.path.join(file_path, d)
