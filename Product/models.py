@@ -333,7 +333,7 @@ class Browser(models.Model):
             with os.popen("adb shell pm list packages", "r") as f:
                 all_package = f.read()
             if package not in all_package:
-                log.info("当前设备为安装测试app，准备安装中~~~")
+                log.info("当前设备未安装测试app，准备安装中~~~")
                 cmd = r"adb install {}".format(host)
                 os.system(cmd)
             try:
