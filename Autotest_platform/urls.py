@@ -14,11 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import url
+# from django.conf.urls import url
 from django.urls import include, path, re_path
 from django.conf.urls.static import static
-from django.views.static import serve
-from django.conf import settings
+# from django.views.static import serve
+# from django.conf import settings
 from Admin.views import *
 from Product.views import Project, Page, Element, Keyword, TestCase, TestResult, Public, TestTasks, Environment, \
     Login, TestTaskTime
@@ -100,8 +100,8 @@ urlpatterns = [
     path('login/', login_view, name="login"),
     path('register/', register, name="register"),
     path('logout/', logout, name="logout"),
-    path('admin/index', index, name="index"),
-    path('', index, name="index"),
+    path('admin/index/<int:tid>/', index, name="index"),
+    # path('', index, name="index"),
     path('admin/project', project, name="project"),
     path('admin/project/<int:project_id>', project_config),
     path('admin/page', page, name="page"),
@@ -119,5 +119,14 @@ urlpatterns = [
     path('admin/result', result, name="result"),
     path('admin/result/<int:result_id>', result_see),
     path("admin/change_password/", change_password, name="change_password"),
+    # team
+    path('team/', TeamIndex.as_view(), name='team'),
+    path('', TeamIndex.as_view(), name='team'),
+    path('team/go/', team_go, name='team_go'),
+    path('team/create/', create_team, name='create_team'),
+    path('team/join/', team_join, name='team_join'),
+    path('team/apply/<int:tid>/', team_apply, name='team_apply'),
+    path('team/edit/<int:tid>/', team_edit, name='team_edit'),
+    path('team/modular/<int:tid>/', team_modular, name='team_modular'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

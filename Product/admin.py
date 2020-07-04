@@ -10,25 +10,25 @@ class ProjectAdmin(admin.ModelAdmin):
 
 
 class PageAdmin(admin.ModelAdmin):
-    list_display = ['id', 'projectId', 'name', 'remark', 'createTime']
+    list_display = ['id', 'project', 'name', 'remark', 'createTime']
     search_fields = ['id', 'name']  # 搜索栏
     list_filter = ['name']  # 过滤器
 
 
 class ElementAdmin(admin.ModelAdmin):
-    list_display = ['id', 'projectId', 'pageId', 'name', 'by', 'locator', 'remark', 'createTime']
+    list_display = ['id', 'project', 'page', 'name', 'by', 'locator', 'remark', 'createTime']
     search_fields = ['id', 'name']  # 搜索栏
     list_filter = ['name']  # 过滤器
 
 
 class KeywordAdmin(admin.ModelAdmin):
-    list_display = ['id', 'projectId', 'name', 'type', 'method', 'params', 'remark', 'createTime']
+    list_display = ['id', 'project', 'name', 'type', 'method', 'params', 'remark', 'createTime']
     search_fields = ['id', 'name']  # 搜索栏
     list_filter = ['name']  # 过滤器
 
 
 class TestCasedAdmin(admin.ModelAdmin):
-    list_display = ['id', 'projectId', 'title', 'level', 'beforeLogin', 'remark', 'createTime']
+    list_display = ['id', 'project', 'title', 'level', 'beforeLogin', 'remark', 'createTime']
     search_fields = ['id', 'title']  # 搜索栏
     list_filter = ['title']  # 过滤器
 
@@ -46,7 +46,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 class LoginConfigAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'projectId', 'remark', 'createTime']
+    list_display = ['id', 'name', 'project', 'remark', 'createTime']
     search_fields = ['id', 'name']  # 搜索栏
     list_filter = ['name']  # 过滤器
 

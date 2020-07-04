@@ -492,7 +492,7 @@
                 success: function (res) {
                     if (res.code == 200) {
                         $("#testcaseTitle").val(res.data.title);
-                        var projectId = res.data.projectId;
+                        var projectId = res.data.project;
                         // for (var i = 0; i < res.data.projects.length; i++) {
                         //     // $("#projectSelect").append('<option value="' + res.data.projects[i].id + '">' + res.data.projects[i].name + '</option>');
                         //     $("#projectSelect").append("<option checked='checked' value='" + projectId + "'>" + res.data.projectName + "</option>");
@@ -603,7 +603,6 @@
             for (var i = 0; i < parameterList.length; i++) {
                 parameter.push(JSON.parse($(parameterList[i]).text().toString()));
             }
-            console.log("url地址：" + parameter);
             remark = $("#remark").val();
             var data = {
                 "projectId": projectId,

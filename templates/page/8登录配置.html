@@ -394,7 +394,7 @@
                     if (res.code == 200) {
                         $("#projectName").html("登录名称：" + res.data.name);
                         $("#binds").find("tr").remove();
-                        projectId = res.data.projectId;
+                        projectId = res.data.project;
                         var tr = '';
                         for (var i = 0; i < res.data.bind.length; i++) {
                             tr += '<tr>';
@@ -586,10 +586,10 @@
                 type: 'post',
                 dataType: 'json',
                 success: function (res) {
+                    console.log(res, 222222222222)
                     if (res.code == 200) {
-
                         var data = {
-                            "projectId": res.data.projectId,
+                            "projectId": res.data.project,
                             "name": res.data.name + ' - 副本',
                             "remark": res.data.remark,
                             "params": res.data.params,
@@ -599,6 +599,7 @@
                             "checkText": res.data.checkText,
                             "selectText": res.data.selectText
                         };
+                        console.log(data, 1111111111)
                         $.ajax({
                             url: '/api/v1/login/create',
                             type: 'post',

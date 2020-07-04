@@ -1,19 +1,66 @@
+from django.contrib.auth.models import User
 import django.utils.timezone as timezone
 from django.core.exceptions import ValidationError
+from djcelery.models import PeriodicTask
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from Autotest_platform.helper.helperPath import *
-import requests
-import json
-import random
-import time, logging
+import logging
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from appium import webdriver as app
+import subprocess
 
 log = logging.getLogger('log')  # 初始化log
+
+
+class Team(models.Model):
+    name = models.CharField(max_length=20, null=False)
+    remark = models.TextField(null=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, default='lixiaofeng', null=True)
+    update_time = models.DateTimeField('更新时间', auto_now=True)
+    create_time = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'team'
+
+    def clean(self):
+        name = self.name.strip() if self.name else ''
+        if 0 >= len(name) or len(name) > 20:
+            raise ValidationError({'error': '无效的团队名称'})
+
+
+class TeamUsers(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None, null=True)
+    status = models.IntegerField(default=0)  # 申请状态
+    create_time = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'team_users'
+
+
+class ModularTable(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
+    url = models.CharField(max_length=255)
+    Icon = models.CharField(max_length=255)
+    model_name = models.CharField(max_length=6)
+    status = models.IntegerField(default=1)
+
+    class Meta:
+        db_table = 'modular'
+
+    def clean(self):
+        name = self.model_name.strip() if self.model_name else ''
+        if 0 >= len(name) or len(name) > 6:
+            raise ValidationError({'error': '无效的模块名称'})
 
 
 # Create your models here.
 class Project(models.Model):
     name = models.CharField(max_length=20, null=False)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
     remark = models.TextField(null=True)
     creator = models.CharField(max_length=20, null=False, default='lixiaofeng')
     createTime = models.DateTimeField(default=timezone.now)
@@ -22,13 +69,15 @@ class Project(models.Model):
         db_table = 'project'
 
     def clean(self):
-        name = self.name.strip() if self.name else ""
+        name = self.name.strip() if self.name else ''
         if 0 >= len(name) or len(name) > 20:
             raise ValidationError({'name': '无效的项目名称'})
 
 
 class Page(models.Model):
-    projectId = models.IntegerField()
+    # projectId = models.IntegerField()
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=None, null=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
     name = models.CharField(max_length=20, null=False)
     remark = models.TextField(null=True)
     createTime = models.DateTimeField(default=timezone.now)
@@ -37,21 +86,24 @@ class Page(models.Model):
         db_table = 'page'
 
     def clean(self):
-        name = self.name.strip() if self.name else ""
-        projectId = int(self.projectId) if self.projectId and str(self.projectId).isdigit() else 0
+        name = self.name.strip() if self.name else ''
+        project_id = int(self.project_id) if self.project_id and str(self.project_id).isdigit() else 0
         if 0 >= len(name) or len(name) > 20:
             raise ValidationError({'name': '无效的页面名称'})
-        if projectId < 1:
-            raise ValidationError({'projectId': '无效的项目Id'})
+        if project_id < 1:
+            raise ValidationError({'project_id': '无效的项目Id'})
 
 
 class Element(models.Model):
-    projectId = models.IntegerField()
-    pageId = models.IntegerField()
+    # projectId = models.IntegerField()
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=None, null=True)
+    page = models.ForeignKey(Page, on_delete=models.CASCADE, default=None, null=True)
+    # pageId = models.IntegerField()
     name = models.CharField(max_length=20, null=False)
     remark = models.TextField(null=True)
     createTime = models.DateTimeField(default=timezone.now)
-    BY_TYPES = ["id", "xpath", "link text", "partial link text", "name", "tag name", "class name", "css selector"]
+    BY_TYPES = ['id', 'xpath', 'link text', 'partial link text', 'name', 'tag name', 'class name', 'css selector']
     by = models.CharField(null=False, max_length=20)
     locator = models.CharField(max_length=200, null=False)
 
@@ -62,26 +114,28 @@ class Element(models.Model):
         return self.name
 
     def clean(self):
-        name = self.name.strip() if self.name else ""
-        locator = str(self.locator) if self.locator else ""
-        by = str(self.by).lower() if self.by else ""
+        name = self.name.strip() if self.name else ''
+        locator = str(self.locator) if self.locator else ''
+        by = str(self.by).lower() if self.by else ''
         # projectId = int(self.projectId) if str(self.projectId).isdigit() else 0
-        pageId = int(self.pageId) if str(self.pageId).isdigit() else 0
+        page_id = int(self.page_id) if str(self.page_id).isdigit() else 0
         if 0 >= len(name) or len(name) > 20:
             raise ValidationError({'name': '无效的元素名称'})
         # if projectId < 1:
         #     raise ValidationError({'projectId': 'projectId'})
-        if pageId < 1:
+        if page_id < 1:
             raise ValidationError({'pageId': '无效的页面Id'})
-        if not by in Element.BY_TYPES:
+        if by not in Element.BY_TYPES:
             raise ValidationError({'by': 'by'})
         if 0 >= len(locator) or len(locator) > 200:
             raise ValidationError({'locator': '无效的定位值'})
 
 
 class Keyword(models.Model):
-    __KEYWORD_TYPES = {1: "system", 2: "custom"}
-    projectId = models.IntegerField()
+    __KEYWORD_TYPES = {1: 'system', 2: 'custom'}
+    # projectId = models.IntegerField()
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=None, null=True)
     name = models.CharField(max_length=20)
     type = models.IntegerField(default=2)
     package = models.CharField(max_length=200, null=True)
@@ -93,11 +147,11 @@ class Keyword(models.Model):
     remark = models.TextField(null=True)
 
     class Meta:
-        db_table = "keyword"
+        db_table = 'keyword'
 
     def clean(self):
-        name = self.name.strip() if self.name else ""
-        projectId = int(self.projectId) if str(self.projectId).isdigit() else 0
+        name = self.name.strip() if self.name else ''
+        project_id = int(self.project_id) if str(self.project_id).isdigit() else 0
         package = self.package
         clazz = self.clazz
         method = self.method
@@ -107,11 +161,11 @@ class Keyword(models.Model):
         step = self.steps if self.steps else []
         if 0 >= len(name) or len(name) > 20:
             raise ValidationError({'name': '无效的关键字名称'})
-        if projectId < 0:
+        if project_id < 0:
             raise ValidationError({'projectId': '无效的项目Id'})
         if t == 1:
             try:
-                obj = __import__(package, fromlist=[package.split(",")[-1]])
+                obj = __import__(package, fromlist=[package.split(',')[-1]])
             except:
                 raise ValidationError({'package': '无效的引用包'})
             try:
@@ -131,14 +185,14 @@ class Keyword(models.Model):
             for s in step:
                 if not isinstance(s, dict):
                     raise ValidationError({'step': '无效的操作步骤'})
-                if not "keywordId" in s:
+                if 'keywordId' not in s:
                     raise ValidationError({'step': '无效的操作步骤 : keywordId'})
-                keywordId = int(s.get("keywordId")) if str(s.get("keywordId")).isdigit() else 0
+                keywordId = int(s.get('keywordId')) if str(s.get('keywordId')).isdigit() else 0
                 if keywordId < 1:
                     raise ValidationError({'step': '无效的操作步骤 : keywordId'})
-                if not ("values" in s and isinstance(s.get("values"), list)):
+                if not ('values' in s and isinstance(s.get('values'), list)):
                     raise ValidationError({'step': '无效的操作步骤 : values'})
-                values = s.get("values")
+                values = s.get('values')
                 for value in values:
                     try:
                         Params(value)
@@ -149,11 +203,13 @@ class Keyword(models.Model):
 
 
 class TestCase(models.Model):
-    # TESTCASE_TYPES = {1: "功能测试", 2: "接口测试"}
-    TESTCASE_STATUS = {1: "未执行", 2: "排队中", 3: "执行中"}
-    TESTCASE_LEVEL = {1: "低", 2: "中", 3: "高", }
-    TESTCASE_CHECK_TYPE = {1: "url", 2: "element"}
-    projectId = models.IntegerField()
+    # TESTCASE_TYPES = {1: '功能测试', 2: '接口测试'}
+    TESTCASE_STATUS = {1: '未执行', 2: '排队中', 3: '执行中'}
+    TESTCASE_LEVEL = {1: '低', 2: '中', 3: '高', }
+    TESTCASE_CHECK_TYPE = {1: 'url', 2: 'element'}
+    # projectId = models.IntegerField()
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=None, null=True)
     title = models.CharField(max_length=200, null=False)
     # type = models.IntegerField(null=False, default=1)
     level = models.IntegerField(default=1)
@@ -169,12 +225,12 @@ class TestCase(models.Model):
     remark = models.TextField(null=True)
 
     class Meta:
-        db_table = "testcase"
+        db_table = 'testcase'
 
     def clean(self):
-        projectId = self.projectId if self.projectId else 0
-        projectId = int(self.projectId) if str(projectId).isdigit() else 0
-        title = self.title.strip() if self.title else ""
+        project_id = self.project_id if self.project_id else 0
+        project_id = int(self.project_id) if str(project_id).isdigit() else 0
+        title = self.title.strip() if self.title else ''
         # Type = self.type
         level = self.level
         # status = self.status
@@ -187,7 +243,7 @@ class TestCase(models.Model):
         login = self.beforeLogin
         if not isinstance(login, list):
             raise ValidationError({'beforeLogin': '无效的登录配置'})
-        if not projectId or projectId < 1:
+        if not project_id or project_id < 1:
             raise ValidationError({'projectId': '无效的项目Id'})
         if not title or 0 >= len(title) or len(title) > 200:
             raise ValidationError({'title': '无效的测试用例标题'})
@@ -201,14 +257,14 @@ class TestCase(models.Model):
         for s in step:
             if not isinstance(s, dict):
                 raise ValidationError({'step': '无效的操作步骤 : step'})
-        # if not "keywordId" in s:
+        # if not 'keywordId' in s:
         #         raise ValidationError({'step': '无效的操作步骤 1 : keywordId'})
-        #     keywordId = int(s.get("keywordId")) if str(s.get("keywordId")).isdigit() else 0
+        #     keywordId = int(s.get('keywordId')) if str(s.get('keywordId')).isdigit() else 0
         #     if keywordId < 1:
         #         raise ValidationError({'step': '无效的操作步骤 : keywordId'})
-        #     if not ("values" in s and isinstance(s.get("values"), list)):
+        #     if not ('values' in s and isinstance(s.get('values'), list)):
         #         raise ValidationError({'step': '无效的操作步骤 : values'})
-        #     values = s.get("values")
+        #     values = s.get('values')
         #     for value in values:
         #         try:
         #             Params(value)
@@ -232,7 +288,9 @@ class TestCase(models.Model):
 
 
 class Environment(models.Model):
-    projectId = models.IntegerField(null=True)
+    # projectId = models.IntegerField(null=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=None, null=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
     name = models.CharField(max_length=20, null=False)
     host = models.TextField(null=False)
     remark = models.TextField(null=True)
@@ -241,10 +299,10 @@ class Environment(models.Model):
         db_table = 'Environment'
 
     def clean(self):
-        projectId = int(self.projectId) if str(self.projectId).isdigit() and int(self.projectId) > 0 else 0
-        name = self.name.strip() if self.name else ""
-        host = str(self.host).strip() if self.host else ""
-        if projectId < 1:
+        project_id = int(self.project_id) if str(self.project_id).isdigit() and int(self.project_id) > 0 else 0
+        name = self.name.strip() if self.name else ''
+        host = str(self.host).strip() if self.host else ''
+        if project_id < 1:
             raise ValidationError({'projectId': '无效的项目Id'})
         if not name or len(name) > 20 or len(name) < 1:
             raise ValidationError({'name': '无效的环境名称'})
@@ -264,44 +322,40 @@ class Browser(models.Model):
         db_table = 'Browser'
 
     def clean(self):
-        name = self.name.strip() if self.name else ""
+        name = self.name.strip() if self.name else ''
         if 0 >= len(name) or len(name) > 20:
             raise ValidationError({'name': '无效的浏览器名称'})
-        value = self.value.strip() if self.value else ""
+        value = self.value.strip() if self.value else ''
         if 0 >= len(value) or len(value) > 20:
             raise ValidationError({'value': '无效的浏览器控制器'})
 
     def buid(self, host):
-        browser = self.value.lower().strip() if self.value else ""
-        log.info("启动的浏览器名称是 : {}".format(browser))
-        if browser not in ["android", "html"]:
-            from selenium import webdriver
+        browser = self.value.lower().strip() if self.value else ''
+        log.info('启动的浏览器名称是 : {}'.format(browser))
+        if browser not in ['android', 'html']:
             if browser == 'chrome-no-web':
-                from selenium.webdriver.chrome.options import Options
-                executable_path = check_file(os.path.join(driver_path, "chromedriver.exe"))
+                executable_path = check_file(os.path.join(driver_path, 'chromedriver.exe'))
                 options = Options()
                 options.add_argument('headless')  # 不显示执行过程，不打开浏览器
-                options.add_argument("disable-infobars")
+                options.add_argument('disable-infobars')
                 options.add_argument('no-sandbox')
                 options.add_argument('disable-dev-shm-usage')
                 browser = webdriver.Chrome(chrome_options=options, executable_path=executable_path)
             elif browser == 'chrome':
-                from selenium.webdriver.chrome.options import Options
-                executable_path = check_file(os.path.join(driver_path, "chromedriver.exe"))
+                executable_path = check_file(os.path.join(driver_path, 'chromedriver.exe'))
                 options = Options()
                 # options.add_argument('headless')
-                options.add_argument("disable-infobars")
+                options.add_argument('disable-infobars')
                 options.add_argument('no-sandbox')
                 options.add_argument('disable-dev-shm-usage')
                 browser = webdriver.Chrome(chrome_options=options, executable_path=executable_path)
             elif browser == 'firefox':
-                executable_path = check_file(os.path.join(driver_path, "geckodriver.exe"))
+                executable_path = check_file(os.path.join(driver_path, 'geckodriver.exe'))
                 browser = webdriver.Firefox(executable_path=executable_path)
             elif browser == 'edge':
                 browser = webdriver.Edge()
             elif browser == 'ie':
-                from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-                executable_path = check_file(os.path.join(driver_path, "IEDriverServer.exe"))
+                executable_path = check_file(os.path.join(driver_path, 'IEDriverServer.exe'))
                 DesiredCapabilities.INTERNETEXPLORER['ignoreProtectedModeSettings'] = True
                 browser = webdriver.Ie(executable_path=executable_path)
             else:
@@ -309,87 +363,88 @@ class Browser(models.Model):
             browser.maximize_window()
             return browser
         else:
-            from appium import webdriver as app
-            import subprocess
             # host = eval(host)
             if not os.path.exists(host):
-                error = "apk路径不存在！{}".format(host)
+                error = 'apk路径不存在！{}'.format(host)
                 log.error(error)
                 raise Exception(error)
-            if os.path.splitext(host)[-1] != ".apk":
-                error = "apk文件类型错误！{}".format(host)
+            if os.path.splitext(host)[-1] != '.apk':
+                error = 'apk文件类型错误！{}'.format(host)
                 log.error(error)
                 raise Exception(error)
-            cmd = r"aapt dump badging {}".format(host)
+            cmd = r'aapt dump badging {}'.format(host)
             try:
                 with subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as f:
-                    text = f.communicate()[0].decode("utf-8")
+                    text = f.communicate()[0].decode('utf-8')
             except Exception as e:
-                raise Exception("apk名称可能存在问题，就确认后执行！{} {}".format(e, cmd))
+                raise Exception('apk名称可能存在问题，就确认后执行！{} {}'.format(e, cmd))
             appPackage = re.compile("package: name='(.+?)' ")
             appActivity = re.compile("activity: name='(.+?)'")
             package = appPackage.findall(text)[0]
             activity = appActivity.findall(text)[0]
-            with os.popen("adb shell pm list packages", "r") as f:
+            with os.popen('adb shell pm list packages', 'r') as f:
                 all_package = f.read()
             if package not in all_package:
-                log.info("当前设备未安装测试app，准备安装中~~~")
-                cmd = r"adb install {}".format(host)
+                log.info('当前设备未安装测试app，准备安装中~~~')
+                cmd = r'adb install {}'.format(host)
                 os.system(cmd)
             try:
                 desired_caps = {
-                    # "platformName": host.get("platformName", ""),
-                    "platformName": "Android",
+                    # 'platformName': host.get('platformName', ''),
+                    'platformName': 'Android',
 
-                    "deviceName": "Android",
+                    'deviceName': 'Android',
 
                     # 不重置app
-                    # "noReset": host.get("noReset", ""),
-                    "noReset": True,
+                    # 'noReset': host.get('noReset', ''),
+                    'noReset': True,
 
-                    # "autoLaunch": host.get("autoLaunch", True),
-                    "autoLaunch": True,
+                    # 'autoLaunch': host.get('autoLaunch', True),
+                    'autoLaunch': True,
 
-                    # "udid": "" # 指定运行设备
-                    # "chromeOptions": {"androidProcess": "com.tencent.mm:tools"}
+                    # 'udid': '' # 指定运行设备
+                    # 'chromeOptions': {'androidProcess': 'com.tencent.mm:tools'}
                 }
 
-                if browser == "android":
-                    desired_caps.update({"appPackage": package,
+                if browser == 'android':
+                    desired_caps.update({'appPackage': package,
 
-                                         "appActivity": activity,
+                                         'appActivity': activity,
                                          # 隐藏手机默认键盘
-                                         # "unicodeKeyboard": host.get("unicodeKeyboard", ""),
-                                         "unicodeKeyboard": True,
+                                         # 'unicodeKeyboard': host.get('unicodeKeyboard', ''),
+                                         'unicodeKeyboard': True,
 
-                                         # "resetKeyboard": host.get("unicodeKeyboard", ""),
-                                         "resetKeyboard": True,
+                                         # 'resetKeyboard': host.get('unicodeKeyboard', ''),
+                                         'resetKeyboard': True,
 
-                                         "automationName": "uiautomator2",
+                                         'automationName': 'uiautomator2',
                                          })
-                elif browser == "simulator":
-                    # desired_caps.update({"platformVersion": host.get("platformVersion", ""), })
-                    desired_caps.update({"platformVersion": "9.0", })
-                elif browser == "html":
-                    executable_path = check_file(os.path.join(os.path.join(driver_path, "h5"), "chromedriver.exe"))
-                    desired_caps.update({"browserName": "chrome",
+                elif browser == 'simulator':
+                    # desired_caps.update({'platformVersion': host.get('platformVersion', ''), })
+                    desired_caps.update({'platformVersion': '9.0', })
+                elif browser == 'html':
+                    executable_path = check_file(os.path.join(os.path.join(driver_path, 'h5'), 'chromedriver.exe'))
+                    desired_caps.update({'browserName': 'chrome',
 
-                                         "chromedriverExecutable": executable_path,
+                                         'chromedriverExecutable': executable_path,
 
-                                         "showChromedriverLog": True, })
+                                         'showChromedriverLog': True, })
 
                 # 关联appium
-                browser = app.Remote("http://127.0.0.1:4723/wd/hub", desired_caps)
+                browser = app.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
                 return browser
             except Exception as e:
-                raise Exception("连接 Appium 出错：{}".format(e))
+                raise Exception('连接 Appium 出错：{}'.format(e))
 
 
 class Result(models.Model):
     title = models.CharField(max_length=200, null=False)
-    taskId = models.IntegerField(null=True, default=0)
-    projectId = models.IntegerField()
-    testcaseId = models.IntegerField()
+    # projectId = models.IntegerField()
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
+    task = models.ForeignKey(PeriodicTask, on_delete=models.CASCADE, default=None, null=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=None, null=True)
+    testcase = models.ForeignKey(TestCase, on_delete=models.CASCADE, default=None, null=True)
+    # testcaseId = models.IntegerField()
     browsers = models.TextField(null=True)
     beforeLogin = models.TextField(null=True)
     environments = models.TextField(null=True)
@@ -407,9 +462,12 @@ class Result(models.Model):
 
 
 class SplitResult(models.Model):
-    environmentId = models.IntegerField(null=True)
-    browserId = models.IntegerField(null=True)
-    resultId = models.IntegerField()
+    # environmentId = models.IntegerField(null=True)
+    # browserId = models.IntegerField(null=True)
+    # resultId = models.IntegerField()
+    result = models.ForeignKey(Result, on_delete=models.CASCADE, default=None, null=True)
+    browser = models.ForeignKey(Browser, on_delete=models.CASCADE, default=None, null=True)
+    environment = models.ForeignKey(Environment, on_delete=models.CASCADE, default=None, null=True)
     loginStatus = models.IntegerField(default=0)  # 1 成功  2 失败  3 跳过
     createTime = models.DateTimeField(default=timezone.now)
     startTime = models.DateTimeField(null=True)
@@ -419,7 +477,7 @@ class SplitResult(models.Model):
     status = models.IntegerField(default=10)  # 10 排队中 20 测试中 30 成功  40 失败 50跳过
     remark = models.TextField(null=True)
     step_num = models.IntegerField(default=0)
-    error_name = models.CharField(max_length=200, default="")
+    error_name = models.CharField(max_length=200, default='')
     again = models.IntegerField(default=0, null=True)  # 再次执行标记
 
     class Meta:
@@ -427,6 +485,7 @@ class SplitResult(models.Model):
 
 
 class Task(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
     name = models.CharField(max_length=200, null=False)
     testcases = models.TextField(null=False)
     browsers = models.TextField(null=True)
@@ -439,7 +498,7 @@ class Task(models.Model):
         db_table = 'Task'
 
     def clean(self):
-        name = self.name.strip() if self.name else ""
+        name = self.name.strip() if self.name else ''
         testcases = self.testcases if self.testcases else []
         browsers = self.browsers if self.browsers else []
         if not name or len(name) > 20 or len(name) < 1:
@@ -458,17 +517,17 @@ class Params:
     TYPES = [TYPE_ELEMENT, TYPE_FILE, TYPE_STRING]
 
     def __init__(self, kwargs):
-        isParameter = kwargs.get("isParameter", False)
-        Type = kwargs.get("type", None)
-        key = kwargs.get("key", None)
-        value = kwargs.get("value", None)
+        isParameter = kwargs.get('isParameter', False)
+        Type = kwargs.get('type', None)
+        key = kwargs.get('key', None)
+        value = kwargs.get('value', None)
         if not (Type and isinstance(Type, str)):
-            raise ValueError("Params object Type must be str type")
+            raise ValueError('Params object Type must be str type')
         Type = Type.lower()
         if Type not in Params.TYPES:
-            raise ValueError("Params object Type value error")
+            raise ValueError('Params object Type value error')
         if isParameter and (not value or str(value).strip() == 0):
-            raise ValueError("Params Type parameter must has key")
+            raise ValueError('Params Type parameter must has key')
         else:
             self.Type = Type
             self.key = key.strip()
@@ -477,10 +536,10 @@ class Params:
 
     def __dict__(self):
         obj = dict()
-        obj["type"] = self.Type
-        obj["isParameter"] = self.isParameter
-        obj["value"] = self.value
-        obj["key"] = self.key
+        obj['type'] = self.Type
+        obj['isParameter'] = self.isParameter
+        obj['value'] = self.value
+        obj['key'] = self.key
         return obj
 
 
@@ -493,9 +552,9 @@ class Check:
         self.type = type_
         self.value = value
         if not (self.type and self.type in Check.TYPES):
-            raise ValueError("Check对象的type属性值错误")
+            raise ValueError('Check对象的type属性值错误')
         if self.type and (value and not self.value.strip()):
-            raise ValueError("Check对象的value属性不能为空")
+            raise ValueError('Check对象的value属性不能为空')
 
     def __dict__(self):
         obj = dict()
@@ -504,7 +563,9 @@ class Check:
 
 
 class LoginConfig(models.Model):
-    projectId = models.IntegerField()
+    # projectId = models.IntegerField()
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, default=None, null=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
     name = models.CharField(max_length=20, null=False)
     remark = models.TextField(null=True)
     checkType = models.TextField(default='')
@@ -519,7 +580,7 @@ class LoginConfig(models.Model):
         db_table = 'login'
 
     def clean(self):
-        name = self.name.strip() if self.name else ""
+        name = self.name.strip() if self.name else ''
         step = self.steps
         checkType = self.checkType
         checkValue = self.checkValue
@@ -532,14 +593,14 @@ class LoginConfig(models.Model):
         for s in step:
             if not isinstance(s, dict):
                 raise ValidationError({'step': '无效的登录步骤 : step'})
-            if not "keywordId" in s:
+            if not 'keywordId' in s:
                 raise ValidationError({'step': '无效的登录步骤 : keywordId'})
-            keywordId = int(s.get("keywordId")) if str(s.get("keywordId")).isdigit() else 0
+            keywordId = int(s.get('keywordId')) if str(s.get('keywordId')).isdigit() else 0
             if keywordId < 1:
                 raise ValidationError({'step': '无效的登录步骤 : keywordId'})
-            if not ("values" in s and isinstance(s.get("values"), list)):
+            if not ('values' in s and isinstance(s.get('values'), list)):
                 raise ValidationError({'step': '无效的登录步骤 : values'})
-            values = s.get("values")
+            values = s.get('values')
             for value in values:
                 try:
                     Params(value)
@@ -552,8 +613,10 @@ class LoginConfig(models.Model):
 
 
 class EnvironmentLogin(models.Model):
-    loginId = models.IntegerField()
-    environmentId = models.IntegerField()
+    # loginId = models.IntegerField()
+    login = models.ForeignKey(LoginConfig, on_delete=models.CASCADE, default=None, null=True)
+    environment = models.ForeignKey(Environment, on_delete=models.CASCADE, default=None, null=True)
+    # environmentId = models.IntegerField()
     parameter = models.TextField()
 
     class Meta:
@@ -562,7 +625,7 @@ class EnvironmentLogin(models.Model):
 
 class TaskRelation(models.Model):
     result_id_list = models.CharField(max_length=200, null=True)
-    result_id = models.ImageField(null=True)
+    result_id = models.ForeignKey(Result, on_delete=models.CASCADE, default=None, null=True)
 
     class Meta:
         db_table = 'TaskRelation'

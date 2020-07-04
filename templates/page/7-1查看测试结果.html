@@ -244,27 +244,30 @@
                 dataType: 'json',
                 success: function (res) {
                     if (res.code == 200) {
-                        duanyanId = res.data.checkValue;
-                        duanyanType = res.data.checkType;
-                        duanyanText = res.data.checkText;
-                        if (res.data.selectText == 'all')
-                            selectType = '匹配类型为： 完全匹配';
-                        else
-                            selectType = '匹配类型为： 包含匹配';
-                        if (duanyanType == 'url')
-                            $("#checkValue").html("打开的url是否为 ： " + res.data.checkValue);
-                        else {
-                            $.ajax({
-                                url: '/api/v1/element/' + duanyanId,
-                                type: 'post',
-                                dataType: 'json',
-                                success: function (res) {
-                                    if (res.code == 200) {
-                                        $("#checkValue").html("【 " + res.data.name + " 】  是否为 : '&nbsp;&nbsp;&nbsp;" + duanyanText + "  &nbsp;'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（&nbsp;" + selectType + "&nbsp;）");
+                        for (var i in res.data) {
+                            duanyanId = res.data[i].checkValue;
+                            duanyanType = res.data[i].checkType;
+                            duanyanText = res.data[i].checkText;
+                            if (res.data.selectText == 'all')
+                                selectType = '匹配类型为： 完全匹配';
+                            else
+                                selectType = '匹配类型为： 包含匹配';
+                            if (duanyanType == 'url')
+                                $("#checkValue").html("打开的url是否为 ： " + res.data[i].checkValue);
+                            else {
+                                $.ajax({
+                                    url: '/api/v1/element/' + duanyanId,
+                                    type: 'post',
+                                    dataType: 'json',
+                                    success: function (res) {
+                                        if (res.code == 200) {
+                                            $("#checkValue").html("【 " + res.data[i].name + " 】  是否为 : '&nbsp;&nbsp;&nbsp;" + duanyanText + "  &nbsp;'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（&nbsp;" + selectType + "&nbsp;）");
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
+
                     }
                 }
             });

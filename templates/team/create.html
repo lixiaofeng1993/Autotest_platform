@@ -1,0 +1,59 @@
+{% extends 'header.html' %}
+{% block team %}
+    <div class="container-fluid dashboard-content">
+        <div class="row">
+            <div class="col-xl-10">
+                <!-- ============================================================== -->
+                <!-- basic form  -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title">创建一个团队</h2>
+                            <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><span>No permission please contact the administrator ~~~</span></li>
+                                        <li class="breadcrumb-item"><a href="{% url 'team' %}" class="breadcrumb-link">Back
+                                            to team page</a></li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            {#                            <h5 class="card-header">Basic Form</h5>#}
+                            <div class="card-body">
+                                <form action="{% url 'create_team' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="inputText3" class="col-form-label">团队名称</label>
+                                        <input id="name" name="name" type="text" class="form-control">
+                                    </div>
+                                    {#                                    <div class="custom-file mb-3">#}
+                                    {#                                        <input type="file" class="custom-file-input" id="customFile">#}
+                                    {#                                        <label class="custom-file-label" for="customFile">File Input</label>#}
+                                    {#                                    </div>#}
+                                    <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">团队介绍</label>
+                                        <textarea class="form-control" id="remarks" name="remarks"
+                                                  rows="3"></textarea>
+                                    </div>
+                                    <p style="font-size: 12px;color: red">{{ error }}</p>
+                                    <button type="submit" class="btn btn-primary btn-1g btn-block">Sign in</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end basic form  -->
+                <!-- ============================================================== -->
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

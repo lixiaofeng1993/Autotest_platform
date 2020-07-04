@@ -1,0 +1,99 @@
+{% extends 'header.html' %}
+{% block team %}
+    <div class="dashboard-wrapper">
+        <div class="container-fluid  dashboard-content">
+            <!-- ============================================================== -->
+            <!-- hoverable table -->
+            <!-- ============================================================== -->
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-header">
+                        <h2 class="pageheader-title">待通过</h2>
+                        <div class="page-breadcrumb">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><span>Choose
+                                        the right
+                                        people to join your team！</span></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'team' %}" class="breadcrumb-link">Back
+                                        to team page</a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-8 col-lg-6 col-md-12 col-sm-12 col-12">
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">申请人</th>
+                                    <th scope="col">申请时间</th>
+                                    <th scope="col">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if join %}
+                                    {% for foo in join %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>{{ foo.user.username }}</td>
+                                            <td>{{ foo.create_time }}</td>
+                                            <td>
+                                                <button class="badge badge-success" onclick="apply({{ foo.id }})">同意
+                                                </button>
+                                                <button class="badge badge-danger" style="margin-left: 1%">拒绝</button>
+
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                                            id="error"
+                                            style="display: block">
+                                            <span id="error-msg">还没有人发起申请呢~~~</span>
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </a>
+                                        </div>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============================================================== -->
+    <!-- end hoverable table -->
+    <!-- ============================================================== -->
+{% endblock %}
+{% block js %}
+    <script type="application/javascript">
+        function apply(apply_id) {
+            $.ajax({
+                type: "post",
+                url: "/team/apply/" + {{ tid }} +"/",
+                data: {
+                    "apply_id": apply_id
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        alert("成功！");
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+    </script>
+{% endblock %}

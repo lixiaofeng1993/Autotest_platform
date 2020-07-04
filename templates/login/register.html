@@ -1,0 +1,75 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link href="{% static 'assets/vendor/fonts/circular-std/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/libs/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendor/fonts/fontawesome/css/fontawesome-all.css' %}">
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-align: center;
+            align-items: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+    </style>
+</head>
+<!-- ============================================================== -->
+<!-- signup form  -->
+<!-- ============================================================== -->
+
+<body>
+<!-- ============================================================== -->
+<!-- signup form  -->
+<!-- ============================================================== -->
+<form class="splash-container" action="{% url 'register' %}" method="post">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="mb-1">Registrations Form</h3>
+            <p>Please enter your user information.</p>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <input class="form-control form-control-lg" type="text" name="nick" required="" placeholder="Username"
+                       autocomplete="off">
+            </div>
+            <div class="form-group">
+                <input class="form-control form-control-lg" type="email" name="email" placeholder="E-mail">
+            </div>
+            <div class="form-group">
+                <input class="form-control form-control-lg" id="pass1" type="password" required="" name="password"
+                       placeholder="Password">
+            </div>
+            <div class="form-group">
+                <input class="form-control form-control-lg" required="" placeholder="Confirm" name="confirm">
+            </div>
+            {% for message in messages %}
+                <p class="errors" style="color: red; font-size: 12px"> {{ message }} </p>
+            {% endfor %}
+            <div class="form-group pt-2">
+                <button class="btn btn-block btn-primary" type="submit">Register My Account</button>
+            </div>
+        </div>
+        <div class="card-footer bg-white">
+            <p>Already member? <a href="{% url 'login' %}" class="text-secondary">Login Here.</a></p>
+        </div>
+    </div>
+</form>
+</body>
+
+
+</html>

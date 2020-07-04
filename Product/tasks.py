@@ -27,7 +27,7 @@ def SplitTask(result_id, status=False):
     environments = json.loads(result.environments) if result.environments else []
     for browser in browsers:
         if environments:
-            for environmentId in environments:
+            for environment_id in environments:
                 if parameter:
                     for params in parameter:
                         for k, v in params.items():
@@ -40,29 +40,29 @@ def SplitTask(result_id, status=False):
                                 if '#null#' == v:
                                     v = None
                                 if '#logo#' == v:
-                                    v = "/home/Atp/logo.png"
+                                    v = '/home/Atp/logo.png'
                                 if '#random_text#' in v:
                                     v = v.replace('#random_text#', faker.text(5))
                                 params[k] = v
                         if status:
-                            sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
-                                                            resultId=result.id, again=1,
+                            sr = SplitResult.objects.create(environment_id=environment_id, browser_id=browser,
+                                                            result_id=result.id, again=1,
                                                             parameter=json.dumps(params, ensure_ascii=False),
                                                             expect=params.get('expect', True))
                         else:
-                            sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
-                                                            resultId=result.id,
+                            sr = SplitResult.objects.create(environment_id=environment_id, browser_id=browser,
+                                                            result_id=result.id,
                                                             parameter=json.dumps(params, ensure_ascii=False),
                                                             expect=params.get('expect', True))
                         SplitTaskRunning.delay(sr.id)
                 else:
                     if status:
-                        sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
-                                                        resultId=result.id, again=1,
+                        sr = SplitResult.objects.create(environment_id=environment_id, browser_id=browser,
+                                                        result_id=result.id, again=1,
                                                         parameter={}, expect=True)
                     else:
-                        sr = SplitResult.objects.create(environmentId=environmentId, browserId=browser,
-                                                        resultId=result.id,
+                        sr = SplitResult.objects.create(environment_id=environment_id, browser_id=browser,
+                                                        result_id=result.id,
                                                         parameter={}, expect=True)
                     SplitTaskRunning.delay(sr.id)
         else:
@@ -78,25 +78,25 @@ def SplitTask(result_id, status=False):
                             if '#null#' == v:
                                 v = None
                             if '#logo#' == v:
-                                v = "/home/Atp/logo.png"
+                                v = '/home/Atp/logo.png'
                             if '#random_text#' in v:
                                 v = v.replace('#random_text#', faker.text(5))
                             params[k] = v
                     if status:
-                        sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id,
+                        sr = SplitResult.objects.create(environment_id=0, browser_id=browser, result_id=result.id,
                                                         parameter=json.dumps(params, ensure_ascii=False), again=1,
                                                         expect=params.get('expect', True))
                     else:
-                        sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id,
+                        sr = SplitResult.objects.create(environment_id=0, browser_id=browser, result_id=result.id,
                                                         parameter=json.dumps(params, ensure_ascii=False),
                                                         expect=params.get('expect', True))
                     SplitTaskRunning.delay(sr.id)
             else:
                 if status:
-                    sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id, again=1,
+                    sr = SplitResult.objects.create(environment_id=0, browser_id=browser, result_id=result.id, again=1,
                                                     parameter={}, expect=True)
                 else:
-                    sr = SplitResult.objects.create(environmentId=0, browserId=browser, resultId=result.id,
+                    sr = SplitResult.objects.create(environment_id=0, browser_id=browser, result_id=result.id,
                                                     parameter={}, expect=True)
                 SplitTaskRunning.delay(sr.id)
     SplitTaskRan.delay(result_id)
@@ -106,9 +106,9 @@ def SplitTask(result_id, status=False):
 def SplitTaskRan(result_id):
     from Product.models import Result, SplitResult
     result = Result.objects.get(id=result_id)
-    while len(SplitResult.objects.filter(resultId=result.id, status__in=[10, 20])) > 0:
+    while len(SplitResult.objects.filter(result_id=result.id, status__in=[10, 20])) > 0:
         time.sleep(1)
-    split_list = SplitResult.objects.filter(resultId=result.id)
+    split_list = SplitResult.objects.filter(result_id=result.id)
     for split in split_list:
         expect = split.expect
         result_ = True if split.status == 30 else False
@@ -130,7 +130,7 @@ def SplitTaskRunning(splitResult_id):
     from Autotest_platform.PageObject.base_page import PageObject
     from Autotest_platform.helper.util import get_model
     split = SplitResult.objects.get(id=splitResult_id)
-    result_ = Result.objects.get(id=split.resultId)
+    result_ = Result.objects.get(id=split.result_id)
     steps = json.loads(result_.steps) if result_.steps else []
     parameter = json.loads(split.parameter) if split.parameter else {}
     checkType = result_.checkType
@@ -141,16 +141,16 @@ def SplitTaskRunning(splitResult_id):
     split.status = 20
     split.save()
     split.startTime = timezone.now()
-    environment = get_model(Environment, id=split.environmentId)
+    environment = get_model(Environment, id=split.environment_id)
     host = environment.host if environment and environment.host else ''
     driver = None
     make_params = {}
     step_num = 0
-    error_name = ""
+    error_name = ''
     now = datetime.utcnow().strftime('%Y-%m-%d %H-%M-%S-%f')[:-1]
-    img_path = os.path.join(settings.MEDIA_ROOT, now + ".png")
+    img_path = os.path.join(settings.MEDIA_ROOT, now + '.png')
     try:
-        driver = Browser.objects.get(id=split.browserId).buid(host)
+        driver = Browser.objects.get(id=split.browser_id).buid(host)
     except Exception as e:
         split.status = 40
         split.remark = '浏览器初始化失败！{}'.format(e)
@@ -169,7 +169,7 @@ def SplitTaskRunning(splitResult_id):
             if not login:
                 split.loginStatus = 3
                 split.status = 50
-                split.remark = "找不到登陆配置,id=" + str(bl)
+                split.remark = '找不到登陆配置,id=' + str(bl)
                 split.finishTime = timezone.now()
                 split.save()
                 if driver:
@@ -179,22 +179,22 @@ def SplitTaskRunning(splitResult_id):
             loginSteps = json.loads(login.steps) if login.steps else []
             loginParameter = {}
             if environment:
-                environmentLogin = get_model(EnvironmentLogin, loginId=bl, environmentId=environment.id)
+                environmentLogin = get_model(EnvironmentLogin, loginId=bl, environment_id=environment.id)
                 if environmentLogin:
                     loginParameter = json.loads(environmentLogin.parameter) if environmentLogin.parameter else {}
             for loginStep in loginSteps:
                 try:
-                    Step(loginStep.get("keywordId"), loginStep.get("values")).perform(driver, loginParameter, host)
+                    Step(loginStep.get('keywordId'), loginStep.get('values')).perform(driver, loginParameter, host)
                 except Exception as e:
                     split.loginStatus = 2
                     split.status = 40
                     try:
                         driver.save_screenshot(img_path)
-                        split.error_name = now + ".png"
+                        split.error_name = now + '.png'
                     except Exception as msg:
-                        log.warning("页面加载超时：{}".format(msg))
+                        log.warning('页面加载超时：{}'.format(msg))
                     split.step_num = 777  # 页面加载超时异常，无法截图
-                    split.remark = "初始化登陆失败</br>登陆名称={}, </br>错误信息={}".format(login.name, e)
+                    split.remark = '初始化登陆失败</br>登陆名称={}, </br>错误信息={}'.format(login.name, e)
                     split.finishTime = timezone.now()
                     split.save()
                     if driver:
@@ -209,8 +209,8 @@ def SplitTaskRunning(splitResult_id):
                         split.status = 40
                         driver.save_screenshot(img_path)
                         split.step_num = 888
-                        split.error_name = now + ".png"
-                        split.remark = "初始化登陆失败</br>登陆名称=" + login.name + " , </br>错误信息=登录断言不通过"
+                        split.error_name = now + '.png'
+                        split.remark = '初始化登陆失败</br>登陆名称=' + login.name + ' , </br>错误信息=登录断言不通过'
                         split.finishTime = timezone.now()
                         split.save()
                         if driver:
@@ -228,8 +228,8 @@ def SplitTaskRunning(splitResult_id):
                         split.status = 40
                         driver.save_screenshot(img_path)
                         split.step_num = 888
-                        split.error_name = now + ".png"
-                        split.remark = "初始化登陆失败[ 登陆名称:" + login.name + " , 错误信息：断言不通过"
+                        split.error_name = now + '.png'
+                        split.remark = '初始化登陆失败[ 登陆名称:' + login.name + ' , 错误信息：断言不通过'
                         split.finishTime = timezone.now()
                         split.save()
                         if driver:
@@ -240,32 +240,32 @@ def SplitTaskRunning(splitResult_id):
             split.loginStatus = 1
     index = 1
     for step in steps:
-        values = step.get("values", [])
-        keyword_id = step.get("keywordId")
+        values = step.get('values', [])
+        keyword_id = step.get('keywordId')
         try:
-            if "make" in str(values):
+            if 'make' in str(values):
                 for key in values:
-                    if key.get("value", "").isdigit():
-                        element = key["value"]
+                    if key.get('value', '').isdigit():
+                        element = key['value']
                         element = get_model(Element, id=int(element))
-                    if key.get("key", "") == "make":
+                    if key.get('key', '') == 'make':
                         PageObject().find_element(driver, element)
                         make_text = PageObject().get_text(element)
-                        log.info("提取的文本是：{}".format(make_text))
-                        make_key = key.get("value")
+                        log.info('提取的文本是：{}'.format(make_text))
+                        make_key = key.get('value')
                         make_params.update({make_key: make_text})
             for key in values:
-                if key.get("value", "") in make_params.keys():
-                    log.info("把提取的文本，赋值给需要输入的值：{}".format(make_params[key["value"]]))
-                    key["value"] = make_params[key["value"]]
+                if key.get('value', '') in make_params.keys():
+                    log.info('把提取的文本，赋值给需要输入的值：{}'.format(make_params[key['value']]))
+                    key['value'] = make_params[key['value']]
             Step(keyword_id, values).perform(driver, parameter, host)
             index = index + 1
         except RuntimeError as re:
             split.status = 40
             driver.save_screenshot(img_path)
             split.step_num = index
-            split.error_name = now + ".png"
-            split.remark = "测试用例执行第" + str(index) + "步失败，错误信息:" + str(re.args)
+            split.error_name = now + '.png'
+            split.remark = '测试用例执行第' + str(index) + '步失败，错误信息:' + str(re.args)
             split.finishTime = timezone.now()
             split.save()
             if driver:
@@ -276,8 +276,8 @@ def SplitTaskRunning(splitResult_id):
             split.status = 40
             driver.save_screenshot(img_path)
             split.step_num = index
-            split.error_name = now + ".png"
-            split.remark = "执行测试用例第" + str(index) + "步发生错误，请检查测试用例:" + str(info.args)
+            split.error_name = now + '.png'
+            split.remark = '执行测试用例第' + str(index) + '步发生错误，请检查测试用例:' + str(info.args)
             split.finishTime = timezone.now()
             split.save()
             if driver:
@@ -295,16 +295,16 @@ def SplitTaskRunning(splitResult_id):
                 else:
                     driver.save_screenshot(img_path)
                     step_num = 999
-                    error_name = now + ".png"
-                    remark = '测试不通过,预期结果为["' + checkValue + '"], 但实际结果为["' + driver.current_url + '"]'
+                    error_name = now + '.png'
+                    remark = '测试不通过,预期结果为['' + checkValue + ''], 但实际结果为['' + driver.current_url + '']'
             else:
                 if split.expect:
                     remark = '测试通过'
                 else:
                     driver.save_screenshot(img_path)
                     step_num = 999
-                    error_name = now + ".png"
-                    remark = '测试不通过,预期结果为["' + checkValue + '"], 但实际结果为["' + driver.current_url + '"]'
+                    error_name = now + '.png'
+                    remark = '测试不通过,预期结果为['' + checkValue + ''], 但实际结果为['' + driver.current_url + '']'
         elif checkType == Check.TYPE_ELEMENT:
             element = checkValue
             expect_text = checkText
@@ -325,16 +325,16 @@ def SplitTaskRunning(splitResult_id):
                         else:
                             driver.save_screenshot(img_path)
                             step_num = 999
-                            error_name = now + ".png"
+                            error_name = now + '.png'
                             remark = '测试不通过，预期结果失败，但实际结果是成功。'
                     else:
                         driver.save_screenshot(img_path)
                         step_num = 999
-                        error_name = now + ".png"
+                        error_name = now + '.png'
                         if not split.expect:
                             remark = '测试通过，预期结果失败，实际结果也是失败。'
                         else:
-                            remark = '测试不通过，预期结果为["' + expect_text + '"]，但实际结果为["' + actual_text + '"]'
+                            remark = '测试不通过，预期结果为['' + expect_text + '']，但实际结果为['' + actual_text + '']'
                 else:
                     if expect_text in actual_text:
                         TestResult = True
@@ -346,21 +346,21 @@ def SplitTaskRunning(splitResult_id):
                         else:
                             driver.save_screenshot(img_path)
                             step_num = 999
-                            error_name = now + ".png"
+                            error_name = now + '.png'
                             remark = '测试不通过，预期结果失败，但实际结果是成功。'
                     else:
                         driver.save_screenshot(img_path)
                         step_num = 999
-                        error_name = now + ".png"
+                        error_name = now + '.png'
                         if not split.expect:
                             remark = '测试通过，预期结果失败，实际结果也是失败。'
                         else:
-                            remark = '测试不通过，预期结果为["' + expect_text + '"]，但实际结果为["' + actual_text + '"]'
+                            remark = '测试不通过，预期结果为['' + expect_text + '']，但实际结果为['' + actual_text + '']'
             except:
                 TestResult = False
                 driver.save_screenshot(img_path)
                 step_num = 999
-                error_name = now + ".png"
+                error_name = now + '.png'
                 remark = '当前元素定位已改变，请及时更新定位！'
 
     if driver:
@@ -381,23 +381,24 @@ def timingRunning(*args, **kwargs):
     from Autotest_platform.helper.util import get_model
     from djcelery.models import PeriodicTask
     if kwargs:
-        name = kwargs["name"] if kwargs["name"] else None
+        name = kwargs['name'] if kwargs['name'] else None
         periodic = PeriodicTask.objects.get(name__exact=name)
-        browsers = kwargs["browsers"] if kwargs["browsers"] else []
-        testcases = kwargs["testcases"] if kwargs["testcases"] else []
+        browsers = kwargs['browsers'] if kwargs['browsers'] else []
+        testcases = kwargs['testcases'] if kwargs['testcases'] else []
         result_id_list = []
         for tc in testcases:
-            environments = tc.get("environments", [])
-            tc = get_model(TestCase, id=tc.get("id", 0))
-            r = Result.objects.create(projectId=tc.projectId, testcaseId=tc.id, checkValue=tc.checkValue,
+            environments = tc.get('environments', [])
+            tc = get_model(TestCase, id=tc.get('id', 0))
+            r = Result.objects.create(project_id=tc.project_id, testcase_id=tc.id, checkValue=tc.checkValue,
                                       checkType=tc.checkType, checkText=tc.checkText, selectText=tc.selectText,
-                                      title=name, beforeLogin=tc.beforeLogin,
+                                      title=name, beforeLogin=tc.beforeLogin, team_id=tc.team_id,
                                       steps=tc.steps, parameter=tc.parameter,
                                       browsers=json.dumps(browsers, ensure_ascii=False),
-                                      environments=json.dumps(environments, ensure_ascii=False), taskId=periodic.id)
+                                      environments=json.dumps(environments, ensure_ascii=False), task_id=periodic.id)
             result_id_list.append(str(r.id))
             SplitTask.delay(r.id)
-        tr = TaskRelation.objects.create(result_id_list=json.dumps(result_id_list), result_id=result_id_list[0])
+        tr = TaskRelation.objects.create(result_id_list=json.dumps(result_id_list),
+                                         result_id=get_model(Result, id=result_id_list[0]))
         tr.save()
 
 
@@ -439,14 +440,14 @@ class Step:
                         parameter[pa.key] = pa.value
             for step in steps:
                 try:
-                    Step(step.get("keywordId"), step.get("values")).perform(driver, parameter, host)
+                    Step(step.get('keywordId'), step.get('values')).perform(driver, parameter, host)
                 except:
                     raise
 
     def sys_method__run(self, driver, value):
         package = __import__(self.keyword.package, fromlist=True)
         clazz = getattr(package, self.keyword.clazz)
-        setattr(clazz, "driver", driver)
+        setattr(clazz, 'driver', driver)
         method = getattr(clazz, self.keyword.method)
 
         def running(*args):

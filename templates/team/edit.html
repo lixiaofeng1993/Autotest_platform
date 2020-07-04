@@ -1,0 +1,217 @@
+{% extends 'header.html' %}
+{% block team %}
+    <div class="container-fluid dashboard-content">
+        <div class="row">
+            <div class="col-xl-10">
+                <!-- ============================================================== -->
+                <!-- basic form  -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title">编辑团队信息</h2>
+                            <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><span>No permission please contact the administrator ~~~</span>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="{% url 'team' %}" class="breadcrumb-link">Back
+                                            to team page</a></li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            {#                            <h5 class="card-header">Basic Form</h5>#}
+                            <div class="card-body">
+                                <form action="/team/edit/{{ tid }}/" method="post">
+                                    {% csrf_token %}
+                                    {% if status %}
+                                        <div class="form-group">
+                                            <label for="inputText3" class="col-form-label">团队名称</label>
+                                            <input id="name" name="name" type="text" class="form-control"
+                                                   value="{{ te.name }}">
+                                        </div>
+                                        {#                                    <div class="custom-file mb-3">#}
+                                        {#                                        <input type="file" class="custom-file-input" id="customFile">#}
+                                        {#                                        <label class="custom-file-label" for="customFile">File Input</label>#}
+                                        {#                                    </div>#}
+                                        <div class="form-group">
+                                            <label for="exampleFormControlTextarea1">团队介绍</label>
+                                            <textarea class="form-control" id="remarks" name="remarks"
+                                                      value="{{ te.remark }}"
+                                                      rows="3"></textarea>
+                                        </div>
+                                        <p style="font-size: 12px;color: red">{{ error }}</p>
+                                        <button type="submit" class="btn btn-primary" data-container="body"
+                                                data-toggle="popover" data-content="">保存
+                                        </button>
+                                    {% else %}
+                                        <div class="form-group">
+                                            <label for="inputText3" class="col-form-label">团队名称</label>
+                                            <input id="name" name="name" type="text" class="form-control"
+                                                   value="{{ te.name }}" disabled>
+                                        </div>
+                                        {#                                    <div class="custom-file mb-3">#}
+                                        {#                                        <input type="file" class="custom-file-input" id="customFile">#}
+                                        {#                                        <label class="custom-file-label" for="customFile">File Input</label>#}
+                                        {#                                    </div>#}
+                                        <div class="form-group">
+                                            <label for="exampleFormControlTextarea1">团队介绍</label>
+                                            <textarea class="form-control" id="remarks" name="remarks"
+                                                      value="{{ te.remark }}"
+                                                      rows="3" disabled></textarea>
+                                        </div>
+                                    {% endif %}
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- end basic form  -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="page-header">
+                            <h2 class="pageheader-title">编辑模块信息</h2>
+                            <div class="page-breadcrumb">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><span>No permission please contact the administrator ~~~</span>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="{% url 'team' %}" class="breadcrumb-link">Back
+                                            to team page</a></li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="card">
+                            {#                            <h5 class="card-header">Basic Form</h5>#}
+                            <div class="card-body">
+                                <form action="/team/modular/{{ tid }}/" method="post">
+                                    <div class="form-row">
+                                        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom03">ID</label>
+                                            {% if status %}
+                                                <input type="text" class="form-control" id="validationCustom03"
+                                                       placeholder="id" name="id" required>
+                                            {% else %}
+                                                <input type="text" class="form-control" id="validationCustom03"
+                                                       placeholder="id" name="id" required disabled>
+                                            {% endif %}
+                                            <div class="invalid-feedback">
+                                                Please provide a valid id.
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom04">模块名称</label>
+                                            {% if status %}
+                                                <input type="text" class="form-control" id="validationCustom04"
+                                                       placeholder="name" name="name" required>
+                                            {% else %}
+                                                <input type="text" class="form-control" id="validationCustom04"
+                                                       placeholder="name" name="name" required disabled>
+                                            {% endif %}
+                                            <div class="invalid-feedback">
+                                                Please provide a valid name.
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom05">跳转链接</label>
+                                            {% if status %}
+                                                <input type="text" class="form-control" id="validationCustom05"
+                                                       placeholder="url" name="url" required>
+                                            {% else %}
+                                                <input type="text" class="form-control" id="validationCustom05"
+                                                       placeholder="url" name="url" required disabled>
+                                            {% endif %}
+                                            <div class="invalid-feedback">
+                                                Please provide a valid url.
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            <label for="validationCustom05">Icon</label>
+                                            {% if status %}
+                                                <input type="text" class="form-control" id="validationCustom05"
+                                                       placeholder="icon" name="icon" required>
+                                            {% else %}
+                                                <input type="text" class="form-control" id="validationCustom05"
+                                                       placeholder="icon" name="icon" disabled>
+                                            {% endif %}
+                                            <div class="invalid-feedback">
+                                                Please provide a valid icon.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p style="font-size: 12px;color: red">{{ error }}</p>
+                                    <button type="submit" class="btn btn-primary" data-container="body"
+                                            data-toggle="popover" data-content="">保存
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    {% for foo in mt %}
+                                        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            {% if forloop.counter == 1 %}
+                                                <label for="validationCustom03">ID</label>
+                                            {% endif %}
+                                            <input type="text" class="form-control" id="validationCustom03"
+                                                   placeholder="id" name="id" value="{{ foo.id }}" required disabled>
+                                            <div class="invalid-feedback">
+                                                Please provide a valid id.
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            {% if forloop.counter == 1 %}
+                                                <label for="validationCustom04">模块名称</label>
+                                            {% endif %}
+                                            <input type="text" class="form-control" id="validationCustom04"
+                                                   placeholder="name" name="name" value="{{ foo.model_name }}" required
+                                                   disabled>
+                                            <div class="invalid-feedback">
+                                                Please provide a valid name.
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            {% if forloop.counter == 1 %}
+                                                <label for="validationCustom05">跳转链接</label>
+                                            {% endif %}
+                                            <input type="text" class="form-control" id="validationCustom05"
+                                                   placeholder="url" name="url" value="{{ foo.url }}" required disabled>
+                                            <div class="invalid-feedback">
+                                                Please provide a valid url.
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                            {% if forloop.counter == 1 %}
+                                                <label for="validationCustom05">Icon</label>
+                                            {% endif %}
+                                            <input type="text" class="form-control" id="validationCustom05"
+                                                   placeholder="icon" name="icon" value="{{ foo.Icon }}" required
+                                                   disabled>
+                                            <div class="invalid-feedback">
+                                                Please provide a valid icon.
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

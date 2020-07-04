@@ -355,7 +355,7 @@
                 success: function (res) {
                     if (res.code == 200) {
                         for (var i = 0; i < res.data.environments.length; i++) {
-                            if (projectId == res.data.environments[i].projectId) {
+                            if (projectId == res.data.environments[i].project) {
                                 $("#es").append('<option value="' + res.data.environments[i].id + '">' + res.data.environments[i].name + '</option>');
                             }
                         }

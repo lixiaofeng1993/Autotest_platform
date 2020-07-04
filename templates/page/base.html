@@ -65,7 +65,7 @@
                 <span class="icon-bar"></span>
             </button>
             <div class="brand">
-                <a href="{% url 'index' %}"><img src="{% static 'assets/img/logo.png' %}" alt="Klorofil Logo"
+                <a href="/admin/index/{{ tid }}/"><img src="{% static 'assets/img/logo.png' %}" alt="Klorofil Logo"
                                                  class="img-responsive logo"></a>
             </div>
         </div>
@@ -80,14 +80,7 @@
                             class="img-circle" alt="Avatar">
                         <span>{{ user }}</span> <i class="icon-submenu fa fa-caret-down"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="javascript:void(0)" onclick="changePassword()"><i
-                                class="fa fa-minus-square"></i> <span>修改密码</span></a>
-                        </li>
-                        <li><a href="/admin/"><i class="fa fa-bookmark"></i> <span>站点管理</span></a></li>
-                        <li><a href="https://www.cnblogs.com/changqing8023" target="_blank"><i
-                                class="fa fa-rouble"></i> <span>博客园地址</span></a>
-                        </li>
-                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> <span>退出</span></a></li>
+                        <li><a href="{% url 'team' %}"><i class="fa fa-sign-out"></i> <span>返回团队管理</span></a></li>
                     </ul>
                 </li>
             </ul>
@@ -101,7 +94,7 @@
             <nav>
                 <ul class="nav" id="main-menu" style="margin-top: 15px">
                     <li>
-                        <a href="{% url 'index' %}" class=""><i class="fa fa-dashboard"></i> 主页</a>
+                        <a href="/admin/index/{{ tid }}/" class=""><i class="fa fa-dashboard"></i> 主页</a>
                     </li>
                     <li>
                         <a href="{% url 'project' %}" class=""><i class="fa fa-desktop"></i> 项目管理</a>

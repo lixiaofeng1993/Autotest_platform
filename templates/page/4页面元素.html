@@ -385,12 +385,12 @@
                 success: function (res) {
                     if (res.code == 200) {
                         var data = {
-                            "projectId": res.data.projectId,
+                            "projectId": res.data.project,
                             "name": res.data.name + ' - 副本',
                             "remark": res.data.remark,
                             "by": res.data.by,
                             "locator": res.data.locator,
-                            "pageId": res.data.pageId
+                            "pageId": res.data.page
                         };
                         $.ajax({
                             url: '/api/v1/element/create',
@@ -399,7 +399,7 @@
                             data: JSON.stringify(data),
                             success: function (res) {
                                 if (res.code == 200) {
-                                    $('.alert').html('复制新建成功').addClass('alert-success').show().delay(1500).fadeOut();
+                                    $('.alert').html('复制成功').addClass('alert-success').show().delay(1500).fadeOut();
                                     setTimeout(function () {
                                         //重新获取下列表
                                         search();
@@ -455,7 +455,7 @@
                 data: data,
                 success: function (res) {
                     for (var i = 0; i < res.data.pages.length; i++) {
-                        if (newNum == res.data.pages[i].projectId) {
+                        if (newNum == res.data.pages[i].project) {
                             $("#newpage").append('<option ID="' + res.data.pages[i].id + '" value="' + res.data.pages[i].name + '">' + res.data.pages[i].name + '</option>');
                         }
                     }
@@ -479,9 +479,8 @@
                 dataType: 'json',
                 data: data,
                 success: function (res) {
-
                     for (var i = 0; i < res.data.pages.length; i++) {
-                        if (newNum == res.data.pages[i].projectId) {
+                        if (newNum == res.data.pages[i].project) {
                             $("#newpage1").append('<option ID="' + res.data.pages[i].id + '" value="' + res.data.pages[i].name + '">' + res.data.pages[i].name + '</option>');
                         }
                     }
