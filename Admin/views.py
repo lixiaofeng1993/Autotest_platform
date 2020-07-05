@@ -10,11 +10,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.conf import settings
 from Autotest_platform.helper.helperPath import register_info_logic, change_info_logic, delete_testcase
-from Product.models import Team, TeamUsers, ValidationError, ModularTable
+from Product.models import Team, TeamUsers, ValidationError, ModularTable, Keyword, Project
 from Autotest_platform.helper.util import get_model, pagination_data
 from Autotest_platform.helper.Http import JsonResponse
-from Product.models import Project as projects
-from Product.models import Keyword as keyword
+from Product.public import check_team, model_nav, create_model
 import logging
 
 log = logging.getLogger('log')  # 初始化log
@@ -30,6 +29,7 @@ def login_view(request):
             request.session['user'] = username  # 跨请求的保持user参数
             user_id = get_model(User, username=username).id
             request.session['user_id'] = user_id
+            request.session.set_expiry(None)  # 关闭浏览器后，session失效
             response = HttpResponseRedirect('/team/')
             delete_testcase(settings.MEDIA_ROOT)
             delete_testcase(settings.LOG_PATH)
@@ -72,7 +72,7 @@ class TeamIndex(ListView):
     model = Team
     template_name = 'team/team.html'
     context_object_name = 'object_list'
-    paginate_by = 5
+    paginate_by = 2
 
     def dispatch(self, *args, **kwargs):
         return super(TeamIndex, self).dispatch(*args, **kwargs)
@@ -123,7 +123,7 @@ def create_team(request):
             return render(request, 'team/create.html', {'error': e.args})
         tu = TeamUsers()
         tu.team_id = t.id
-        tu.user_id = t.creator.id
+        tu.user_id = t.creator_id
         tu.status = 1
         try:
             tu.save()
@@ -151,8 +151,10 @@ def team_edit(request, tid):
             return render(request, 'team/edit.html', {'error': e.args})
     te = get_model(Team, id=tid)
     user_id = request.session['user_id']
-    mt = get_model(ModularTable, get=False)
-    info = {'te': te, 'status': False, 'tid': tid, 'mt': mt}
+    mt = get_model(ModularTable, get=False, team_id=tid)
+    if not mt:
+        mt = create_model(tid)
+    info = {'te': te, 'status': False, 'tid': tid, 'mt': mt.order_by('order_id')}
     if te.creator.id == user_id:
         info['status'] = True
         return render(request, 'team/edit.html', info)
@@ -164,11 +166,21 @@ def team_edit(request, tid):
 def team_modular(request, tid):
     if request.method == 'POST':
         mt = ModularTable()
-        mt.id = request.POST.get('id', '')
+        mt.order_id = request.POST.get('id', '')
         mt.model_name = request.POST.get('name', '')
         mt.url = request.POST.get('url', '')
         mt.Icon = request.POST.get('icon', '')
+        mot = ModularTable.objects.filter(team_id=tid).filter(order_id=mt.order_id)
+        if mt.order_id != 0 and mt.model_name == '0' and mt.url == '0' and mt.Icon == '0':
+            try:
+                mot.delete()
+            except:
+                pass
+            return redirect('/team/edit/{}/'.format(tid))
         mt.team_id = tid
+        if mot:
+            mot.update(order_id=mt.order_id, model_name=mt.model_name, url=mt.url, Icon=mt.Icon)
+            return redirect('/team/edit/{}/'.format(tid))
         try:
             mt.clean()
         except ValidationError as error:
@@ -236,119 +248,134 @@ def index(request, tid):
     if not t:
         return redirect('/team/')
     request.session['tid'] = tid
-    return render(request, 'page/首页.html', {'tid': tid})
+    model_list = get_model(ModularTable, get=False, team_id=tid).order_by('order_id')
+    return render(request, 'page/首页.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def project(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/2项目管理.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/2项目管理.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def project_config(request, project_id):
-    from Product.models import Project
-    from Autotest_platform.helper.util import get_model
     p = get_model(Project, id=project_id)
     name = p.name if p else ''
-    tid = request.session.get('tid', None)
-    return render(request, 'page/2项目管理--环境配置.html', {'projectId': project_id, 'projectName': name, 'tid': tid})
+    tid, model_list = model_nav(request)
+    info = {'projectId': project_id, 'projectName': name, 'tid': tid, 'model_list': model_list}
+    return render(request, 'page/2项目管理--环境配置.html', info)
 
 
 @login_required
+@check_team
 def page(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/3页面管理.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/3页面管理.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def element(request):
     project_id = request.GET.get('projectId', 'false')
     page_id = request.GET.get('pageId', 'false')
-    tid = request.session.get('tid', None)
-    info = {'projectId': project_id, 'pageId': page_id, 'tid': tid}
+    tid, model_list = model_nav(request)
+    info = {'projectId': project_id, 'pageId': page_id, 'tid': tid, 'model_list': model_list}
     return render(request, 'page/4页面元素.html', info)
 
 
 @login_required
+@check_team
 def keyword(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/5关键字库.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/5关键字库.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def keyword_create(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/5-1新建关键字.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/5-1新建关键字.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def keyword_edit(request, keyword_id):
-    from Product.models import Keyword, Project
-    from Autotest_platform.helper.util import get_model
     kw = get_model(Keyword, id=keyword_id)
     project_id = kw.project_id if kw else 0
     p = get_model(Project, id=project_id)
     project_name = p.name if project_id is not None and p else '通用关键字封装'
     keyword_name = kw.name if kw else ''
-    tid = request.session.get('tid', None)
+    tid, model_list = model_nav(request)
     info = {'id': project_id, 'projectName': project_name, 'keywordId': keyword_id, 'keywordName': keyword_name,
-            'tid': tid}
+            'tid': tid, 'model_list': model_list}
     return render(request, 'page/5-2编辑关键字.html', info)
 
 
 @login_required
+@check_team
 def testcase(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/6测试用例.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/6测试用例.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def testcase_create(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/6-1新建测试用例.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/6-1新建测试用例.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def testcase_edit(request, testcase_id):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/6-1编辑测试用例.html', {'testcaseId': testcase_id, 'tid': tid})
+    tid, model_list = model_nav(request)
+    info = {'testcaseId': testcase_id, 'tid': tid, 'model_list': model_list}
+    return render(request, 'page/6-1编辑测试用例.html', info)
 
 
 @login_required
+@check_team
 def result(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/7测试结果.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/7测试结果.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def result_see(request, result_id):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/7-1查看测试结果.html', {'id': result_id, 'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/7-1查看测试结果.html', {'id': result_id, 'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def task(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/9任务管理.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/9任务管理.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def loginConfig(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/8登录配置.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/8登录配置.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def loginConfig_create(request):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/8-1新建登录配置.html', {'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/8-1新建登录配置.html', {'tid': tid, 'model_list': model_list})
 
 
 @login_required
+@check_team
 def loginConfig_edit(request, login_id):
-    tid = request.session.get('tid', None)
-    return render(request, 'page/8-1编辑登录配置.html', {'id': login_id, 'tid': tid})
+    tid, model_list = model_nav(request)
+    return render(request, 'page/8-1编辑登录配置.html', {'id': login_id, 'tid': tid, 'model_list': model_list})
 
 
 # @login_required

@@ -1,6 +1,12 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
-
+{% block nav %}
+    {% for model in model_list %}
+        <li>
+            <a href="{{ model.url }}" class=""><i class="{{ model.Icon }}"></i> {{ model.model_name }}</a>
+        </li>
+    {% endfor %}
+{% endblock %}
 {% block css %}
     <style type="text/css">
 

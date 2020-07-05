@@ -100,62 +100,65 @@
                                 <form action="/team/modular/{{ tid }}/" method="post">
                                     <div class="form-row">
                                         <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
-                                            <label for="validationCustom03">ID</label>
                                             {% if status %}
+                                                <label for="validationCustom03">ID</label>
                                                 <input type="text" class="form-control" id="validationCustom03"
                                                        placeholder="id" name="id" required>
                                             {% else %}
-                                                <input type="text" class="form-control" id="validationCustom03"
-                                                       placeholder="id" name="id" required disabled>
+                                                {#                                                <input type="text" class="form-control" id="validationCustom03"#}
+                                                {#                                                       placeholder="id" name="id" required disabled>#}
                                             {% endif %}
                                             <div class="invalid-feedback">
                                                 Please provide a valid id.
                                             </div>
                                         </div>
                                         <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
-                                            <label for="validationCustom04">模块名称</label>
                                             {% if status %}
+                                                <label for="validationCustom04">模块名称</label>
                                                 <input type="text" class="form-control" id="validationCustom04"
                                                        placeholder="name" name="name" required>
                                             {% else %}
-                                                <input type="text" class="form-control" id="validationCustom04"
-                                                       placeholder="name" name="name" required disabled>
+                                                {#                                                <input type="text" class="form-control" id="validationCustom04"#}
+                                                {#                                                       placeholder="name" name="name" required disabled>#}
                                             {% endif %}
                                             <div class="invalid-feedback">
                                                 Please provide a valid name.
                                             </div>
                                         </div>
                                         <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
-                                            <label for="validationCustom05">跳转链接</label>
                                             {% if status %}
+                                                <label for="validationCustom05">跳转链接</label>
                                                 <input type="text" class="form-control" id="validationCustom05"
                                                        placeholder="url" name="url" required>
                                             {% else %}
-                                                <input type="text" class="form-control" id="validationCustom05"
-                                                       placeholder="url" name="url" required disabled>
+                                                {#                                                <input type="text" class="form-control" id="validationCustom05"#}
+                                                {#                                                       placeholder="url" name="url" required disabled>#}
                                             {% endif %}
                                             <div class="invalid-feedback">
                                                 Please provide a valid url.
                                             </div>
                                         </div>
                                         <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
-                                            <label for="validationCustom05">Icon</label>
                                             {% if status %}
+                                                <label for="validationCustom05">Icon</label>
                                                 <input type="text" class="form-control" id="validationCustom05"
                                                        placeholder="icon" name="icon" required>
                                             {% else %}
-                                                <input type="text" class="form-control" id="validationCustom05"
-                                                       placeholder="icon" name="icon" disabled>
+                                                {#                                                <input type="text" class="form-control" id="validationCustom05"#}
+                                                {#                                                       placeholder="icon" name="icon" disabled>#}
                                             {% endif %}
                                             <div class="invalid-feedback">
                                                 Please provide a valid icon.
                                             </div>
                                         </div>
                                     </div>
-                                    <p style="font-size: 12px;color: red">{{ error }}</p>
-                                    <button type="submit" class="btn btn-primary" data-container="body"
-                                            data-toggle="popover" data-content="">保存
-                                    </button>
+                                    {% if status %}
+                                        <p style="font-size: 12px;color: red">{{ error }}</p>
+                                        <button type="submit" class="btn btn-primary" data-container="body"
+                                                data-toggle="popover" data-content="">保存
+                                        </button>
+                                    {% endif %}
+
                                 </form>
                             </div>
                             <div class="card-body">
@@ -166,7 +169,7 @@
                                                 <label for="validationCustom03">ID</label>
                                             {% endif %}
                                             <input type="text" class="form-control" id="validationCustom03"
-                                                   placeholder="id" name="id" value="{{ foo.id }}" required disabled>
+                                                   placeholder="id" name="id" value="{{ foo.order_id }}" required disabled>
                                             <div class="invalid-feedback">
                                                 Please provide a valid id.
                                             </div>

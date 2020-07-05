@@ -66,7 +66,7 @@
             </button>
             <div class="brand">
                 <a href="/admin/index/{{ tid }}/"><img src="{% static 'assets/img/logo.png' %}" alt="Klorofil Logo"
-                                                 class="img-responsive logo"></a>
+                                                       class="img-responsive logo"></a>
             </div>
         </div>
         <div class="container-fluid">
@@ -96,31 +96,34 @@
                     <li>
                         <a href="/admin/index/{{ tid }}/" class=""><i class="fa fa-dashboard"></i> 主页</a>
                     </li>
-                    <li>
-                        <a href="{% url 'project' %}" class=""><i class="fa fa-desktop"></i> 项目管理</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'page' %}" class=""><i class="fa fa-bar-chart"></i> 页面管理</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'element' %}" class=""><i class="fa  fa-fw fa-qrcode"></i> 页面元素</a>
-                    </li>
+                    {% block nav %}
 
-                    <li>
-                        <a href="{% url 'keyword' %}" class=""><i class="fa fa-fw fa-table"></i> 关键字库</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'testcase' %}" class=""><i class="fa fa-fw fa-edit"></i> 测试用例 </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'result' %}" class=""><i class="fa fa-fw fa-file"></i> 测试结果 </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'loginConfig' %}" class=""><i class="fa fa-fw fa-building"></i> 登录配置 </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'task' %}" class=""><i class="fa fa-fw fa-sitemap"></i> 任务管理 </a>
-                    </li>
+                    {% endblock %}
+                    {#                    <li>#}
+                    {#                        <a href="{% url 'project' %}" class=""><i class="fa fa-desktop"></i> 项目管理</a>#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a href="{% url 'page' %}" class=""><i class="fa fa-bar-chart"></i> 页面管理</a>#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a href="{% url 'element' %}" class=""><i class="fa  fa-fw fa-qrcode"></i> 页面元素</a>#}
+                    {#                    </li>#}
+                    {##}
+                    {#                    <li>#}
+                    {#                        <a href="{% url 'keyword' %}" class=""><i class="fa fa-fw fa-table"></i> 关键字库</a>#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a href="{% url 'testcase' %}" class=""><i class="fa fa-fw fa-edit"></i> 测试用例 </a>#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a href="{% url 'result' %}" class=""><i class="fa fa-fw fa-file"></i> 测试结果 </a>#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a href="{% url 'loginConfig' %}" class=""><i class="fa fa-fw fa-building"></i> 登录配置 </a>#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a href="{% url 'task' %}" class=""><i class="fa fa-fw fa-sitemap"></i> 任务管理 </a>#}
+                    {#                    </li>#}
                 </ul>
             </nav>
         </div>

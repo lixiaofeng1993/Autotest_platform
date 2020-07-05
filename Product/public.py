@@ -13,6 +13,7 @@ from django.conf import settings
 from matplotlib import pyplot as plt
 # from matplotlib.font_manager import FontProperties
 from datetime import datetime
+from django.http import HttpResponseRedirect
 from collections import OrderedDict
 
 log = logging.getLogger('log')  # 初始化log
@@ -116,3 +117,57 @@ def remove_logs(path):
                 log.warning('删除文件失败：{}'.format(e))
         else:
             log.warning('不是文件或者文件不存在：{}'.format(pic_path))
+
+
+def check_team(fn):
+    from .models import TeamUsers
+
+    def wrapper(request, *args, **kwargs):
+        user_id = request.session.get('user_id', None)
+        tid = request.session.get('tid', None)
+        if not tid:
+            return HttpResponseRedirect('/team/')
+        status = 0
+        tus = TeamUsers.objects.filter(team_id=tid).filter(user_id=user_id)
+        if tus:
+            for t in tus:
+                status = t.status
+        if status == 0:
+            return HttpResponseRedirect('/team/')
+        else:
+            return fn(request, *args, **kwargs)
+
+    return wrapper
+
+
+def model_nav(request):
+    from .models import ModularTable
+    from Autotest_platform.helper.util import get_model
+
+    tid = request.session.get('tid', None)
+    model_list = get_model(ModularTable, get=False, team_id=tid)
+    return tid, model_list
+
+
+def create_model(tid):
+    from .models import ModularTable
+    from Autotest_platform.helper.util import get_model
+    mt_list = []
+    sign_dict = [
+        {"id": 1, "model_name": "项目管理", "url": "/admin/project", 'Icon': 'fa fa-desktop', 'team_id': tid},
+        {"id": 2, "model_name": "页面管理", "url": "/admin/page", 'Icon': 'fa fa-bar-chart', 'team_id': tid},
+        {"id": 3, "model_name": "页面元素", "url": "/admin/element", 'Icon': 'fa fa-fw fa-qrcode', 'team_id': tid},
+        {"id": 4, "model_name": "关键字库", "url": "/admin/keyword", 'Icon': 'fa fa-fw fa-table', 'team_id': tid},
+        {"id": 5, "model_name": "测试用例", "url": "/admin/testcase", 'Icon': 'fa fa-w fa-edit', 'team_id': tid},
+        {"id": 6, "model_name": "测试结果", "url": "/admin/result", 'Icon': 'fa fa-fw fa-file', 'team_id': tid},
+        {"id": 7, "model_name": "登录配置", "url": "/admin/loginConfig", 'Icon': 'fa fa-fw fa-building',
+         'team_id': tid},
+        {"id": 8, "model_name": "任务管理", "url": "/admin/task", 'Icon': 'fa fa-fw fa-sitemap', 'team_id': tid},
+    ]
+    for signer in sign_dict:
+        mt_list.append(
+            ModularTable(order_id=signer["id"], model_name=signer["model_name"], url=signer["url"], Icon=signer["Icon"],
+                         team_id=signer["team_id"]))
+    ModularTable.objects.bulk_create(mt_list)
+    mt = get_model(ModularTable, get=False, team_id=tid)
+    return mt

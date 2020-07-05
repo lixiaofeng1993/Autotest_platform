@@ -1578,7 +1578,7 @@ class TestTasks:
         name = parameter.get('name').strip() if parameter.get('name', '') else ''
         timing = parameter.get('timing', 0)
         timing = int(timing) if str(timing).isdigit() and int(timing) in [0, 1] else 2
-        tid = request.session.get('tid', None)  # TODO:不同团队区分任务管理模块
+        tid = request.session.get('tid', None)
         team_id = 0
         try:
             ts = PeriodicTask.objects.filter(

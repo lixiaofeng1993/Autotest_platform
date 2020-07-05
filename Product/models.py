@@ -42,6 +42,7 @@ class TeamUsers(models.Model):
 
 
 class ModularTable(models.Model):
+    order_id = models.IntegerField(default=None, null=True)
     team = models.ForeignKey(Team, on_delete=models.CASCADE, default=None, null=True)
     url = models.CharField(max_length=255)
     Icon = models.CharField(max_length=255)
