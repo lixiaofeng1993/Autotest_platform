@@ -398,7 +398,7 @@ def timingRunning(*args, **kwargs):
             result_id_list.append(str(r.id))
             SplitTask.delay(r.id)
         tr = TaskRelation.objects.create(result_id_list=json.dumps(result_id_list),
-                                         result_id=get_model(Result, id=result_id_list[0]))
+                                         result_id=result_id_list[0])
         tr.save()
 
 

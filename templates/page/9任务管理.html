@@ -1,6 +1,7 @@
 ﻿{% extends "page/base.html" %}
 {% load static %}
 {% block body %}
+    {#    <div class="alert"></div>#}
     <div id="page-wrapper">
         <div id="page-inner">
             <div class="row">
@@ -600,32 +601,34 @@
                     $('#dataTables-example').dataTable().fnClearTable();//清空数据.fnClearTable();//清空数据
                     $('#dataTables-example').dataTable().fnDestroy(); //还原初始化了的datatable
                     var tr = '';
-                    for (var i = 0; i < res.data.tasks.length; i++) {
-                        var num_timing = res.data.tasks[i].enabled;
-                        var crontab = res.data.tasks[i].crontab;
-                        var interval = res.data.tasks[i].interval;
-                        tr += '<tr class="odd"><td class="center">' + (i + 1) + '</td>';
-                        tr += '<td class="center">' + res.data.tasks[i].name + '</td>';
-                        tr += '<td class="center">' + (num_timing == 1 ? "有效" : num_timing == 0 ? "无效" : "") + '</td>';
-                        if (crontab) {
-                            tr += '<td class="center">' + (crontab.minute + " " + crontab.hour + " " + crontab.day_of_week
-                                + " " + crontab.day_of_month + " " + crontab.month_of_year) + '</td>';
-                        } else if (interval) {
-                            tr += '<td class="center">' + (interval.every + " " + interval.period + "/次") + '</td>';
-                        } else {
-                            tr += '<td class="center">' + '点击：' + '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer"><i class="fa fa-gear"></i></a>' + '</td>';
+                    if (res.code == 200) {
+                        for (var i = 0; i < res.data.tasks.length; i++) {
+                            var num_timing = res.data.tasks[i].enabled;
+                            var crontab = res.data.tasks[i].crontab;
+                            var interval = res.data.tasks[i].interval;
+                            tr += '<tr class="odd"><td class="center">' + (i + 1) + '</td>';
+                            tr += '<td class="center">' + res.data.tasks[i].name + '</td>';
+                            tr += '<td class="center">' + (num_timing == 1 ? "有效" : num_timing == 0 ? "无效" : "") + '</td>';
+                            if (crontab) {
+                                tr += '<td class="center">' + (crontab.minute + " " + crontab.hour + " " + crontab.day_of_week
+                                    + " " + crontab.day_of_month + " " + crontab.month_of_year) + '</td>';
+                            } else if (interval) {
+                                tr += '<td class="center">' + (interval.every + " " + interval.period + "/次") + '</td>';
+                            } else {
+                                tr += '<td class="center">' + '点击：' + '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer"><i class="fa fa-gear"></i></a>' + '</td>';
+                            }
+                            tr += '<td class="center">' + res.data.tasks[i].description + '</td>';
+                            tr += '<td class="center">' + res.data.tasks[i].createTime + '</td>';
+                            tr += '<td class="center">';
+                            tr += '<a href="javascript:void(0);" class="pointer"  onclick="run(' + res.data.tasks[i].id + ')"><i class="fa fa-play"></i></a>';
+                            tr += '&nbsp;&nbsp;&nbsp;';
+                            tr += '<a href="javascript:void(0);" class="pointer"  onclick="edit(' + res.data.tasks[i].id + ')"><i class="fa fa-pencil"></i></a>';
+                            tr += '&nbsp;&nbsp;&nbsp;';
+                            tr += '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer"><i class="fa fa-gear"></i></a>';
+                            tr += '&nbsp;&nbsp;&nbsp;';
+                            tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.tasks[i].id + ')"><i class="fa fa-times"></i></a>';
+                            tr += '</td></tr>';
                         }
-                        tr += '<td class="center">' + res.data.tasks[i].description + '</td>';
-                        tr += '<td class="center">' + res.data.tasks[i].createTime + '</td>';
-                        tr += '<td class="center">';
-                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="run(' + res.data.tasks[i].id + ')"><i class="fa fa-play"></i></a>';
-                        tr += '&nbsp;&nbsp;&nbsp;';
-                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="edit(' + res.data.tasks[i].id + ')"><i class="fa fa-pencil"></i></a>';
-                        tr += '&nbsp;&nbsp;&nbsp;';
-                        tr += '<a href="/api/v1/task_time/' + res.data.tasks[i].id + '" class="pointer"><i class="fa fa-gear"></i></a>';
-                        tr += '&nbsp;&nbsp;&nbsp;';
-                        tr += '<a href="javascript:void(0);" class="pointer"  onclick="isDel(' + res.data.tasks[i].id + ')"><i class="fa fa-times"></i></a>';
-                        tr += '</td></tr>';
                     }
                     $(".js_table").append(tr);
                     $('#dataTables-example').dataTable({

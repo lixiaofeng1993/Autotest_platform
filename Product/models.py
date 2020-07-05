@@ -625,7 +625,7 @@ class EnvironmentLogin(models.Model):
 
 class TaskRelation(models.Model):
     result_id_list = models.CharField(max_length=200, null=True)
-    result_id = models.ForeignKey(Result, on_delete=models.CASCADE, default=None, null=True)
+    result = models.ForeignKey(Result, on_delete=models.CASCADE, default=None, null=True)
 
     class Meta:
         db_table = 'TaskRelation'

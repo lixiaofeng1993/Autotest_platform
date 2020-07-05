@@ -980,8 +980,6 @@ class TestResult:
             parameter = get_request_body(request)
         except ValueError:
             return JsonResponse.BadRequest('json格式错误')
-        task_id = parameter.get('taskId', 0)
-        task_id = int(task_id) if str(task_id).isdigit() and int(task_id) >= 1 else 0
         project_id = parameter.get('projectId', 0)
         project_id = int(project_id) if str(project_id).isdigit() and int(project_id) >= 1 else 0
         testcase_id = parameter.get('testcaseId', 0)
@@ -1004,7 +1002,7 @@ class TestResult:
         task_list = []
         tasks_list = []
         for t in tr:
-            task_list.append(t.result_id)
+            task_list.append(str(t.result_id))
             tasks_list += json.loads(t.result_id_list)
         for result_id in tasks_list:
             if result_id not in task_list:
@@ -1012,9 +1010,7 @@ class TestResult:
         try:
             res = Result.objects.filter(createTime__lt=end_time, createTime__gt=start_time, team_id=tid,
                                         title__contains=title).order_by('-createTime').exclude(id__in=exclude_list)
-            if task_id:
-                res = res.filter(task_id=task_id)
-            elif project_id:
+            if project_id:
                 res = res.filter(project_id=project_id)
             if testcase_id:
                 res = res.filter(testcase_id=testcase_id)
@@ -1050,7 +1046,7 @@ class TestResult:
         if tr:
             result_id_list = eval(tr.result_id_list)
             for ret_id in result_id_list:
-                sts = get_model(SplitResult, get=False, resultId=int(ret_id))
+                sts = get_model(SplitResult, get=False, result_id=int(ret_id))
                 re = get_model(Result, id=int(ret_id))
                 if not re:
                     return JsonResponse(404, '该测试结果不存在！')
@@ -1583,17 +1579,21 @@ class TestTasks:
         timing = parameter.get('timing', 0)
         timing = int(timing) if str(timing).isdigit() and int(timing) in [0, 1] else 2
         tid = request.session.get('tid', None)  # TODO:不同团队区分任务管理模块
+        team_id = 0
         try:
             ts = PeriodicTask.objects.filter(
                 date_changed__lt=end_time, date_changed__gt=start_time, name__contains=name,
                 task='Product.tasks.timingRunning').order_by('-date_changed')
-            # for t in ts:
-            #     if t.kwargs.get('tid', 0) == tid:
+            for t in ts:
+                kwargs = json.loads(t.kwargs)
+                team_id = kwargs.get('tid', 0)
+            if tid != team_id:
+                return JsonResponse(400, '当前团队下数据为空')
             if timing != 2:
                 ts = ts.filter(enabled=timing)
             total = len(ts)
         except:
-            return JsonResponse(400, '时间参数错误')
+            return JsonResponse(400, '查看数据失败')
         ts = ts[(page_index - 1) * page_size:page_index * page_size]
         _list = list()
         for t in ts:
@@ -1666,7 +1666,7 @@ class TestTasks:
             result_id_list.append(str(r.id))
             SplitTask.delay(r.id)
         tr = TaskRelation.objects.create(result_id_list=json.dumps(result_id_list),
-                                         result_id=get_model(Result, id=result_id_list[0]))
+                                         result_id=result_id_list[0])
         tr.save()
         return JsonResponse.OK()
 
