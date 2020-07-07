@@ -1,5 +1,8 @@
 from django.http import HttpResponse
 import json
+import logging
+
+log = logging.getLogger('log')  # 初始化log
 
 
 class JsonResponse(HttpResponse):
@@ -17,32 +20,39 @@ class JsonResponse(HttpResponse):
 
     @staticmethod
     def OK(message='ok', data=None):
+        log.info('执行成功！{}'.format(message))
         response = JsonResponse(200, message, data)
         return response
 
     @staticmethod
     def BadRequest(message='Bad request', data=None):
+        log.warning('执行出现异常！{}'.format(message))
         response = JsonResponse(400, message, data)
         return response
 
     @staticmethod
     def Unauthorized(message='Unauthorized', data=None):
+        log.warning('未授权！{}'.format(message))
         return JsonResponse(401, message, data)
 
     @staticmethod
     def MethodNotAllowed(message='Method not allowed', data=None):
+        log.warning('不允许的方法！{}'.format(message))
         return JsonResponse(405, message, data)
 
     @staticmethod
     def ServerError(message='Internal server error', data=None):
+        log.error('服务异常！{}'.format(message))
         return JsonResponse(500, message, data)
 
     @staticmethod
     def SkipLink(message='skip link', data=None):
+        log.warning('跳转链接！{}'.format(message))
         return JsonResponse(403, message, data)
 
     @staticmethod
     def AbnormalCheck(message='except check', data=None):
+        log.warning('异常检查！{}'.format(message))
         return JsonResponse(999, message, data)
 
 
