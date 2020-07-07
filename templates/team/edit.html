@@ -101,9 +101,9 @@
                                     <div class="form-row">
                                         <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
                                             {% if status %}
-                                                <label for="validationCustom03">ID</label>
+                                                <label for="validationCustom03">排序id</label>
                                                 <input type="text" class="form-control" id="validationCustom03"
-                                                       placeholder="id" name="id" required>
+                                                       placeholder="order_id" name="id" required>
                                             {% else %}
                                                 {#                                                <input type="text" class="form-control" id="validationCustom03"#}
                                                 {#                                                       placeholder="id" name="id" required disabled>#}
@@ -166,7 +166,7 @@
                                     {% for foo in mt %}
                                         <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
                                             {% if forloop.counter == 1 %}
-                                                <label for="validationCustom03">ID</label>
+                                                <label for="validationCustom03">排序id</label>
                                             {% endif %}
                                             <input type="text" class="form-control" id="validationCustom03"
                                                    placeholder="id" name="id" value="{{ foo.order_id }}" required disabled>

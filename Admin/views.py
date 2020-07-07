@@ -429,3 +429,29 @@ def change_password(request):
             user.save()
             log.info('用户：{} 修改密码为 {}'.format(user, new_password))
             return JsonResponse({'msg': 'success'})
+
+
+def delete_customer(request, phone):
+    import re
+    from Autotest_platform.helper.connectMySql import SqL
+
+    patt = re.compile('^1[3-8]\d{9}$')
+    ver = patt.findall(str(phone))
+    if not ver:
+        return JsonResponse.AbnormalCheck('手机号输入不符合规则，请重新输入!')
+    sql = SqL(job=True)
+    sql_ = SqL()
+    try:
+        msg = sql.execute_sql('DELETE FROM customer WHERE phone = "{}";'.format(phone))
+        msg1 = sql.execute_sql('DELETE FROM store_user WHERE phone = "{}";'.format(phone))
+        msg2 = sql.execute_sql('DELETE FROM balance_account WHERE account = "{}";'.format(phone))
+        easy_agent_id = sql_.execute_sql('SELECT easy_agent_id FROM easy_agent WHERE phone = "{}";'.format(phone))
+        msg3 = sql_.execute_sql(
+            'DELETE FROM easy_agent_account WHERE easy_agent_id  = "{}";'.format(easy_agent_id))
+        log.info('返回值：{}, {}, {}, {}, {}'.format(msg, msg1, msg2, easy_agent_id, msg3))
+        if not msg and not msg1 and not msg2 and not msg3:
+            return JsonResponse.OK('删除用户：{} 成功！'.format(phone))
+        else:
+            return JsonResponse.ServerError(msg + msg1 + msg2 + msg3)
+    except Exception as e:
+        return JsonResponse.ServerError('删除用户出现错误：{}'.format(e))

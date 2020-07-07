@@ -128,5 +128,7 @@ urlpatterns = [
     path('team/apply/<int:tid>/', team_apply, name='team_apply'),
     path('team/edit/<int:tid>/', team_edit, name='team_edit'),
     path('team/modular/<int:tid>/', team_modular, name='team_modular'),
+    # 删除用户接口
+    path('delete/customer/<int:phone>/', delete_customer, name='delete_customer'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

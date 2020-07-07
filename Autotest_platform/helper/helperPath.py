@@ -8,7 +8,6 @@
 
 
 from django.conf import settings
-from django.contrib.auth.models import User
 import os, platform, time, re, logging, shutil
 
 pattern = '/' if platform.system() != 'Windows' else '\\'
@@ -75,6 +74,8 @@ def register_info_logic(username, password, pswd_again, email):
     :param email:
     :return:
     """
+    from django.contrib.auth.models import User
+
     if email:
         if not re.match('.+@.+\..+$', email):
             return "邮箱格式错误！"
