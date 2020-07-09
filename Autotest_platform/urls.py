@@ -130,5 +130,6 @@ urlpatterns = [
     path('team/modular/<int:tid>/', team_modular, name='team_modular'),
     # 删除用户接口
     path('delete/customer/<int:phone>/', delete_customer, name='delete_customer'),
+    path('set/balance/<int:phone>/', set_balance, name='delete_customer'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -464,3 +464,28 @@ def delete_customer(request, phone):
             return JsonResponse.ServerError(msg1 + msg2 + msg3 + msg4 + msg5 + msg6 + msg7 + msg8)
     except Exception as e:
         return JsonResponse.ServerError('删除用户出现错误：{}'.format(e))
+
+
+def set_balance(request, phone):
+    import re
+    from Autotest_platform.helper.connectMySql import SqL
+
+    patt = re.compile('^1[3-8]\d{9}$')
+    ver = patt.findall(str(phone))
+    if not ver:
+        return JsonResponse.AbnormalCheck('手机号输入不符合规则，请重新输入!')
+    balance = request.GET.get('balance', '')
+    patt1 = re.compile('^\d{3,6}$')
+    ver1 = patt1.findall(str(balance))
+    if not ver1:
+        return JsonResponse.AbnormalCheck('输入的余额不符合规则，请重新输入!')
+    sql = SqL()
+    try:
+        easy_agent_id = sql.execute_sql('SELECT easy_agent_id FROM easy_agent WHERE phone = "{}";'.format(phone))
+        msg = sql.execute_sql(
+            'update easy_agent_account set balance= "{}" where easy_agent_id = "{}";'.format(balance, easy_agent_id))
+        log.info('返回值：{}, {}'.format(easy_agent_id, msg))
+        if not msg:
+            return JsonResponse.OK('用户：{} 设置余额：{} 成功！'.format(phone, balance))
+    except Exception as e:
+        return JsonResponse.ServerError('用户：{} 设置余额出现错误！{}'.format(phone, e))
