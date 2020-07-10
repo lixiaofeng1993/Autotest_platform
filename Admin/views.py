@@ -475,7 +475,7 @@ def set_balance(request, phone):
     if not ver:
         return JsonResponse.AbnormalCheck('手机号输入不符合规则，请重新输入!')
     balance = request.GET.get('balance', '')
-    patt1 = re.compile('^\d{3,6}$')
+    patt1 = re.compile('^\d{3,9}$')
     ver1 = patt1.findall(str(balance))
     if not ver1:
         return JsonResponse.AbnormalCheck('输入的余额不符合规则，请重新输入!')
