@@ -439,16 +439,23 @@ def delete_customer(request, phone):
     ver = patt.findall(str(phone))
     if not ver:
         return JsonResponse.AbnormalCheck('手机号输入不符合规则，请重新输入!')
+    patt_c = re.compile('\d{1,4}')
+    channel_id = request.GET.get('channel_id', 1)
+    ver_c = patt_c.findall(str(channel_id))
+    if not ver_c:
+        return JsonResponse.AbnormalCheck('channel_id 输入不符合规则，请重新输入!')
     sql = SqL(job=True)
     sql_ = SqL()
     try:
-        customer_id = sql.execute_sql('SELECT id FROM customer WHERE phone = "{}" AND channel_id =1;'.format(phone))
+        customer_id = sql.execute_sql(
+            'SELECT id FROM customer WHERE phone = "{}" AND channel_id = "{}";'.format(phone, channel_id))
         msg1 = sql.execute_sql('DELETE FROM wechat_user WHERE customer_id = "{}";'.format(customer_id))
         msg2 = sql.execute_sql('DELETE FROM account WHERE customer_id = "{}";'.format(customer_id))
         msg3 = sql.execute_sql('DELETE FROM customer_vip_info WHERE customer_id = "{}";'.format(customer_id))
         msg4 = sql.execute_sql('DELETE FROM customer_attachment_info WHERE customer_id = "{}";'.format(customer_id))
         msg5 = sql.execute_sql('DELETE FROM customer WHERE id = "{}";'.format(customer_id))
-        msg6 = sql.execute_sql('DELETE FROM balance_account WHERE account = "{}" AND channel_id = 1;'.format(phone))
+        msg6 = sql.execute_sql(
+            'DELETE FROM balance_account WHERE account = "{}" AND channel_id = "{}";'.format(phone, channel_id))
 
         easy_agent_id = sql_.execute_sql('SELECT easy_agent_id FROM easy_agent WHERE phone = "{}";'.format(phone))
         msg7 = sql_.execute_sql(
@@ -457,9 +464,10 @@ def delete_customer(request, phone):
             'DELETE FROM easy_agent WHERE easy_agent_id  = "{}";'.format(easy_agent_id))
 
         log.info(
-            '返回值：{}, {}, {}, {}, {},{}, {}, {}'.format(customer_id, msg1, msg2, msg3, msg4, msg5, msg6, msg7, msg8))
+            '返回值：customer_id ==》 {}, {}, {}, {}, {},{}, {}, {}'.format(customer_id, msg1, msg2, msg3, msg4, msg5, msg6,
+                                                                       msg7, msg8))
         if not msg1 and not msg2 and not msg3 and not msg4 and not msg5 and not msg6 and not msg7 and not msg8:
-            return JsonResponse.OK('删除用户：{} 成功！'.format(phone))
+            return JsonResponse.OK(data='渠道：{} 删除用户：{} 成功！'.format(channel_id, phone))
         else:
             return JsonResponse.ServerError(msg1 + msg2 + msg3 + msg4 + msg5 + msg6 + msg7 + msg8)
     except Exception as e:
@@ -486,6 +494,32 @@ def set_balance(request, phone):
             'update easy_agent_account set balance= "{}" where easy_agent_id = "{}";'.format(balance, easy_agent_id))
         log.info('返回值：{}, {}'.format(easy_agent_id, msg))
         if not msg:
-            return JsonResponse.OK('用户：{} 设置余额：{} 成功！'.format(phone, balance))
+            return JsonResponse.OK(data='用户：{} 设置余额：{} 成功！'.format(phone, balance))
     except Exception as e:
         return JsonResponse.ServerError('用户：{} 设置余额出现错误！{}'.format(phone, e))
+
+
+def mobile_code(request, phone):
+    import re
+    from Autotest_platform.helper.connectMySql import SqL
+
+    patt = re.compile('^1[3-8]\d{9}$')
+    ver = patt.findall(str(phone))
+    if not ver:
+        return JsonResponse.AbnormalCheck('手机号输入不符合规则，请重新输入!')
+    sql = SqL(job=True)
+    try:
+        msg = sql.execute_sql(
+            'select app_sign, mobile, params from sms_message where mobile= "{}" order by id desc limit 1;'.format(
+                phone), num=2)
+        msg_list = msg.split(',')
+        log.info('返回值：{}'.format(msg_list))
+        data = {
+            "商户": msg_list[0],
+            "手机号": msg_list[1],
+            "短信内容": msg_list[2],
+        }
+        if msg:
+            return JsonResponse.OK(data=data)
+    except Exception as e:
+        return JsonResponse.ServerError('手机号：{} 查询验证码失败！{}'.format(phone, e))

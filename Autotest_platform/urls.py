@@ -131,5 +131,6 @@ urlpatterns = [
     # 删除用户接口
     path('delete/customer/<int:phone>/', delete_customer, name='delete_customer'),
     path('set/balance/<int:phone>/', set_balance, name='delete_customer'),
+    path('mobile/code/<int:phone>/', mobile_code, name='mobile_code'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
