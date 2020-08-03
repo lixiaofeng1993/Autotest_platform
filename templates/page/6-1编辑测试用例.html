@@ -496,6 +496,7 @@
                 type: 'post',
                 dataType: 'json',
                 success: function (res) {
+                    console.log(res, 11111111111111111111)
                     if (res.code == 200) {
                         $("#testcaseTitle").val(res.data.title);
                         var projectId = res.data.project;
@@ -515,7 +516,7 @@
                             $("#urlCheckValue").val(res.data.checkValue);
                         } else {
                             key_select(2);
-                            initCheckValue(res.data.pageId, res.data.checkValue);
+                            initCheckValue(res.data.page_id, res.data.checkValue);
                             $("#check-text").val(res.data.checkText);
                             var selectText = res.data.selectText;
                             $("input[name='selectText'][value='" + selectText + "']").prop('checked', true);

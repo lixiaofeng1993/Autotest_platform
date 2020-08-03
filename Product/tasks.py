@@ -296,7 +296,7 @@ def SplitTaskRunning(splitResult_id):
                     driver.save_screenshot(img_path)
                     step_num = 999
                     error_name = now + '.png'
-                    remark = '测试不通过,预期结果为['' + checkValue + ''], 但实际结果为['' + driver.current_url + '']'
+                    remark = '测试不通过,预期结果为[' + checkValue + '], 但实际结果为[' + driver.current_url + ']'
             else:
                 if split.expect:
                     remark = '测试通过'
@@ -304,7 +304,7 @@ def SplitTaskRunning(splitResult_id):
                     driver.save_screenshot(img_path)
                     step_num = 999
                     error_name = now + '.png'
-                    remark = '测试不通过,预期结果为['' + checkValue + ''], 但实际结果为['' + driver.current_url + '']'
+                    remark = '测试不通过,预期结果为[' + checkValue + '], 但实际结果为[' + driver.current_url + ']'
         elif checkType == Check.TYPE_ELEMENT:
             element = checkValue
             expect_text = checkText
@@ -334,7 +334,7 @@ def SplitTaskRunning(splitResult_id):
                         if not split.expect:
                             remark = '测试通过，预期结果失败，实际结果也是失败。'
                         else:
-                            remark = '测试不通过，预期结果为['' + expect_text + '']，但实际结果为['' + actual_text + '']'
+                            remark = '测试不通过，预期结果为[' + expect_text + ']，但实际结果为[' + actual_text + ']'
                 else:
                     if expect_text in actual_text:
                         TestResult = True
@@ -355,7 +355,7 @@ def SplitTaskRunning(splitResult_id):
                         if not split.expect:
                             remark = '测试通过，预期结果失败，实际结果也是失败。'
                         else:
-                            remark = '测试不通过，预期结果为['' + expect_text + '']，但实际结果为['' + actual_text + '']'
+                            remark = '测试不通过，预期结果为[' + expect_text + ']，但实际结果为[' + actual_text + ']'
             except:
                 TestResult = False
                 driver.save_screenshot(img_path)
