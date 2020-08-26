@@ -462,10 +462,12 @@ def delete_customer(request, phone):
             'DELETE FROM easy_agent_account WHERE easy_agent_id  = "{}";'.format(easy_agent_id))
         msg8 = sql_.execute_sql(
             'DELETE FROM easy_agent WHERE easy_agent_id  = "{}";'.format(easy_agent_id))
+        msg9 = sql_.execute_sql(
+            'update customer_vip_info set vip_type_id = 1 where customer_id = "{}";'.format(customer_id))
 
         log.info(
-            '返回值：customer_id ==》 {}, {}, {}, {}, {},{}, {}, {}'.format(customer_id, msg1, msg2, msg3, msg4, msg5, msg6,
-                                                                       msg7, msg8))
+            '返回值：customer_id ==》 {}, {}, {}, {}, {},{}, {}, {}, {}'.format(customer_id, msg1, msg2, msg3, msg4, msg5,
+                                                                           msg6, msg7, msg8, msg9))
         if not msg1 and not msg2 and not msg3 and not msg4 and not msg5 and not msg6 and not msg7 and not msg8:
             return JsonResponse.OK(data='渠道：{} 删除用户：{} 成功！'.format(channel_id, phone))
         else:
